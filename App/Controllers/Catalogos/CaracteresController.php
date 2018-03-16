@@ -4,7 +4,7 @@ namespace Juridico\App\Controllers\Catalogos;
 
 use Juridico\App\Controllers\TwigController;
 
-use Juridico\App\Controllers\ApiController;
+use Juridico\App\Controllers\BaseController;
 
 
 class CaracteresController extends TwigController{
@@ -13,17 +13,14 @@ class CaracteresController extends TwigController{
 	private $js = 'caracteres';
 
 	public function index(){
-
-		$api_class = new ApiController();
-		$header_data = $api_class->headerData();
-		$navigation = $api_class->navigation_data();
 		
-	
-		$_SESSION['moduleName'] = $this->moduleName;
+		$base = new BaseController();
+		$home = $base->home_layout_data($this->moduleName);
 		echo $this->render('HomeLayout/HomeContainer.twig',[
-			'header' => $header_data,
-			'menus' => $navigation
-		]); 
+			'home' => $home
+		]);
+
+		
 	}
 
 	public function get_registers(){

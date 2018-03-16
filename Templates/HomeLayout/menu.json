@@ -1,0 +1,41 @@
+{
+	"header":{},
+	"modulos":{
+		"GESTION" : {
+			"nombre":"Gestión",
+			"submenus":[],
+			"icon":"fa fa-chevron-right"
+		},
+		"PROGRAMA" : {
+			"nombre" : "Programas",
+			"submenus" : [],
+			"icon": "fa fa-bars"
+		},
+		"AUDITORIA" : {
+			"nombre" : "Auditorías",
+			"submenus" : [],
+			"icon": "fa fa-search"
+		},
+		"OBSERVACIONES" : {
+			"nombre" : "Acciones",
+			"submenus" : [],
+			"icon": "fa fa-cogs"
+		},
+		"CONFIGURACION" : {
+			"nombre" : "Catálogos",
+			"submenus": [],
+			"icon" : "fas fa-edit"
+		},
+		"REPORTEADOR" : {
+			"nombre" : "Informes",
+			"submenus" : [],
+			"icon":"far fa-file"
+		},
+		"NORMATIVIDAD" : {
+			"nombre" : "Normatividad",
+			"submenus": [],
+			"icon":"fa fa-pencil-square-o"
+		}
+	}
+
+}

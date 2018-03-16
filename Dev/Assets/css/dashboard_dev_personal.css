@@ -1,3 +1,4 @@
+
 body{
 	line-height: 22px;
 	color:#666;
@@ -110,3 +111,53 @@ header a{
 	display: block;
 }
 
+
+/*-------------Main Container-----------------------*/
+
+main{
+	display: flex;
+}
+
+
+/*------------------ Menu -------------- */
+
+
+
+
+aside{
+	background: #f2f2f2;
+	width: 17%;
+}
+
+.Navigation ul{
+	list-style: none;
+}
+
+.Navigation-menu{
+	margin:0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.Navigation-menu-item{
+	border:1px solid rgba(0,0,0,.3);
+	padding:20px 10px;
+}
+
+.Navigation-menu-icon{
+	background: #eee;
+	color:#888;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	text-align: center;
+	border:1px solid rgba(0,0,0,.3);
+}
+
+.Navigation-menu-icon svg {
+	margin-top: 10px;
+}
+
+.Navigation-submenu{
+	display: none;
+}

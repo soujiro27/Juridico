@@ -12,11 +12,13 @@
 		{% include '/HomeLayout/Header.twig'  %}
 	</header>
 	
-	<aside>
-		{% include '/HomeLayout/Navigation.twig' %}
-	</aside>
 	<main>
-		<div id="root"></div>
+		<aside>
+			{% include '/HomeLayout/Navigation.twig' %}
+		</aside>
+		<section>
+			<div id="root"></div>
+		</section>
 	</main>
 	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 

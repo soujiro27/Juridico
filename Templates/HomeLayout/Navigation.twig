@@ -1,5 +1,41 @@
-<div class="Navigation">
-	{% for menu in menus %}
-	    <p>{{menu}}</p>
-	{% endfor %}
-</div>
+<nav class="Navigation">
+	<ul class="Navigation-menu">
+		<li class="Navigation-menu-item">
+			<a href="/SIA">
+				<div class="Navigation-menu-icon">
+					<i class="fas fa-home"></i>
+				</div>
+				<span>Inicio</span>
+			</a>
+		</li>
+
+		{% for modulo in home.modulos  %}
+			{% if modulo.submenus | length > 0 %}
+				<li class="Navigation-menu-item">
+					<i class="{{ modulo.icon }}"></i>
+					<span>{{ modulo.nombre }}</span>
+					<ul class="Navigation-submenu">
+						{% for item in modulo.submenus %}
+							<li class="Navigation-submenu-item">
+								<a href="{{ item.liga }}">
+									<i class="{{ item.icono }}"></i>
+									<span>{{ item.nombre }}</span>
+									<i class="fas fa-caret-right"></i>
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</li>
+			{% endif %}
+		{% endfor %}
+
+		<li class="Navigation-menu-item">
+			<a href="#!">
+				<i class="fas fa-sign-out-alt"></i>
+				<span>Exit</span>
+			</a>
+		</li>
+
+
+	</ul>
+</nav>
