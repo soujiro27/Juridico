@@ -1,0 +1,112 @@
+body{
+	line-height: 22px;
+	color:#666;
+	background: #343434 url(../images/back.png);
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+}
+
+/*------------Header --------------------------*/
+header{
+	background:-webkit-linear-gradient(top, #f8f8f8, #f2f2f2);
+	color:#666;
+}
+
+header a{
+	text-decoration: none;
+	color: #666;
+}
+
+.Header{
+	display: flex;
+	border-bottom:thin solid rgba(0,0,0,.3);
+	box-shadow: 2px 0px 2px rgba(0,0,0,.3);
+	align-items: center;
+}
+
+.Header-logo{
+	width: 15%;
+	margin-right: 2%;
+}
+
+
+.Header-logo img{
+	width: 85%;
+	padding:3% 5%;
+	cursor: pointer;
+}
+
+.Header-cuenta{
+	width: 13%;
+	margin-right: 2%;
+}
+
+.Header-module{
+	width: 25%;
+	margin-right: 2%;
+	text-align: center;
+	font-size: 25px;
+	
+}
+
+
+.Header-module p{
+	margin: 3px;
+}
+
+.Header-notifications{
+	width: 15%;
+	margin-right: 2%;
+	text-align: center;
+	cursor:pointer;
+
+}
+
+
+.Header-notifications svg{
+	margin-right: 5px;
+}
+
+.Header-user{
+	width: 24%;
+	text-align: left;
+	display: block;
+	cursor: pointer;
+	position: relative;
+	
+}
+
+.Header-user p svg{
+	margin-right:5px;
+}
+
+
+.Header-user-submenu{
+	position: absolute;
+	top:40px;
+	left:0;
+	background: white;
+	border-radius: 5px;
+}
+
+.Header-user-submenu a{
+	width: 150px;
+	display: block;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+
+.Header-user-submenu a:hover{
+	background: #666;
+	color:white;
+}
+
+
+.Header-user .Header-user-submenu {
+	display: none
+}
+
+.Header-user:hover > .Header-user-submenu {
+	display: block;
+}
+
