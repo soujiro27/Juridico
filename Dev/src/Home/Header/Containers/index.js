@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 import Logo from './../Components/logo';
 import Cuenta from './../Components/cuentaPublica';
@@ -9,28 +8,14 @@ import User from './../Components/User';
 
 export default class Header  extends Component{
 
-    state = {
-        datos:[]
-    }
-
-
-    componentWillMount(){
-        axios.get('/SIA/juridico/Api/headerData')
-        .then((response)=>{
-            this.setState({
-                datos:response.data
-            })
-        })
-    }
-
     render(){
         return(
             <header className="Header">
                 <Logo />
-                <Cuenta cuenta={this.state.datos.cuentaPublica} />
-                <Modulo modulo={this.state.datos.modulo} />
-                <Notificaciones notificaciones={this.state.datos.notificaciones} />
-                <User user={this.state.datos.usuario} />
+                <Cuenta cuenta={this.props.header.cuentaPublica} />
+                <Modulo modulo={this.props.header.modulo} />
+                <Notificaciones notificaciones={this.props.header.notificaciones} />
+                <User user={this.props.header.usuario} />
             </header>
         )
     }

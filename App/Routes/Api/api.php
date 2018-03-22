@@ -11,9 +11,9 @@ $controller = new ApiController();
  
 $app->group('/juridico',function() use($app,$controller){
 		
-	$app->get('/Api/headerData',function() use ($app,$controller){
+	$app->get('/Api/HomeData',function() use ($app,$controller){
 		
-		$controller->headerData();
+		$controller->home_layout_data();
 		
 	});
 
