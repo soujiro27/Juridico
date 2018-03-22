@@ -9,7 +9,7 @@ $auth = function(){
 	//echo "yes";
 };
 
-
+$_SESSION['modulo'] = 'Caracteres';
 
 $app->group('/juridico',$auth,function() use($controller, $app){
 

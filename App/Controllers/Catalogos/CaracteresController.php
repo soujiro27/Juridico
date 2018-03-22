@@ -17,7 +17,7 @@ class CaracteresController extends TwigController{
 		$base = new BaseController();
 		$home = $base->home_layout_data($this->moduleName);
 		echo $this->render('HomeLayout/HomeContainer.twig',[
-			'home' => $home
+			'js' => $this->js
 		]);
 
 		

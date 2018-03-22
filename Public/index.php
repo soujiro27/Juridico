@@ -36,7 +36,7 @@ include_once $root_directory.'Catalogos/Caracteres.php';
 //include_once '/../routes/oficios/Turnados.php';
 
 /*------------ Api --------------------------*/
-//include_once '/../backend/routes/api/api.php';
+include_once $root_directory.'Api/api.php';
 
 /*----------------Datos DB ------------------*/
 include_once '/../../src/conexion.php';

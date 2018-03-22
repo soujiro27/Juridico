@@ -12,15 +12,24 @@
 		{% for modulo in home.modulos  %}
 			{% if modulo.submenus | length > 0 %}
 				<li class="Navigation-menu-item">
-					<i class="{{ modulo.icon }}"></i>
-					<span>{{ modulo.nombre }}</span>
+					<div class="Navigation-menu-item-container">
+						
+						<div class="Navigation-menu-icon">
+							<i class="{{ modulo.icon }}"></i>
+						</div>
+						<span>{{ modulo.nombre }}</span>
+						<div class="Navigation-menu-arrow">
+							<i class="fas fa-angle-right"></i>
+						</div>
+					</div>
+					
 					<ul class="Navigation-submenu">
 						{% for item in modulo.submenus %}
 							<li class="Navigation-submenu-item">
 								<a href="{{ item.liga }}">
 									<i class="{{ item.icono }}"></i>
 									<span>{{ item.nombre }}</span>
-									<i class="fas fa-caret-right"></i>
+									
 								</a>
 							</li>
 						{% endfor %}
@@ -31,7 +40,9 @@
 
 		<li class="Navigation-menu-item">
 			<a href="#!">
-				<i class="fas fa-sign-out-alt"></i>
+				<div class="Navigation-menu-icon">
+					<i class="fas fa-sign-out-alt"></i>
+				</div>
 				<span>Exit</span>
 			</a>
 		</li>

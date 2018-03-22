@@ -26,7 +26,7 @@ header a{
 }
 
 .Header-logo{
-	width: 15%;
+	width: 200px;
 	margin-right: 2%;
 }
 
@@ -38,12 +38,12 @@ header a{
 }
 
 .Header-cuenta{
-	width: 13%;
-	margin-right: 2%;
+	width: 220px;
+	
 }
 
 .Header-module{
-	width: 25%;
+	width: 300px;
 	margin-right: 2%;
 	text-align: center;
 	font-size: 25px;
@@ -52,11 +52,11 @@ header a{
 
 
 .Header-module p{
-	margin: 3px;
+	margin: 2px;
 }
 
 .Header-notifications{
-	width: 15%;
+	width: 200px;
 	margin-right: 2%;
 	text-align: center;
 	cursor:pointer;
@@ -69,7 +69,7 @@ header a{
 }
 
 .Header-user{
-	width: 24%;
+	width: 345px;
 	text-align: left;
 	display: block;
 	cursor: pointer;
@@ -119,13 +119,21 @@ main{
 }
 
 
+div.line-header{
+	height: 18px;
+	width: 100%;
+	display: block;
+	background: url(../images/cream.png);
+	border-bottom: thin solid  rgba(0,0,0,.3);
+}
+
 /*------------------ Menu -------------- */
 
 
 
 
 aside{
-	background: #f2f2f2;
+	background: #343434 url(../images/cream.png);
 	width: 17%;
 }
 
@@ -140,24 +148,71 @@ aside{
 }
 
 .Navigation-menu-item{
-	border:1px solid rgba(0,0,0,.3);
-	padding:20px 10px;
+	border:1px solid rgba(0,0,0,.2);
+	padding:15px 10px;
+	
+}
+
+
+.Navigation-menu-item-container{
+	display: flex;
+	align-items: center;
+}
+
+.Navigation-menu-item a{
+	align-items: center;
+	color: #666;
+	display:flex;
+	text-decoration: none;
+}
+
+
+.Navigation-menu-item  span{
+	margin-left:15px;
+	width: 150px;
 }
 
 .Navigation-menu-icon{
 	background: #eee;
-	color:#888;
-	width: 38px;
-	height: 38px;
 	border-radius: 50%;
-	text-align: center;
 	border:1px solid rgba(0,0,0,.3);
+	color:#888;
+	height: 30px;
+	text-align: center;
+	width: 30px;
 }
 
 .Navigation-menu-icon svg {
-	margin-top: 10px;
+	margin-top: 7px;
+}
+
+
+.Navigation-menu-arrow svg {
+	font-size: 20px
 }
 
 .Navigation-submenu{
 	display: none;
+}
+
+
+.Navigation-submenu{
+	padding: 0;
+	border:none;
+	border-bottom: thin solid rgba(0,0,0,.2)
+}
+
+
+
+.Navigation-menu-item:hover > ul {
+	transition: all 10s;
+	display: block;
+
+}
+
+.Navigation-submenu li{
+	
+	padding: 10px;
+	font-size: 14px;
+	border-bottom: thin solid rgba(0,0,0,.1)
 }
