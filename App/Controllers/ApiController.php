@@ -4,7 +4,8 @@ namespace Juridico\App\Controllers;
 use Juridico\App\Models\Api\Notificaciones;
 use Juridico\App\Models\Api\TiposDocumentos;
 use Juridico\App\Models\Api\UsuariosRoles;
-
+use Juridico\App\Models\Api\Puestos;
+use Juridico\App\Models\Api\Usuarios;
 
 class ApiController {
 
@@ -44,9 +45,22 @@ class ApiController {
 	#Pide las Notificaciones por el idUsuario
 	public function get_user_notification($idUsuario){
 
+		$rpe = $_SESSION['idEmpleado'];
+
+		$asiste = Puestos::select('usrAsisteA')->where('rpe',"$rpe")->get();
+
+		$rpeAsiste = $asiste[0]['usrAsisteA'];
+
+		$usrAsisteA = Usuarios::select('idUsuario')->where('idEmpleado',"$rpeAsiste")->get();
+
+		$idRecibe = $usrAsisteA[0]['idUsuario'];
+
+
 		$notificaciones = Notificaciones::where('idUsuario',"$idUsuario")
+										->Orwhere('idUsuario',"$idRecibe")
 										->where('situacion','NUEVO')
 										->get();
+
 		return $notificaciones;
 
 	}
@@ -97,4 +111,11 @@ class ApiController {
 
 	}
 */
+
+	#funcion de pruebas 
+	public function tester($data){
+
+		//pruebas
+
+	}
 }

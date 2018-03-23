@@ -1,7 +1,9 @@
 import React from 'react';
-import logo from './../../../../Assets/images/Logotipo.png'
+import logo from './../../../../Assets/images/Logotipo.png';
+import './Logo.styl';
+
 const Logo = () => (
-    <div className="Header-logo">
+    <div className="Header-logo col-lg-2">
         <img src={logo} />
     </div>
 )

@@ -1,6 +1,6 @@
 const path = require('path');
-
-
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractCSS = new ExtractTextPlugin('[name].css');
 let moduleWorks = 'catalogos';
 
 module.exports = {
@@ -38,6 +38,10 @@ module.exports = {
         },
       },
       {
+        test: /\.styl$/,
+        loader:'style-loader!css-loader!stylus-loader'
+      },
+      {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
       },
@@ -53,5 +57,6 @@ module.exports = {
         }
       },
     ]
-  }
+  },
+  plugins: [extractCSS],
 }

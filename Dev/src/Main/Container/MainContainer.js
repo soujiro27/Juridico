@@ -1,7 +1,8 @@
 import React from 'react';
+import './MainContainer.styl';
 const MainContainer = (props) => (
-    <main className="Main">
-        {this.props.children}
+    <main className="row Main-container">
+        {props.children}
     </main>
 )
 

@@ -1,7 +1,9 @@
 import React from 'react';
 
+
+
 const HomeLayout = (props) => (
-    <div id="HomeLayout">
+    <div className="HomeLayout">
         { props.children }
     </div>
 )
