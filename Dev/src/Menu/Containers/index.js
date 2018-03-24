@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import Inicio from './../Components/inicio';
 import Element from './../Components/Elements';
+
 import Salir from './../Components/Exit';
 import './index.styl';
 
 export default class Menu extends Component{
+
+
+
     render(){
         const modulos = this.props.modulos
         let array = new Array()
@@ -14,7 +18,8 @@ export default class Menu extends Component{
         }
 
         return(
-            <aside className="col-lg-2">
+            
+            <aside>
                 <nav>
                     <ul className="Menu">
                         <Inicio/>
@@ -22,7 +27,7 @@ export default class Menu extends Component{
                             array.map(element => (
                                 
                                 element.submenus.length > 0 &&
-                                <Element item={element} />
+                                <Element item={element}  key={element.nombre}  />
                                 
                             ))
 
@@ -31,6 +36,7 @@ export default class Menu extends Component{
                     </ul>
                 </nav>
             </aside>
+            
         )
     }
 }

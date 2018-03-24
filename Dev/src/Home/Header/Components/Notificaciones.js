@@ -12,8 +12,8 @@ export default class Notificaciones extends Component {
             <a href="#!"> 
                 {
                     this.props.notificaciones > 0 ?
-                    <i class="far fa-bell animate"></i> :
-                    <i class="far fa-envelope-open"></i>
+                    <i className="far fa-bell animate"></i> :
+                    <i className="far fa-envelope-open"></i>
                 }
                 Tienes 
                 <span>

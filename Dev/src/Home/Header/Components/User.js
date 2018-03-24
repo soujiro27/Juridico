@@ -28,13 +28,13 @@ export default class User extends Component{
                     <ul>
                         <li>
                             <a href="#!">
-                                <i class="far fa-user"></i>
+                                <i className="far fa-user"></i>
                                 Perfil
                             </a>
                         </li>
                         <li>
                             <a href="#!">
-                                <i class="fas fa-sign-out-alt"></i>
+                                <i className="fas fa-sign-out-alt"></i>
                                 Salir
                             </a>
                         </li>
@@ -43,9 +43,9 @@ export default class User extends Component{
             </FadeIn>
             }
             <p onClick={this.handleClickSubmenu.bind(this)}>
-            <i class="fas fa-user"></i>
+            <i className="fas fa-user"></i>
             {this.props.user}
-            <i class="fas fa-caret-down"></i>
+            <i className="fas fa-caret-down"></i>
         </p>
         </div>
         )
