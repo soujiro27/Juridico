@@ -31,4 +31,9 @@ class AccionesController extends TwigController{
 			'js' => $this->js
 		]);
 	}
+
+
+	public function Save($data){
+		var_dump($data);
+	}
 }

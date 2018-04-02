@@ -1,15 +1,10 @@
-import React, { Component } from 'react';
-import { withFormsy } from 'formsy-react';
+import React from 'react';
 
-class InputText extends Component {
-    render(){
-        return(
-                <div>
-                    <input type="text" />
-                    <p>{this.props.validationErrors.isEmail}</p>
-                </div>
-            )
-    }
-}
-
-export default withFormsy(InputText)
+export default ({ error, ...props }) => (
+    <div className="form-row">
+        <label className="col-lg-1">Nombre</label>
+        <input {...props} className="form-control col-lg-4" />
+        
+        <p className="col-lg-3 error-form">{error}</p>
+    </div>
+  );

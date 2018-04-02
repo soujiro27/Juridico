@@ -26,6 +26,10 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 		$controller->new_register();
 	});
 
+	$app->post('/Acciones/Save',function() use ($controller,$app){
+		$controller->Save($app->request->post());
+	});
+
 });
 
 

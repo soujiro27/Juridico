@@ -29,7 +29,7 @@ export default class Home extends Component {
                             <WorkHeaderText />
                         </WorkHeader>
                         <WorkTable>
-                            <Form />
+                            <Form url={this.props.url} />
                         </WorkTable>
                     </Work>
                 </MainContainer>
