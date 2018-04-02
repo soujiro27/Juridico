@@ -9,16 +9,21 @@ $auth = function(){
 	//echo "yes";
 };
 
-$_SESSION['modulo'] = 'Caracteres';
+
 
 $app->group('/juridico',$auth,function() use($controller, $app){
 
 	$app->get('/Caracteres',function() use ($controller){
+		$_SESSION['modulo'] = 'Caracteres';
 		$controller->index();
 	});
 
 	$app->get('/Caracteres/Registers',function() use ($controller){
 		$controller->get_registers();
+	});
+
+	$app->get('/Caracteres/New',function() use ($controller){
+		$controller->new_register();
 	});
 
 });

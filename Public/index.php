@@ -5,9 +5,9 @@ $root_directory = '/../App/routes/';
 
 /*--------------Catalogos-------------------*/
 include_once $root_directory.'Catalogos/Caracteres.php';
-//include_once '/../backend/routes/catalogos/Acciones.php';
-//include_once '/../backend/routes/catalogos/SubTiposDocumentos.php';
-//include_once '/../routes/catalogos/Textos.php';
+include_once $root_directory.'Catalogos/Acciones.php';
+include_once $root_directory.'Catalogos/SubTipos.php';
+include_once $root_directory.'Catalogos/Textos.php';
 
 
 /*-------------Volantes----------------------*/

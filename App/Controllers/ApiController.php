@@ -7,6 +7,10 @@ use Juridico\App\Models\Api\UsuariosRoles;
 use Juridico\App\Models\Api\Puestos;
 use Juridico\App\Models\Api\Usuarios;
 
+
+use Juridico\App\Models\Catalogos\Textos;
+
+
 class ApiController {
 
 	public function headerData(){
@@ -115,7 +119,9 @@ class ApiController {
 	#funcion de pruebas 
 	public function tester($data){
 
-		//pruebas
+		$test = new Textos();
+
+		echo json_encode(Textos::all());
 
 	}
 }

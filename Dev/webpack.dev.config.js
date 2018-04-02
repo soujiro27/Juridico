@@ -5,19 +5,19 @@ let moduleWorks = 'catalogos';
 
 module.exports = {
   entry: {
-    //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/entries/catalogos/acciones/acciones.js')],
-    "Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Caracteres/index.js')],
-    //"subTipos":['babel-polyfill', path.resolve(__dirname, 'src/entries/catalogos/subTipos/subTipos.js')],
-    //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/entries/catalogos/textos/textos.js')],
+    //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Acciones/index.js')],
+    //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Caracteres/index.js')],
+    //"SubTipos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/SubTipos/index.js')],
+    //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Textos/index.js')],
 
 
     //formularios insert
-    //"subTipos":['babel-polyfill', path.resolve(__dirname, 'src/entries/catalogos/subTipos/create.js')],
+    "NewAcciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Acciones/create.js')],
 
   },
   output: {
     path: path.resolve(__dirname, '../public/'),
-    filename: `js/[name]/[name].js`
+    filename: `js/Acciones/[name].js`
   },
   devServer: {
     port: 9000,

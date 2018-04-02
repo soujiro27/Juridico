@@ -12,7 +12,7 @@ import ButtonAdd from './../../../Work/Components/table-header-button-add';
 
 
 import WorkTable from './../../../Work/Containers/Work-table-container';
-import Table from './../../../Work/Components/table';
+import Table from './../../../Work/Components/Table-textos';
 
 import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './../../../../Assets/js/fontawesome-all.min';
@@ -29,7 +29,7 @@ export default class Home extends Component {
                     <Work>
                         <WorkHeader>
                             <WorkHeaderText />
-                            <ButtonAdd url={this.props.url}/>
+                            <ButtonAdd url={this.props.url} />
                         </WorkHeader>
                         <WorkTable>
                             <Table datos={this.props.registers}/>

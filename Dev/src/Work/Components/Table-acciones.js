@@ -14,10 +14,6 @@ export default class Table extends Component{
         const data = this.state.data
         const columns = [
             {
-                Header:'Siglas',
-                accessor:'siglas'
-            },
-            {
                 Header:'Nombre',
                 accessor:'nombre'
             },
@@ -31,7 +27,7 @@ export default class Table extends Component{
             <ReactTable
             data={data}
             columns={columns}
-            defaultPageSize={5}
+            defaultPageSize={10}
             showPageSizeOptions={false}
             previousText= 'Anterior'
             nextText='Siguiente'

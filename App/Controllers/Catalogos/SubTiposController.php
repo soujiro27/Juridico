@@ -4,14 +4,13 @@ namespace Juridico\App\Controllers\Catalogos;
 
 use Juridico\App\Controllers\TwigController;
 
-use Juridico\App\Models\Catalogos\Caracteres;
+use Juridico\App\Models\Catalogos\SubTipos;
 
 
 
-class CaracteresController extends TwigController{
+class SubTiposController extends TwigController{
 
-	
-	private $js = 'caracteres';
+	private $js = 'SubTipos';
 
 	public function index(){
 		
@@ -23,7 +22,7 @@ class CaracteresController extends TwigController{
 	}
 
 	public function get_registers(){
-		echo json_encode(Caracteres::all());
+		echo json_encode(SubTipos::all());
 	}
 
 	public function new_register($controller){

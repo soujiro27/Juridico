@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import axios from 'axios';
-import Home from './../../../Pages/Catalogos/Caracteres/index';
+import Home from './../../../Pages/Catalogos/SubTipos/index';
 
 const  root = document.getElementById('root');
 
@@ -10,7 +10,7 @@ function getHomeData(){
 }
 
 function getRegisters(){
-    return axios.get('/SIA/juridico/Caracteres/Registers')
+    return axios.get('/SIA/juridico/SubTiposDocumentos/Registers')
 }
 
 

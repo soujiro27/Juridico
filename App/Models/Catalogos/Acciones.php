@@ -1,5 +1,5 @@
 <?php 
-namespace React\Backend\Models\Catalogos;
+namespace Juridico\App\Models\Catalogos;
 use Illuminate\Database\Eloquent\Model;
 
 
