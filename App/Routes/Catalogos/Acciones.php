@@ -14,7 +14,6 @@ $auth = function(){
 $app->group('/juridico',$auth,function() use($controller, $app){
 
 	$app->get('/Acciones',function() use ($controller){
-		$_SESSION['modulo'] = 'Acciones';
 		$controller->index();
 	});
 
@@ -24,6 +23,10 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 
 	$app->get('/Acciones/New',function() use ($controller){
 		$controller->new_register();
+	});
+
+	$app->get('/Acciones/:id',function($id) use ($controller){
+		$controller->update_register($id);
 	});
 
 	$app->post('/Acciones/Save',function() use ($controller,$app){

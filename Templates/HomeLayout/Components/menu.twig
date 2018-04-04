@@ -1,0 +1,47 @@
+<aside>
+    <nav>
+        <ul class="Menu">
+        	<li class="Menu-item">
+				<a href="#!" class="Menu-item-container">
+					<div class="Menu-item-icon">
+    					<i class="fas fa-home"></i>
+					</div>
+					<p>Inicio</p>
+				</a>
+			</li>
+
+{% for item in menu %}
+    {% if item.submenus | length >0 %}
+		  <li class="Menu-item" onclick="menu(this)">
+			<div class="Menu-item-container">
+				<div class="Menu-item-icon">
+					<i class="{{item.icon}}"></i>
+				</div>
+				<p>{{item.nombre}}</p>
+                <i class="fas fa-angle-right"></i>
+            </div>
+
+			<ul class="Menu-sub">
+				{% for element in item.submenus %}
+				    <li class="Menu-item-submenu-element">
+				    	<a href={{element.liga}}>
+				    		<i class="{{element.icono}}"></i>
+				    		<p>{{element.nombre}}</p>
+				    	</a>
+				    </li>
+				{% endfor %}
+			</ul>
+		  </li>
+    {% endif %}
+{% endfor %}
+            <li class="Menu-item">
+    			<a href="#!" class="Menu-item-container">
+    				<div class="Menu-item-icon">
+    					<i class="fas fa-sign-out-alt"></i>
+    				</div>
+    				<p>Salir</p>
+    			</a>
+    		</li> 
+        </ul>
+    </nav>
+</aside>

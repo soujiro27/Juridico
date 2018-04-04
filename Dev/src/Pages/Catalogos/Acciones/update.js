@@ -7,12 +7,10 @@ import Menu from './../../../Menu/Containers/index';
 import LineMenu from './../../Containers/line-menu';
 import Work from './../../../Work/Containers/Work-container';
 import WorkHeader from './../../../Work/Containers/Work-header-container';
-import WorkHeaderText from './../../../Work/Components/table-header-text';
-import ButtonAdd from './../../../Work/Components/table-header-button-add';
-
+import WorkHeaderText from './../../../Work/Components/table-header-form-text';
 
 import WorkTable from './../../../Work/Containers/Work-table-container';
-import Table from './../../../Work/Components/Table-acciones';
+import Form from './../../../Work/Catalogos/Insert-Acciones';
 
 import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './../../../../Assets/js/fontawesome-all.min';
@@ -29,10 +27,9 @@ export default class Home extends Component {
                     <Work>
                         <WorkHeader>
                             <WorkHeaderText />
-                            <ButtonAdd  url={this.props.url}/>
                         </WorkHeader>
                         <WorkTable>
-                            <Table datos={this.props.registers} url={this.props.url} />
+                            <Form url={this.props.url} />
                         </WorkTable>
                     </Work>
                 </MainContainer>

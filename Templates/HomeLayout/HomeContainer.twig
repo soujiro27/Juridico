@@ -3,12 +3,16 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title>Modulo Juridico</title>
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/SIA/juridico/Public/css/home.css">
 </head>
 <body>
-	<section id="root">
-		
+	{% include 'HomeLayout/Components/header.twig'  %}
+	<section class="row">
+		 {% include 'HomeLayout/Components/menu.twig'  %}
 	</section>
-	<script type="text/javascript" src="/SIA/juridico/public/js/{{js}}/{{js}}.js"></script>
+
+	<script type="text/javascript" src="/SIA/juridico/Public/js/fontawesome-all.min.js"></script>
+	<script type="text/javascript" src="/SIA/juridico/Public/js/home.js"></script>
 </body>
 </html>

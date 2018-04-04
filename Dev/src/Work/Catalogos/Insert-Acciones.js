@@ -66,6 +66,7 @@ export default class InsertAcciones extends Component {
                         open={this.state.open} 
                         modalClose={this.modal.bind(this)}
                         message={this.state.message}
+                        url={this.props.url}
                         />
             }
             

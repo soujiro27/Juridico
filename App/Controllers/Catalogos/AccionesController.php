@@ -3,10 +3,12 @@
 namespace Juridico\App\Controllers\Catalogos;
 
 use Juridico\App\Controllers\TwigController;
+use GUMP;
 
 use Juridico\App\Models\Catalogos\Acciones;
 
-use GUMP;
+use Juridico\App\Controllers\BaseController;
+
 
 
 class AccionesController extends TwigController{
@@ -15,12 +17,19 @@ class AccionesController extends TwigController{
 
 	public function index(){
 		
+		$base = new BaseController();
+		$notificaciones = $base->get_user_notification($_SESSION['idUsuario']);
+		$menu = $base->menu();
+
 		echo $this->render('HomeLayout/HomeContainer.twig',[
-			'js' => $this->js
+			'js' => $this->js,
+			'session' => $_SESSION,
+			'notificaciones' => $notificaciones->count(),
+			'menu' => $menu['modulos']
 		]);
 
 		
-	}
+}
 
 	public function get_registers(){
 		echo json_encode(Acciones::all());
@@ -30,6 +39,15 @@ class AccionesController extends TwigController{
 		
 		echo $this->render('HomeLayout/InsertContainer.twig',[
 			'js' => $this->js
+		]);
+	}
+
+	public function update_register($id){
+
+		$datos = Acciones::find($id);
+		echo $this->render('HomeLayout/UpdateContainer.twig',[
+			'js' => $this->js,
+			'datos' => $datos
 		]);
 	}
 

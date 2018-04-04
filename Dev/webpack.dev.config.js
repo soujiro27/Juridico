@@ -14,6 +14,9 @@ module.exports = {
     //formularios insert
     "NewAcciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Acciones/create.js')],
 
+    //formularios Update
+    "UpdateAcciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Acciones/update.js')]
+
   },
   output: {
     path: path.resolve(__dirname, '../public/'),

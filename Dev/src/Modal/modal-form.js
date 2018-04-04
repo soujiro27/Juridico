@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/lib/react-responsive-modal.css';
+import ModalCss from 'react-responsive-modal/lib/css';
 
 
 export default class ModalForm extends Component {
@@ -17,7 +18,14 @@ export default class ModalForm extends Component {
     }
 
     HandleModal = () => { 
-       this.props.modalClose(!this.state.open)
+
+        if(this.props.message === 'success') {
+            location.href = '/SIA/juridico/'+this.props.url
+        } else{
+            this.props.modalClose(!this.state.open)
+        }
+
+       
     }
 
 
@@ -32,8 +40,9 @@ export default class ModalForm extends Component {
 
 
     render(){
-        const 
-        styles = {
+
+       
+        const styles = {
             modal:{
                 width:'70%',
                 margin:'15%',

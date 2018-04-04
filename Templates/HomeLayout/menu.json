@@ -1,5 +1,4 @@
 {
-	"header":{},
 	"modulos":{
 		"GESTION" : {
 			"nombre":"Gestión",
@@ -24,7 +23,7 @@
 		"CONFIGURACION" : {
 			"nombre" : "Catálogos",
 			"submenus": [],
-			"icon" : "fas fa-edit"
+			"icon" : "far fa-edit"
 		},
 		"REPORTEADOR" : {
 			"nombre" : "Informes",

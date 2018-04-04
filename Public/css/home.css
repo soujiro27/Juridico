@@ -1,0 +1,293 @@
+body{
+	background: url('./../images/main-back.png')
+}
+
+
+.Header{
+    align-items: center;
+    background: -webkit-linear-gradient(top, #f8f8f8, #f2f2f2);
+    border-bottom: thin solid rgba(0,0,0,.3);
+    color: #666;
+    font-size: 14px !important;
+    margin-right: 0px !important;
+}
+
+.Header-logo img {
+    padding: 2% 5%;
+    width: 90% !important;
+}
+
+.Header-cuenta p {
+	margin: 0;
+}
+
+.Header-cuenta p svg{
+	margin-right: 10px;
+}
+
+.Header-modulo{
+	text-align: center
+}
+.Header-modulo svg{
+	margin-right: 15px
+}
+
+
+.Header-notificaciones a {
+	margin: 0;
+	text-decoration: none;
+	color: #666;
+}
+
+.Header-notificaciones a:hover {
+	text-decoration: none;
+	color: #666;
+}
+
+.Header-notificaciones a svg {
+	margin-right: 5px;
+}
+
+.Header-notificaciones a span {
+	margin: 0 5px;
+	padding: 3px 5px;
+	background: #e55039;
+	color: #fff;
+	border-radius: 5px;
+	border: thin solid rgba(0,0,0,0.2);
+}
+
+.Header-notificaciones .animate {
+	animation: new 3s infinite;
+}
+
+@-moz-keyframes new {
+	0% {
+		transform: rotate(0deg);
+		color: #f00;
+	}
+
+	50% {
+		transform: rotate(45deg);
+		color: #f00;
+	}
+
+	100% {
+		transform: rotate(-45deg);
+		color: #f00;
+	}
+}
+
+@-webkit-keyframes new {
+	0% {
+		transform: rotate(0deg);
+		color: #f00;
+	}
+
+	50% {
+		transform: rotate(45deg);
+		color: #f00;
+	}
+
+	100% {
+		transform: rotate(-45deg);
+		color: #f00;
+	}
+}
+
+@-o-keyframes new {
+	0% {
+		transform: rotate(0deg);
+		color: #f00;
+	}
+
+	50% {
+		transform: rotate(45deg);
+		color: #f00;
+	}
+
+	100% {
+		transform: rotate(-45deg);
+		color: #f00;
+	}
+}
+
+@keyframes new {
+	0% {
+		transform: rotate(0deg);
+		color: #f00;
+	}
+
+	50% {
+		transform: rotate(45deg);
+		color: #f00;
+	}
+
+	100% {
+		transform: rotate(-45deg);
+		color: #f00;
+	}
+}
+
+
+
+.Header-user {
+	position: relative;
+	cursor: pointer;
+}
+
+.Header-user p {
+	margin: 0;
+}
+
+.Header-user .fa-user {
+	margin-right: 8px;
+}
+
+.Header-user .fa-caret-down {
+	margin-left: 8px;
+}
+
+.Header-user .Header-user-submenu ul {
+	list-style: none;
+	padding: 8px;
+	margin: 0;
+	border: thin solid rgba(0,0,0,0.3);
+	border-radius: 10px;
+	position: absolute;
+	top: 20px;
+	left: 6px;
+	width: 300px;
+	background: #fff;
+}
+
+.Header-user .Header-user-submenu ul li a {
+	display: block;
+	padding: 5px 0;
+	text-decoration: none;
+	color: #666;
+}
+
+.Header-user .Header-user-submenu ul li a:hover {
+	color: #000;
+	text-shadow: 1px 1px 2px #666;
+}
+
+.Header-user .Header-user-submenu ul li a svg {
+	margin-right: 10px;
+}
+
+div.Header-user:hover > div.Header-user-submenu {
+	display: block;
+}
+
+
+div.Header-user-submenu{
+	display: none
+}
+
+
+/*-------------Menu------------------*/
+
+aside {
+	padding: 0 !important;
+	background: url("./../../../Assets/images/back.png");
+	height: 89vh;
+	border-bottom: thin solid rgba(0,0,0,0.1);
+	border-right: thin solid rgba(0,0,0,0.1);
+	width: 18%;
+}
+
+aside ul.Menu {
+	list-style: none;
+	padding: 0;
+	border: thin solid rgba(0,0,0,0.1);
+}
+
+aside ul.Menu li.Menu-item {
+	background: -webkit-linear-gradient(top, #f9f9f9, #f2f2f2);
+	border-bottom: #ccc;
+	cursor: pointer;
+}
+
+aside ul.Menu li.Menu-item .Menu-item-container {
+	padding: 10px 0px 10px 20px;
+	display: flex;
+	align-items: center;
+	align-content: center;
+	padding-bottom: 10px;
+}
+
+aside ul.Menu li.Menu-item .Menu-item-container:hover {
+	background: -webkit-linear-gradient(top, #800000, #d38483);
+}
+
+aside ul.Menu li.Menu-item .Menu-item-container p {
+	width: 130px;
+	margin: 0;
+}
+
+aside ul.Menu li.Menu-item .Menu-item-icon {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: #eee;
+	color: #888;
+	text-align: center;
+	border: thin solid #ccc;
+	margin-right: 10px;
+}
+
+aside ul.Menu li.Menu-item .Menu-item-icon svg {
+	margin-top: 9px;
+	color: #888;
+}
+
+aside ul.Menu a,
+aside ul.Menu p {
+	text-decoration: none;
+	color: #888;
+}
+
+aside ul.Menu ul.Menu-sub {
+	list-style: none;
+	padding: 0;
+	font-size: 12px !important;
+	display: none
+}
+
+aside ul.Menu ul.Menu-sub li {
+	padding: 10px 0px 10px 20px;
+	border-bottom: thin solid #ccc;
+}
+
+aside ul.Menu ul.Menu-sub li:hover {
+	background: #eee;
+}
+
+aside ul.Menu ul.Menu-sub li a {
+	display: flex;
+	align-items: center;
+}
+
+aside ul.Menu ul.Menu-sub li a p {
+	margin: 0 0 0 10px;
+}
+
+aside ul.Menu ul.Menu-sub li a svg {
+	margin: 0;
+}
+
+aside ul.Menu .active {
+	background: -webkit-linear-gradient(top, #800000, #d38483) !important;
+}
+
+aside ul.Menu .active p {
+	color: #fff;
+}
+
+aside ul.Menu .active .arrow-down {
+	color: red;
+	transition: all 0.5s;
+	transform: rotate(90deg) !important;
+}
