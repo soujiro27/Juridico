@@ -11,16 +11,10 @@ module.exports = {
     //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Textos/index.js')],
 
 
-    //formularios insert
-    "NewAcciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Acciones/create.js')],
-
-    //formularios Update
-    "UpdateAcciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Acciones/update.js')]
-
   },
   output: {
     path: path.resolve(__dirname, '../public/'),
-    filename: `js/Acciones/[name].js`
+    filename: `js/[name]/[name].js`
   },
   devServer: {
     port: 9000,

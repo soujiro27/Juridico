@@ -8,11 +8,15 @@
 </head>
 <body>
 	{% include 'HomeLayout/Components/header.twig'  %}
-	<section class="row">
+	<div class="row line"></div>
+	<section class="row main">
 		 {% include 'HomeLayout/Components/menu.twig'  %}
+		 <main id="root"></main>
 	</section>
+	<div id="modal"></div>
 
 	<script type="text/javascript" src="/SIA/juridico/Public/js/fontawesome-all.min.js"></script>
 	<script type="text/javascript" src="/SIA/juridico/Public/js/home.js"></script>
+	<script type="text/javascript" src="/SIA/juridico/Public/js/{{js}}/{{js}}.js"></script>
 </body>
 </html>

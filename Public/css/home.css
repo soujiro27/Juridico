@@ -187,15 +187,39 @@ div.Header-user-submenu{
 }
 
 
+
+/*------------Line --------------*/
+
+div.line{
+	background: white;
+	height: 10px
+}
+
+.row{
+	margin:0 !important;
+}
+
+.main{
+	border:thin solid rgba(0,0,0,0.1);
+}
+
+
+
+
+
+
+
+
 /*-------------Menu------------------*/
 
 aside {
 	padding: 0 !important;
-	background: url("./../../../Assets/images/back.png");
+	background: url("./../images/back.png");
 	height: 89vh;
 	border-bottom: thin solid rgba(0,0,0,0.1);
 	border-right: thin solid rgba(0,0,0,0.1);
 	width: 18%;
+	margin-right:1%;
 }
 
 aside ul.Menu {
@@ -291,3 +315,31 @@ aside ul.Menu .active .arrow-down {
 	transition: all 0.5s;
 	transform: rotate(90deg) !important;
 }
+
+
+.menu-active {
+	display: block !important;
+  	opacity: 1;
+  	transition: opacity 1s; 
+}
+
+.menu-arrow-active{
+	color:white;
+	transform: rotate(90deg);
+	transition: all 4s;
+}
+
+.menu-active-li{
+	background: -webkit-linear-gradient(top, #800000, #d38483) !important;
+}
+
+
+
+/*---------------MAin ---------------*/
+main{
+	width: 80%;
+	border:thin solid rgba(0,0,0,0.1);
+	background: #f9f9f9
+}
+
+
