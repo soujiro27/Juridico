@@ -35,20 +35,12 @@ class AccionesController extends TwigController{
 		echo json_encode(Acciones::all());
 	}
 
-	public function new_register(){
-		
-		echo $this->render('HomeLayout/InsertContainer.twig',[
-			'js' => $this->js
-		]);
-	}
+
 
 	public function update_register($id){
 
 		$datos = Acciones::find($id);
-		echo $this->render('HomeLayout/UpdateContainer.twig',[
-			'js' => $this->js,
-			'datos' => $datos
-		]);
+		echo json_encode($datos);
 	}
 
 

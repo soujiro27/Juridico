@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import HomeLayout from './../../Containers/HomeLayout';
-import Modal from 'react-awesome-modal';
-import 'react-responsive-modal/lib/react-responsive-modal.css';
+
 /*--------------Header -----------------------*/
 import Header from './../../../Main/Header/Container/Header-container';
 import Title from './../../../Main/Header/Components/Header-title';
@@ -10,11 +9,11 @@ import ButtonAdd from './../../../Main/Header/Components/Header-button-add';
 /*------------------ Table Registers ---------*/
 import Registers from './../../../Main/Registros/Container/Table-container';
 
-/*-----------------------Form----------------*/
 import Form from './../../../Main/Insert/Catalogos/Acciones';
+import Update  from './../../../Main/Update/Catalogo/Acciones';
+/*-----------------------Form----------------*/
 
 /*------------------Modal--------------------*/
-import ModalContainer from './../../../Main/Modal/Container/Modal-form';
 
 
 
@@ -25,20 +24,11 @@ export default class Home extends Component {
             text:'Lista de Registros',
             icon:'far fa-address-book'
         },
-        registers:false, //se cambio para checar el formulario
+        registers:true, //se cambio para checar el formulario
         insert:false,
-        open:true
+        update:false,
+        updateId:0
     }
-
-    onOpenModal = () => {
-        this.setState({ open: true });
-      };
-    
-      onCloseModal = () => {
-        this.setState({ open: false });
-      };
-    
-
 
 
     openForm(val){
@@ -52,29 +42,55 @@ export default class Home extends Component {
         })
     }
 
+    cancelForm(){
+        this.setState({
+            header:{
+                text:'Lista de Registros',
+                icon:'far fa-address-book'
+            },
+            registers:true, //se cambio para checar el formulario
+            insert:false,
+        })
+    }
+
+    getIdTr(value){
+        this.setState({
+            header:{
+                text:'Actualizar Registro',
+                icon:'fas fa-pencil-alt'
+            },
+            registers:false,
+            insert:false,
+            update:true,
+            updateId:value
+        })
+    }
+
+
     render(){
         return(
         <HomeLayout >
             <Header>
                 <Title text={this.state.header.text} icon={this.state.header.icon} />
-                <ButtonAdd open={this.openForm.bind(this)} />
+                {
+                    this.state.registers &&
+                    <ButtonAdd open={this.openForm.bind(this)} />
+                }
+                
             </Header>
             {
                 this.state.registers &&
-                    <Registers />
+                    <Registers idRegister={this.getIdTr.bind(this)} />
             }
-           
-            <Form />
+            {
+                this.state.insert &&
+                    <Form cancel={this.cancelForm.bind(this)} />
+            }
+            {
+                this.state.update &&
+                <Update idRegistro={this.state.updateId}/>
+            }
             
-            <ModalContainer>
-            <button onClick={this.onOpenModal}>Open modal</button>
-                <Modal open={this.state.open}>
-                    <h1>test</h1>
-                </Modal>
-                
-     
-            </ModalContainer>
-         
             
         </HomeLayout>
         )

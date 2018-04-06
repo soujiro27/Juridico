@@ -20,6 +20,14 @@ export default class TableRegisters extends Component{
         }
 ]
 
+    HandleClickTr(state, rowInfo, column){
+        return {
+            onClick:(e,handleOriginal) =>{
+                this.props.dataId(rowInfo.original.idAccion)
+            }
+        }
+    }
+
 
     render(){
         return(
@@ -34,6 +42,7 @@ export default class TableRegisters extends Component{
                 noDataText='Sin Datos'
                 pageText='Pagina'
                 ofText= 'de'
+                getTrProps={this.HandleClickTr.bind(this)}
             />
         )
     }

@@ -21,10 +21,6 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 		$controller->get_registers();
 	});
 
-	$app->get('/Acciones/New',function() use ($controller){
-		$controller->new_register();
-	});
-
 	$app->get('/Acciones/:id',function($id) use ($controller){
 		$controller->update_register($id);
 	});

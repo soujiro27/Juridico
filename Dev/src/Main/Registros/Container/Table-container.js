@@ -4,7 +4,9 @@ import Table from './../Components/Table-registers'
 import './Table.styl';
 export default class TableContainer extends Component {
     
-   
+    getId(value){
+        this.props.idRegister(value)
+    }
 
     render(){
         return(
@@ -18,7 +20,7 @@ export default class TableContainer extends Component {
                     return (<div>Loading...</div>)
                 }
                 else if(response !== null) {
-                    return ( <Table registers={response.data} /> )
+                    return ( <Table registers={response.data} dataId={this.getId.bind(this)} /> )
                     
                 }
 
