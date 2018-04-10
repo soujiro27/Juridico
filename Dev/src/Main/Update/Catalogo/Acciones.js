@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import { Form } from 'react-validify';
-import { BaseForm} from 'react-validify'
 import axios from 'axios';
-import { AxiosProvider, Request, Get, Patch, withAxios } from 'react-axios'
-import InputText from './../../Form/Components/Text';
 import Modal from './../../Modal/Components/Modal-form';
-
-import { error } from 'util';
 
 
 export default class formAcciones extends Component{
@@ -15,21 +9,40 @@ export default class formAcciones extends Component{
     state = {
         open:false,
         message:'',
-        idAccion:this.props.idRegistro
+        idAccion:this.props.idRegistro,
+        nombre:this.props.nombre,
+        estatus:this.props.estatus
     }
 
 
-    HandleSubmit(values){
-       let form = new FormData()
-        form.append('nombre',values.nombre)
-        axios.post('/SIA/juridico/Acciones/Save',form)
+    HandleSubmit(event){
+        event.preventDefault()
+        let form = new FormData(event.target)
+        form.append('id',this.state.idAccion)
+        axios.post('/SIA/juridico/Acciones/Update',form)
         .then(response => {
             this.setState({
             open:!this.state.open,
             message:response.data[0]
             })
         })
+
         
+    }
+
+    
+    HandleInputChange(event){
+        const target = event.target
+        const name = target.name
+        const value = target.value
+        this.setState({
+            [name]:value
+        })
+    }
+
+    handleCancel(event){
+        event.preventDefault();
+        this.props.cancel()
     }
 
     modal(value){
@@ -42,72 +55,57 @@ export default class formAcciones extends Component{
         }
     }
 
-    handleCancel(){
-        this.props.cancel()
-    }
+    
 
-    rules = {
-        nombre:'required|string|max:50'
-    }
 
-    errorMessages = {
-        'required.nombre': 'El Campo es Requerido ',
-        'max.nombre':'* Maximo 50 Caracteres'
-    }
-
+  
     render(){
-      
         return(
-            <div>
-                <Get url={'/SIA/juridico/Acciones/'+this.state.idAccion}>
-                    {(error,response,isLoading,onReload) => {
+                <div>
+                    <form className="row Form" onSubmit={this.HandleSubmit.bind(this)} id="Form-insert-acciones">
+                        <div className="form-group col-lg-4">
+                            <label>Nombre</label>
+                            <input 
+                                type="text"
+                                name='nombre'
+                                maxLength='20'
+                                required
+                                defaultValue={this.state.nombre}
+                                className='form-control'
+                                onChange={this.HandleInputChange.bind(this)}
+                            />
+                        </div>
                         
-                        if(response !== null){
-                            console.log(response.data.nombre)
-                            return (
-                                <Form 
-                                    rules={this.rules}  
-                                    errorMessages={this.errorMessages}
-                                    className="row Form"
-                                >
-                
-                                    <InputText 
-                                        col='col-lg-4' 
-                                        label='Nombre' 
-                                        name='nombre' 
-                                        value='test'
-                                    />
+                        <div className="form-group col-lg-2">
+                            <label>Estatus</label>
+                            <select 
+                                defaultValue={this.state.estatus} 
+                                className="form-control" 
+                                name="estatus"
+                                onChange={this.HandleInputChange.bind(this)}
+                            >
+                                <option value="ACTIVO">ACTIVO</option>
+                                <option value="INACTIVO">INACTIVO</option>
+                            </select> 
+                        </div>
+                        
+                        <div className="form-group col-lg-12">
+                            <input type="submit" value="Guardar" className='btn btn-primary save' />
+                            <button className="btn btn-danger" onClick={this.handleCancel.bind(this)} >Cancelar</button> 
+                        </div>
+                                    
+                    </form>
+                    {
                     
-                                    <div className="form-group col-lg-12">
-                                            <button className="btn btn-primary save" submit  onClick={this.HandleSubmit.bind(this)}>
-                                                Guardar
-                                            </button>
-
-                                            <button className="btn btn-danger" onClick={this.handleCancel.bind(this)}>
-                                                Cancelar
-                                            </button>  
-                                    </div>
-                
-                                </Form>
-                            )
-                        }else{
-
-                           
-                            return <p>Loading...</p>
-                        }
-                    }}
-                </Get>
-            
-            {
-            
-                this.state.open &&
-                <Modal 
-                    open={this.state.open} 
-                    modalClose={this.modal.bind(this)}
-                    message={this.state.message}
-                />
-            }
-            </div>
-        )
+                        this.state.open &&
+                        <Modal 
+                            open={this.state.open} 
+                            modalClose={this.modal.bind(this)}
+                            message={this.state.message}
+                        />
+                    }
+                </div>
+            )
+                        
     }
 }

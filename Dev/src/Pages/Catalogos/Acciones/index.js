@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AxiosProvider, Request, Get, Patch, withAxios } from 'react-axios';
 import HomeLayout from './../../Containers/HomeLayout';
 
 /*--------------Header -----------------------*/
@@ -50,6 +51,7 @@ export default class Home extends Component {
             },
             registers:true, //se cambio para checar el formulario
             insert:false,
+            update:false
         })
     }
 
@@ -65,6 +67,7 @@ export default class Home extends Component {
             updateId:value
         })
     }
+
 
 
     render(){
@@ -88,7 +91,21 @@ export default class Home extends Component {
             }
             {
                 this.state.update &&
-                <Update idRegistro={this.state.updateId}/>
+                <Get url={'/SIA/juridico/Acciones/'+this.state.updateId}>
+                    {(error,response,isLoading,onReload) => {  
+                        if(response !== null){
+                             return <Update 
+                                idRegistro={this.state.updateId} 
+                                nombre={response.data.nombre} 
+                                estatus={response.data.estatus}
+                                cancel={this.cancelForm.bind(this)}/>
+                        } else{
+                            return <p>Loading...</p>
+                        }
+                    }}
+                    
+                </Get>
+                
             }
             
             

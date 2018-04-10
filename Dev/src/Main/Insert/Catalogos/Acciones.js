@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Form } from 'react-validify';
-import { BaseForm} from 'react-validify'
 import axios from 'axios';
-import InputText from './../../Form/Components/Text';
 import Modal from './../../Modal/Components/Modal-form';
 import './../form.styl'
 
@@ -12,13 +9,21 @@ export default class formAcciones extends Component{
 
     state = {
         open:false,
-        message:''
+        message:'',
+        value:''
     }
 
 
-    HandleSubmit(values){
-       let form = new FormData()
-        form.append('nombre',values.nombre)
+    HandleChange(event){
+        event.preventDefault()
+        this.setState({value:event.target.value.toUpperCase()})
+    }
+
+
+    HandleSubmit(event){
+        event.preventDefault();
+        let form = new FormData()
+        form.append('nombre',this.state.value)
         axios.post('/SIA/juridico/Acciones/Save',form)
         .then(response => {
             this.setState({
@@ -43,37 +48,31 @@ export default class formAcciones extends Component{
         this.props.cancel()
     }
 
-    rules = {
-        nombre:'required|string|max:50'
-    }
-
-    errorMessages = {
-        'required.nombre': 'El Campo es Requerido ',
-        'max.nombre':'* Maximo 50 Caracteres'
-    }
+  
 
     render(){
         return(
             <div>
-            <Form 
-                rules={this.rules}  
-                errorMessages={this.errorMessages}
-                className="row Form"
-            >
-                
-                <InputText col='col-lg-4' label='Nombre' name='nombre' />
-                
+            <form className="row Form" onSubmit={this.HandleSubmit.bind(this)} id="Form-insert-acciones">
+                <div className="form-group col-lg-4">
+                    <label>Nombre</label>
+                    <input 
+                        type="text"
+                        name='nombre'
+                        maxLength='20'
+                        spellCheck='true'
+                        required
+                        className='form-control'
+                        onChange={this.HandleChange.bind(this)}
+                        value={this.state.value}
+                    />
+                </div>
                 <div className="form-group col-lg-12">
-                        <button className="btn btn-primary save" submit  onClick={this.HandleSubmit.bind(this)}>
-                            Guardar
-                        </button>
-
-                        <button className="btn btn-danger" onClick={this.handleCancel.bind(this)}>
-                            Cancelar
-                        </button>  
+                    <input type="submit" value="Guardar" className='btn btn-primary save' />
+                    <button className="btn btn-danger" onClick={this.handleCancel.bind(this)} >Cancelar</button> 
                 </div>
                 
-            </Form>
+            </form>
             {
             
                 this.state.open &&
