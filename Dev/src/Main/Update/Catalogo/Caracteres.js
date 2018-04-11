@@ -9,8 +9,9 @@ export default class formAcciones extends Component{
     state = {
         open:false,
         message:'',
-        idAccion:this.props.idRegistro,
+        idCaracter:this.props.idRegistro,
         nombre:this.props.nombre,
+        siglas:this.props.siglas,
         estatus:this.props.estatus
     }
 
@@ -18,8 +19,8 @@ export default class formAcciones extends Component{
     HandleSubmit(event){
         event.preventDefault()
         let form = new FormData(event.target)
-        form.append('id',this.state.idAccion)
-        axios.post('/SIA/juridico/Acciones/Update',form)
+        form.append('id',this.state.idCaracter)
+        axios.post('/SIA/juridico/Caracteres/Update',form)
         .then(response => {
             this.setState({
             open:!this.state.open,
@@ -61,6 +62,18 @@ export default class formAcciones extends Component{
         return(
                 <div>
                     <form className="row Form" onSubmit={this.HandleSubmit.bind(this)} id="Form-insert-acciones">
+                          <div className="form-group col-lg-2">
+                            <label>Siglas</label>
+                            <input 
+                                type="text"
+                                name='siglas'
+                                maxLength='20'
+                                required
+                                defaultValue={this.state.siglas}
+                                className='form-control'
+                                onChange={this.HandleInputChange.bind(this)}
+                            />
+                        </div>
                         <div className="form-group col-lg-4">
                             <label>Nombre</label>
                             <input 

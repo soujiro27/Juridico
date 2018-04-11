@@ -1,42 +1,116 @@
 import React, { Component } from 'react';
+import { AxiosProvider, Request, Get, Patch, withAxios } from 'react-axios';
 import HomeLayout from './../../Containers/HomeLayout';
-import Line from './../../Containers/line-header';
-import Header from './../../../Home/Header/Containers/index';
-import MainContainer from './../../../Main/Container/MainContainer';
-import Menu from './../../../Menu/Containers/index';
-import LineMenu from './../../Containers/line-menu';
-import Work from './../../../Work/Containers/Work-container';
-import WorkHeader from './../../../Work/Containers/Work-header-container';
-import WorkHeaderText from './../../../Work/Components/table-header-text';
-import ButtonAdd from './../../../Work/Components/table-header-button-add';
+
+/*--------------Header -----------------------*/
+import Header from './../../../Main/Header/Container/Header-container';
+import Title from './../../../Main/Header/Components/Header-title';
+import ButtonAdd from './../../../Main/Header/Components/Header-button-add';
+
+/*------------------ Table Registers ---------*/
+import Registers from './../../../Main/Registros/Container/Caracteres';
+
+import Form from './../../../Main/Insert/Catalogos/Caracteres';
+import Update  from './../../../Main/Update/Catalogo/Caracteres';
+/*-----------------------Form----------------*/
+
+/*------------------Modal--------------------*/
 
 
-import WorkTable from './../../../Work/Containers/Work-table-container';
-import Table from './../../../Work/Components/table';
 
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import './../../../../Assets/js/fontawesome-all.min';
 export default class Home extends Component {
+
+    state = {
+        header:{
+            text:'Lista de Registros',
+            icon:'far fa-address-book'
+        },
+        registers:true, //se cambio para checar el formulario
+        insert:false,
+        update:false,
+        updateId:0
+    }
+
+
+    openForm(val){
+        this.setState({
+            header:{
+                text:'Nuevo Registro',
+                icon:'fas fa-pencil-alt'
+            },
+            registers:val,
+            insert:!val
+        })
+    }
+
+    cancelForm(){
+        this.setState({
+            header:{
+                text:'Lista de Registros',
+                icon:'far fa-address-book'
+            },
+            registers:true, //se cambio para checar el formulario
+            insert:false,
+            update:false
+        })
+    }
+
+    getIdTr(value){
+        this.setState({
+            header:{
+                text:'Actualizar Registro',
+                icon:'fas fa-pencil-alt'
+            },
+            registers:false,
+            insert:false,
+            update:true,
+            updateId:value
+        })
+    }
+
+
 
     render(){
         return(
-            <HomeLayout>
-                <Header header={this.props.data.header} />
-                <Line />
-                <MainContainer>
-                    <Menu modulos={this.props.data.modulos}/>
-                    <LineMenu />
-                    <Work>
-                        <WorkHeader>
-                            <WorkHeaderText />
-                            <ButtonAdd url={this.props.url}/>
-                        </WorkHeader>
-                        <WorkTable>
-                            <Table datos={this.props.registers}/>
-                        </WorkTable>
-                    </Work>
-                </MainContainer>
-            </HomeLayout>
+        <HomeLayout >
+            <Header>
+                <Title text={this.state.header.text} icon={this.state.header.icon} />
+                {
+                    this.state.registers &&
+                    <ButtonAdd open={this.openForm.bind(this)} />
+                }
+                
+            </Header>
+            {
+                this.state.registers &&
+                    <Registers idRegister={this.getIdTr.bind(this)} />
+            }
+            {
+                this.state.insert &&
+                    <Form cancel={this.cancelForm.bind(this)} />
+            }
+            {
+                this.state.update &&
+                <Get url={'/SIA/juridico/Caracteres/'+this.state.updateId}>
+                    {(error,response,isLoading,onReload) => {  
+                        if(response !== null){
+                             return <Update 
+                                idRegistro={this.state.updateId} 
+                                nombre={response.data.nombre}
+                                siglas={response.data.siglas} 
+                                estatus={response.data.estatus}
+                                cancel={this.cancelForm.bind(this)}/>
+                        } else{
+                            return <p>Loading...</p>
+                        }
+                    }}
+                    
+                </Get>
+                
+            }
+            
+            
+        </HomeLayout>
         )
         
     }

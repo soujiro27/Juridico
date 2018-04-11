@@ -13,5 +13,10 @@ use Juridico\App\Models\Catalogos\Textos;
 
 class ApiController {
 
+	public function get_documentos(){
+
+		$documentos = TiposDocumentos::where('tipo','JURIDICO')->where('estatus','ACTIVO')->get();
+		echo json_encode($documentos);
+	}
 
 }

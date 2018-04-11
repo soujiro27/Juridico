@@ -14,7 +14,6 @@ $auth = function(){
 $app->group('/juridico',$auth,function() use($controller, $app){
 
 	$app->get('/SubTiposDocumentos',function() use ($controller){
-		$_SESSION['modulo'] = 'SubDocumentos';
 		$controller->index();
 	});
 
@@ -22,8 +21,16 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 		$controller->get_registers();
 	});
 
-	$app->get('/SubTiposDocumentos/New',function() use ($controller){
-		$controller->new_register();
+	$app->get('/SubTiposDocumentos/:id',function($id) use ($controller){
+		$controller->update_register($id);
+	});
+
+	$app->post('/SubTiposDocumentos/Save',function() use ($controller,$app){
+		$controller->Save($app->request->post());
+	});
+
+	$app->post('/SubTiposDocumentos/Update',function() use ($controller,$app){
+		$controller->Update($app->request->post());
 	});
 
 });
