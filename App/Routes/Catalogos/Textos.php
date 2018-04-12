@@ -14,7 +14,6 @@ $auth = function(){
 $app->group('/juridico',$auth,function() use($controller, $app){
 
 	$app->get('/DoctosTextos',function() use ($controller){
-		$_SESSION['modulo'] = 'Textos Juridico';
 		$controller->index();
 	});
 
@@ -22,8 +21,16 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 		$controller->get_registers();
 	});
 
-	$app->get('/DoctosTextos/New',function() use ($controller){
-		$controller->new_register();
+	$app->get('/DoctosTextos/:id',function($id) use ($controller){
+		$controller->update_register($id);
+	});
+
+	$app->post('/DoctosTextos/Save',function() use ($controller,$app){
+		$controller->Save($app->request->post());
+	});
+
+	$app->post('/DoctosTextos/Update',function() use ($controller,$app){
+		$controller->Update($app->request->post());
 	});
 
 });
