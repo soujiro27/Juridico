@@ -16,7 +16,7 @@ import Update  from './../../../Main/Update/Catalogo/Textos';
 /*-----------------------Form----------------*/
 
 /*------------------Modal--------------------*/
-
+import Test from './../../../Main/Insert/Catalogos/test';
 
 
 export default class Home extends Component {
@@ -26,63 +26,40 @@ export default class Home extends Component {
             text:'Lista de Registros',
             icon:'far fa-address-book'
         },
+        visible:{
+            registers:true,
+            insert:false,
+            update:false,
+            btnAdd:true
+        },
         registers:true, //se cambio para checar el formulario
         insert:false,
         update:false,
         updateId:0
     }
 
-    documentos = {
-        tipo:''
-    }
-
-
-    openForm(val){
+    
+    HandleClickBtnAdd(value){
         this.setState({
             header:{
                 text:'Nuevo Registro',
-                icon:'fas fa-pencil-alt'
             },
-            registers:val,
-            insert:!val
+            visible:{
+                btnAdd:!value,
+                registers:false,
+                insert:true
+            }
         })
     }
 
 
-    componentDidMount(){
-        axios.get('/SIA/juridico/Api/Documentos').then(json =>{
-            this.documentos.tipo = json.data
-        })
-    }
-
-   shouldComponentUpdate(){
-       console.log(this.state)
-       return true
-   }
-
-    cancelForm(){
-        this.setState({
-            header:{
-                text:'Lista de Registros',
-                icon:'far fa-address-book'
-            },
-            registers:true, //se cambio para checar el formulario
-            insert:false,
-            update:false
-        })
-    }
-
-    getIdTr(value){
-        this.setState({
-            header:{
-                text:'Actualizar Registro',
-                icon:'fas fa-pencil-alt'
-            },
-            registers:false,
-            insert:false,
-            update:true,
-            updateId:value
-        })
+    VisibleComponents(props){
+        const value = props.visible
+        if(value.registers){
+            return <Registers />
+        } else if(value.insert){
+            return <Form />
+        }
     }
 
 
@@ -93,44 +70,11 @@ export default class Home extends Component {
             <Header>
                 <Title text={this.state.header.text} icon={this.state.header.icon} />
                 {
-                    this.state.registers &&
-                    <ButtonAdd open={this.openForm.bind(this)} />
+                    this.state.visible.btnAdd &&
+                    <ButtonAdd open={this.HandleClickBtnAdd.bind(this)} />
                 }
-                
             </Header>
-            {
-                this.state.registers &&
-                    <Registers idRegister={this.getIdTr.bind(this)} />
-            }
-            
-            {
-                this.state.insert &&
-                    <Form cancel={this.cancelForm.bind(this)}  data={this.documentos.tipo}/>
-            }
-
-            {
-                this.state.update &&
-                <Get url={'/SIA/juridico/DoctosTextos/'+this.state.updateId}>
-                    {(error,response,isLoading,onReload) => {  
-                        if(response !== null){
-                             return <Update 
-                                idRegistro={this.state.updateId} 
-                                idSubTipoDocumento={response.data.idSubTipoDocumento}
-                                idTipoDocto={response.data.idTipoDocto} 
-                                estatus={response.data.estatus}
-                                texto={response.data.texto}
-                                cancel={this.cancelForm.bind(this)}
-                                data={this.documentos.tipo}/>
-                        } else{
-                            return <p>Loading...</p>
-                        }
-                    }}
-                    
-                </Get>
-                
-            }
-            
-            
+            <this.VisibleComponents visible={this.state.visible} />
         </HomeLayout>
         )
         

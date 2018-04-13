@@ -1,167 +1,86 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ReactQuill from 'react-quill';
+import ReactTooltip from 'react-tooltip';
+import { AxiosProvider, Request, Get, Head, Post, withAxios } from 'react-axios';
+import Select from './../../../Main/Form/Select-Documentos';
+import SelectSub from './../../../Main/Form/Select-SubDocumentos';
+import TextEditor from './../../../Main/Form/Text-editor';
 import Modal from './../../Modal/Components/Modal-form';
-import './../form.styl'
-import 'react-quill/dist/quill.snow.css'; 
+import './../form.styl';
 
 
-export default class formAcciones extends Component{
-
-
-    state = {
-        open:false,
-        message:'',
-        idTipoDocto:'',
-        SubDocumentos:[],
-        idSubTipoDocumento:'',
-        texto:''
-    }
-   
-    HandleChangeDocumento(event){
-        let documento = event.target.value
-        axios({
-            method:'get',
-            url:'/SIA/juridico/Api/SubDocumentos',
-            params:{documento}
-        })
-        .then(json => {
-            this.setState({
-                idTipoDocto:documento,
-                SubDocumentos:json.data
-
-            })
-        })
-        
-    }
-
-    HandleChangeEditor(value){
-        let text = value.toString()
-        this.setState({
-            texto:String(text)
-        })
-    }
-
-        
-    HandleInputChange(event){
-        event.preventDefault()
-        const target = event.target
-        const name = target.name
-        const value = target.value
-        this.setState({
-            [name]:value
-        })
-    }
-
-
-
-    HandleSubmit(event){
-        event.preventDefault();
-        let form = new FormData(event.target)
-        axios.post('/SIA/juridico/DoctosTextos/Save',form)
-        .then(response => {
-            this.setState({
-            open:!this.state.open,
-            message:response.data[0]
-            })
-        })
-        
-    }
-
-    modal(value){
-        this.setState({
-            open:value
-        })
-
-        if(this.state.message === 'success'){
-            this.props.cancel()
-        }
-    }
-
-    handleCancel(){
-        this.props.cancel()
-    }
-
-
-    modules = {
-        toolbar: [
-            [{ 'header': [1, 2, false] }],
-            [{ 'font': [] }],
-            ['bold', 'italic', 'underline','strike', 'blockquote'],
-            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-            [{ 'align': [] }],    
-        ],
-    }
+export default class Insert extends Component{
     
-    formats = [
-        'header',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        ]
+    state = {
+        documentos:'',
+        subdocumentos:'',
+        form:{
+            idTipoDocto:'',
+            idSubTipoDocumento:''
+        }
+
+    }
+
+    componentWillMount(){
+        axios.get('/SIA/juridico/Api/Documentos').then(json => {
+            this.setState({
+                documentos:json.data,
+            })
+        })
+    }
+
+    async HandleChangeSelect(value){
+        axios({
+            method:'GET',
+            url:'/SIA/juridico/Api/SubDocumentos',
+            params:{
+                documento:value
+            }
+        })
+        .then(json=>{
+            this.setState({
+                subdocumentos:json.data,
+                form:{
+                    idTipoDocto:value
+                }
+            })
+        })
+    }
+
+    HandleChangeInput(name,value){
+        console.log(name,value)
+    }
+
+    HandleChangeTextEditor(value){
+        console.log(value)
+    }
 
     render(){
-        return(
-            <div>
-            <form className="Form" onSubmit={this.HandleSubmit.bind(this)}>
-                <div className="row bottom">
-                    <label className="col-lg-2">Documento</label>
-                    <select className="form-control col-lg-3" name="idTipoDocto" required onChange={this.HandleChangeDocumento.bind(this)}>
-                        <option value="">Selecciona un Elemento </option>
-                        {
-                            this.props.data.map(item =>(
-                                <option key={item.idTipoDocto} value={item.idTipoDocto}>{item.nombre}</option>
-                            ))
-                        }
-                    </select>
-                </div>
+        if(this.state.documentos.length > 0 ){
+            console.log('render')
+            return(
+                <form className="Form">
+                    <Select 
+                        data={this.state.documentos} 
+                        class='row bottom'
+                        classLabel='col-lg-2'
+                        classSelect='form-control col-lg-3'
+                        changeValue={this.HandleChangeSelect.bind(this)}
+                    />
+                    <SelectSub 
+                        subdocumentos={this.state.subdocumentos} 
+                        class='row bottom'
+                        classLabel='col-lg-2'
+                        classSelect='form-control col-lg-3'
+                        inputVal={this.HandleChangeInput.bind(this)}
+                    />
 
+                    <TextEditor inputTextEditor={this.HandleChangeTextEditor.bind(this)} />
+                </form>
+            )
+        } else {
+            return <p>Loading...</p>
+        }
 
-                <div className="row bottom">
-                    <label className="col-lg-2">Sub Documento</label>
-                    <select 
-                        className="form-control col-lg-3" 
-                        name="idSubTipoDocumento" 
-                        required 
-                        onChange={this.HandleInputChange.bind(this)}
-                        defaultValue={this.state.idSubTipoDocumento}
-                        >
-                        <option value="">Selecciona un Elemento </option>
-                        {
-                            this.state.SubDocumentos.map(item => (
-                                <option key={item.idSubTipoDocumento} value={item.idSubTipoDocumento}>{item.nombre}</option>
-                            ))
-                        }
-                    </select>
-                </div>
-
-                <div className="row bottom">
-                    <label className="col-lg-2">Texto</label>
-                </div>
-                <div className="row">
-                    <ReactQuill 
-                        modules={this.modules} 
-                        formats={this.formats} 
-                        className="editor" 
-                        onChange={this.HandleChangeEditor.bind(this)} />
-                    <input type="hidden" value={this.state.texto} name="texto" />         
-                </div>
-               <div className="row Form-save-button">
-                    <input type="submit" value="Guardar" className='btn btn-primary save' />
-                    <button className="btn btn-danger" onClick={this.handleCancel.bind(this)} >Cancelar</button> 
-                </div>
-                
-            </form>
-            {
-            
-                this.state.open &&
-                <Modal 
-                    open={this.state.open} 
-                    modalClose={this.modal.bind(this)}
-                    message={this.state.message}
-                />
-            }
-            </div>
-        )
     }
 }
-
