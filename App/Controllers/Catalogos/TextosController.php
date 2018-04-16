@@ -84,10 +84,10 @@ class TextosController extends TwigController{
 		if(empty($validate)){
 
 
-			$SubTipos = SubTipos::find($id)->update([
-				'idTipoDocto' => strtoupper($data['idTipoDocto']),
-				'nombre' => strtoupper($data['nombre']),
-				'auditoria' => $data['auditoria'],
+			$SubTipos = Textos::find($id)->update([
+				'idTipoDocto' => $data['idTipoDocto'],
+				'idSubTipoDocumento' => $data['idSubTipoDocumento'],
+				'texto' => $data['texto'],
 				'estatus' => $data['estatus'],
 				'usrModificacion' => $_SESSION['idUsuario'],
 				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')

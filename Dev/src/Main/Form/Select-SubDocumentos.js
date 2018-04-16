@@ -14,13 +14,19 @@ export default class SelectInput extends Component {
         return (
             <div className={this.props.class}>
                 <label className={this.props.classLabel}>Sub Documento</label>
-                <select className={this.props.classSelect} name="idSubTipoDocumento" onChange={this.HandleChange.bind(this)}>
+                <select className={this.props.classSelect} 
+                    name="idSubTipoDocumento" 
+                    onChange={this.HandleChange.bind(this)} 
+                    defaultValue={this.props.value}
+                    required 
+                    >
                     <option value="">Seleccione un elemento</option>
                     {
                         this.props.subdocumentos &&
                         this.props.subdocumentos.map((item) =>(
                             <option 
-                                
+                                key={item.idSubTipoDocumento}
+                                value={item.idSubTipoDocumento}
                             >
                                 {item.nombre}
                             </option> 

@@ -21,6 +21,8 @@ import Test from './../../../Main/Insert/Catalogos/test';
 
 export default class Home extends Component {
 
+ 
+
     state = {
         header:{
             text:'Lista de Registros',
@@ -32,10 +34,9 @@ export default class Home extends Component {
             update:false,
             btnAdd:true
         },
-        registers:true, //se cambio para checar el formulario
-        insert:false,
-        update:false,
-        updateId:0
+        update:{
+            id:0
+        }
     }
 
     
@@ -45,24 +46,41 @@ export default class Home extends Component {
                 text:'Nuevo Registro',
             },
             visible:{
-                btnAdd:!value,
+                btnAdd:value,
                 registers:false,
                 insert:true
             }
         })
     }
 
-
-    VisibleComponents(props){
-        const value = props.visible
-        if(value.registers){
-            return <Registers />
-        } else if(value.insert){
-            return <Form />
-        }
+    async HandleClickTr(value){
+        this.setState({
+            visible:{
+                registers:false,
+                insert:false,
+                update:true
+            },
+            update:{
+                id:value
+            }
+        })
     }
 
-
+  
+    HandleCancel(value){
+        this.setState({
+            header:{
+                text:'Lista de Registros',
+                icon:'far fa-address-book'
+            },
+            visible:{
+                registers:!value,
+                insert:value,
+                update:value,
+                btnAdd:!value
+            }
+        })
+    }
 
     render(){
         return(
@@ -71,10 +89,30 @@ export default class Home extends Component {
                 <Title text={this.state.header.text} icon={this.state.header.icon} />
                 {
                     this.state.visible.btnAdd &&
-                    <ButtonAdd open={this.HandleClickBtnAdd.bind(this)} />
+                    <ButtonAdd open={this.HandleClickBtnAdd.bind(this)}  />
                 }
             </Header>
-            <this.VisibleComponents visible={this.state.visible} />
+            {
+                this.state.visible.registers &&
+                <Registers idRegister={this.HandleClickTr.bind(this)} />
+            }
+            {
+                this.state.visible.insert &&
+                <Form cancel={this.HandleCancel.bind(this)}/>
+            }
+            {
+                this.state.visible.update &&
+                <Get url={'/SIA/juridico/DoctosTextos/'+this.state.update.id}>
+                    {(error, response, isLoading, onReload) =>{
+                        if(response !== null) {
+                            return <Update data={response.data} cancel={this.HandleCancel.bind(this)}/>
+                        } 
+                            return (<div>Default message before request is made.</div>)
+                        
+                    }}
+                </Get>
+               
+            }
         </HomeLayout>
         )
         

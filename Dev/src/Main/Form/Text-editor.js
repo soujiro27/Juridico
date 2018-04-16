@@ -8,10 +8,35 @@ export default class TextoEditor extends Component {
         this.props.inputTextEditor(value)
     }
 
+    toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote'],
+      
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                              // text direction
+    
+     
+          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+      
+                                            // remove formatting button
+      ];
+
+
 
     render(){
         return(
-            <ReactQuill onChange={this.HandleChange.bind(this)} name='texto' />
+            <ReactQuill 
+                className='editor' 
+                onChange={this.HandleChange.bind(this)} 
+                defaultValue={this.props.texto}
+                name='texto'  modules={{
+                toolbar:this.toolbarOptions
+            }}/>
         )
     }
 }

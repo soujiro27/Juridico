@@ -12,7 +12,13 @@ export default class SelectInput extends Component {
         return (
             <div className={this.props.class}>
                 <label className={this.props.classLabel}>Documento</label>
-                <select className={this.props.classSelect}  onChange={this.HandleChange.bind(this)}>
+                <select 
+                    className={this.props.classSelect}  
+                    onChange={this.HandleChange.bind(this)}
+                    defaultValue={this.props.value}
+                    name='idTipoDocto'
+                    required
+                    >
                     <option value="">Seleccione un elemento</option>
                     {
                         this.props.data.map((item) =>(

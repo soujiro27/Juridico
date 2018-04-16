@@ -18,6 +18,7 @@ export default class ModalForm extends Component {
 
     HandleModal = () => { 
         this.props.modalClose(!this.state.open)
+      
     }
 
 
@@ -32,6 +33,7 @@ export default class ModalForm extends Component {
 
 
     render(){
+        console.log(this.state)
         const 
         styles = {
             modal:{
