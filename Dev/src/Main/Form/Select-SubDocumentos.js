@@ -4,9 +4,11 @@ export default class SelectInput extends Component {
 
 
     HandleChange(event){
+        var index = event.nativeEvent.target.selectedIndex
+        let texto = event.nativeEvent.target[index].text
         let nombre = event.target.name
         let valor = event.target.value
-        this.props.inputVal(nombre,valor)
+        this.props.inputVal(nombre,valor,texto)
     }
 
 
@@ -20,7 +22,7 @@ export default class SelectInput extends Component {
                     defaultValue={this.props.value}
                     required 
                     >
-                    <option value="">Seleccione un elemento</option>
+                    <option value="">Escoga una Opcion</option>
                     {
                         this.props.subdocumentos &&
                         this.props.subdocumentos.map((item) =>(

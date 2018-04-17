@@ -11,7 +11,7 @@ include_once $root_directory.'Catalogos/Textos.php';
 
 
 /*-------------Volantes----------------------*/
-//include_once '/../routes/volantes/volantes.php';
+include_once $root_directory.'Volantes/Volantes.php';
 //include_once '/../routes/volantes/volantesDiversos.php';
 
 

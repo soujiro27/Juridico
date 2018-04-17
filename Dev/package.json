@@ -37,6 +37,7 @@
   "dependencies": {
     "axios": "0.18.0",
     "formsy-react": "^1.1.4",
+    "moment": "^2.22.1",
     "rc-tooltip": "^3.7.1",
     "react": "16.1.1",
     "react-addons-css-transition-group": "^15.6.2",
@@ -44,6 +45,7 @@
     "react-axios": "^2.0.0",
     "react-ck5": "^0.5.2",
     "react-ckeditor-component": "^1.0.7",
+    "react-datepicker": "^1.4.1",
     "react-dom": "16.1.1",
     "react-fade": "^1.1.1",
     "react-fade-in": "^0.1.5",

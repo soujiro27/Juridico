@@ -10,10 +10,10 @@ export default class ModalForm extends Component {
     }
 
     dataModal = {
-        messageModal:'Registro Existoso',
-        modalIcon:'fas fa-check-circle modal-icon-success',
-        modalTextClass:'modal-text-success',
-        modalBorder:'success-border'
+        messageModal:'¿El Oficio contiene Nota Informativa?',
+        modalIcon:'fas fa-question-circle modal-icon-question',
+        modalTextClass:'modal-text-question',
+        modalBorder:'question-border'
     }
 
     HandleModal = () => { 
@@ -22,15 +22,11 @@ export default class ModalForm extends Component {
     }
 
 
-    componentWillMount(){
-        if(this.props.message != 'success'){
-            this.dataModal.messageModal = this.props.message
-            this.dataModal.modalIcon = 'fas fa-exclamation-circle modal-icon-error',
-            this.dataModal.modalTextClass = 'modal-text-error',
-            this.dataModal.modalBorder = 'error-border'
-        }
+    HandleButton(event){
+        let value = event.target.value
+        this.props.request(value)
+        
     }
-
 
     render(){
         const 
@@ -50,9 +46,9 @@ export default class ModalForm extends Component {
         return(
             <Modal 
                 open={this.state.open} 
-                onClose={this.HandleModal.bind(this)} 
                 little
                 closeOnEsc={false}
+                showCloseIcon={false}
                 styles={styles}
                 classNames={{
                     modal:this.dataModal.modalBorder
@@ -61,6 +57,23 @@ export default class ModalForm extends Component {
                 closeOnOverlayClick={false}>
                 <i className={this.dataModal.modalIcon} ></i>
                 <h4 className={this.dataModal.modalTextClass}>{this.dataModal.messageModal}</h4>
+                <div className="col-lg-4">
+                    <button 
+                        className='btn btn-sm btn-primary btn-modal-inline' 
+                        onClick={this.HandleButton.bind(this)}
+                        value='SI'
+                        >
+                        SI
+                    </button> 
+                
+                    <button 
+                        className='btn btn-sm btn-danger btn-modal-inline'
+                        value='NO'
+                        onClick={this.HandleButton.bind(this)}
+                        >
+                        NO
+                        </button> 
+                </div>
             </Modal>
         )
     }

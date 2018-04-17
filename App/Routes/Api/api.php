@@ -25,6 +25,30 @@ $app->group('/juridico',function() use($app,$controller){
 		
 	});
 
+	#obtiene los datos de la tabla carCaracteres
+	$app->get('/Api/Caracteres',function() use ($controller){
+		
+		$controller->get_caracteres();
+		
+	});
+
+	#obtiene las areas a turnar
+	$app->get('/Api/Areas',function() use ($controller){
+		
+		$controller->get_areas();
+		
+	});
+
+	#obtiene las acciones de catAcciones
+	$app->get('/Api/Acciones',function() use ($controller){
+		
+		$controller->get_acciones();
+		
+	});
+
+	
+
+
 	
 
 });

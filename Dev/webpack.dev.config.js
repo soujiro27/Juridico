@@ -8,8 +8,8 @@ module.exports = {
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Acciones/index.js')],
     //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Caracteres/index.js')],
     //"SubTipos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/SubTipos/index.js')],
-    "Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Textos/index.js')],
-
+    //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Textos/index.js')],
+    "Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Volantes/index.js')],
 
   },
   output: {
