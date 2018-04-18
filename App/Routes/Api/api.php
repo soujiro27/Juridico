@@ -46,6 +46,20 @@ $app->group('/juridico',function() use($app,$controller){
 		
 	});
 
+	#obtiene los datos de las auditoria por su numero 
+	$app->get('/Api/Auditoria',function() use ($app,$controller){
+		
+		$controller->get_data_auditoria($app->request->get());
+		
+	});
+
+	#obtiene las areas a las que se les turno ifa irac confronta
+	$app->get('/Api/AuditoriaTurnos',function() use ($app,$controller){
+		
+		$controller->get_auditoria_turnado($app->request->get());
+		
+	});
+
 	
 
 

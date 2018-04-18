@@ -9,6 +9,10 @@ export default class ModalForm extends Component {
         open:this.props.open
     }
 
+    cuenta = {
+        anio:''
+    }
+
     dataModal = {
         messageModal:'Seleccione la Cuenta Publica',
         modalIcon:'fas fa-archive modal-icon-question',
@@ -22,10 +26,16 @@ export default class ModalForm extends Component {
     }
 
 
-    HandleButton(event){
+    HandleChange(event){
         let value = event.target.value
-        this.props.request(value)
-        
+        this.cuenta.anio = value
+       
+    }
+
+    HandleSubmit(){
+        if(this.cuenta.anio != ''){
+            this.props.request(this.cuenta.anio)
+        }
     }
 
     render(){
@@ -58,12 +68,14 @@ export default class ModalForm extends Component {
                 <i className={this.dataModal.modalIcon} ></i>
                 <h4 className={this.dataModal.modalTextClass}>{this.dataModal.messageModal}</h4>
                 <div className="col-lg-4">
-                    <select className='form-control form-control-sm'>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                    </select>
+                    
+                        <select className='form-control form-control-sm' onChange={this.HandleChange.bind(this)}>
+                            <option value="">Escoga una opcion</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                        </select>
                 </div>
-                <button className='btn btn-sm btn-primary'>Aceptar</button>
+                <button className='btn btn-sm btn-primary' onClick={this.HandleSubmit.bind(this)} >Aceptar</button>
             </Modal>
         )
     }

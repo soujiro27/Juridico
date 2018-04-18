@@ -14,7 +14,7 @@ export default class SelectCaracter extends Component {
                 <label className={this.props.classLabel}>Caracter</label>
                 <select 
                     className={this.props.classSelect}  
-                    onChange={this.HandleChange.bind(this)}
+                    //onChange={this.HandleChange.bind(this)}
                     defaultValue={this.props.value}
                     name='idCaracter'
                     required

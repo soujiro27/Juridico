@@ -6,8 +6,7 @@ use Juridico\App\Models\Api\TiposDocumentos;
 use Juridico\App\Models\Api\UsuariosRoles;
 use Juridico\App\Models\Api\Puestos;
 use Juridico\App\Models\Api\Usuarios;
-
-
+use Juridico\App\Models\Volantes\AnexosJuridico;
 
 class BaseController {
 
@@ -82,6 +81,55 @@ class BaseController {
 
 	}
 
+
+	public function get_data_area($area){
+
+		$datos = Puestos::select('sia_PuestosJuridico.*','u.idUsuario')
+				->join('sia_usuarios as u','u.idEmpleado','=','sia_PuestosJuridico.rpe')
+				->where('sia_PuestosJuridico.titular','SI')
+				->where('sia_PuestosJuridico.idArea',"$area")
+				->get();
+
+		return $datos;
+	}
+
+
+	public function upload_file_areas($file,$idVolante,$idTurnadoJuridico){
+
+		$nombre_file = $file['file']['name'];
+		$extension = explode('.',$nombre_file);
+		$nombre_final = $idTurnadoJuridico.'.'.$extension[1];
+
+		$directory ='juridico/files/'.$idVolante.'/Areas';
+    
+        $extension = explode('.',$nombre_file);
+
+        if(!file_exists($directory)){
+                    
+            mkdir($directory,0777,true);
+        } 
+
+        
+
+        if(move_uploaded_file($file['file']['tmp_name'],$directory.'/'.$nombre_final)){
+
+
+	        $anexo = new AnexosJuridico([
+	    		'idTurnadoJuridico' => $idTurnadoJuridico,
+	    		'archivoOriginal' => $nombre_file,
+	    		'archivoFinal' => $nombre_final,
+	    		'idTipoArchivo' => $extension[1],
+	    		'usrAlta' => $_SESSION['idUsuario'],
+	            'estatus' => 'ACTIVO'
+	            ]);
+
+	    	$anexo->save();
+	    	return true;
+        } else {
+        	return false;
+        }
+
+	}
 
 
 }

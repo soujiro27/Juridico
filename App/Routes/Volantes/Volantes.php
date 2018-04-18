@@ -26,7 +26,7 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 	});
 
 	$app->post('/Volantes/Save',function() use ($controller,$app){
-		$controller->Save($app->request->post());
+		$controller->Save($app->request->post(),$_FILES);
 	});
 
 	$app->post('/Volantes/Update',function() use ($controller,$app){

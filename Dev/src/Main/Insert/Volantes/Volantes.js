@@ -22,6 +22,7 @@ import InputHidden from './../../Form/Input-Hidden';
 import Modal from './../../Modal/Components/Modal-form';
 import Confronta  from './../../Modal/Components/Modal-confronta';
 import Dictamen from './../../Modal/Components/Modal-dictamen';
+import Auditoria from './../../Modal/Components/Modal-auditoria';
 /*------------------Estilos------------------------*/
 import './../form.styl';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -38,13 +39,15 @@ export default class Insert extends Component{
         form:{
             idTipoDocto:'',
             idSubTipoDocumento:'',
-            notaConfronta:'NO'
+            notaConfronta:'NO',
+            remitente:''
         },
         visible:{
             modal:false,
             insert:false,
             modalConfronta:false,
-            modalDictamen:false
+            modalDictamen:false,
+            modalAuditoria:false
         },
         message:''
 
@@ -53,7 +56,9 @@ export default class Insert extends Component{
     form = {
         idTipoDocto:'',
         idSubTipoDocumento:'',
-        notaConfronta:''
+        notaConfronta:'',
+        ctaPublica:'2016',
+        cveAuditoria:''
     }
 
     componentWillMount(){
@@ -114,7 +119,7 @@ export default class Insert extends Component{
     HandleSubmit(event){
         event.preventDefault();
         let form = new FormData(event.target)
-        form.append('texto',this.state.form.texto)
+        form.append('file', document.getElementById('file').files[0]);
         axios.post('/SIA/juridico/Volantes/Save',form)
         .then(response => {
             this.setState({
@@ -158,13 +163,47 @@ export default class Insert extends Component{
         })
     }
 
+    ModalDictamenRequest(value){
+        this.form.ctaPublica = value
+        this.setState({
+            visible:{
+                modalDictamen:false
+            }
+        })
+    }
+
+    modalAuditoria(value){
+        //console.log(value["0"].id)
+        this.form.cveAuditoria = value["0"].id
+        this.setState({
+            visible:{
+                modalAuditoria:false
+            },
+            form:{
+                remitente:value["0"].idArea,
+                cveAuditoria:value["0"].id
+
+            }
+
+        })
+    }
+
+
+    HandleButtonAuditoria(event){
+        event.preventDefault()
+        this.setState({
+            visible:{
+                modalAuditoria:true
+            }
+        })
+    }
 
     render(){
-        console.log(this.form)
+        
         if(this.state.documentos.length > 0 ){
             return(
                 <div>
-                <form className="Form" onSubmit={this.HandleSubmit.bind(this)}>
+                <form className="Form" onSubmit={this.HandleSubmit.bind(this)} encType="multipart/form-data">
                     <div className='form-row bottom'>
                         <Select 
                             data={this.state.documentos} 
@@ -193,14 +232,22 @@ export default class Insert extends Component{
                         />
 
                         <BtnAuditoria 
-                            class='col-lg-2'
+                            class='col-lg-2 center'
                             classLabel='col-lg-12'
+                            auditoria={this.HandleButtonAuditoria.bind(this)}
                         />
+
+                        <div className='col-lg-2 center'>
+                            <label> Remitente </label>
+                            <p className='form-control'>{this.state.form.remitente}</p>
+                        </div>
+
+
                     </div>
                     
                     <div className='form-row bottom'>
                         <InputNumber 
-                            class='col-lg-1'
+                            class='col-lg-2'
                             label='Folio'
                             name='folio'
                             max='9999'
@@ -209,7 +256,7 @@ export default class Insert extends Component{
                         />
 
                         <InputNumber 
-                            class='col-lg-1'
+                            class='col-lg-2'
                             label='SubFolio'
                             name='subFolio'
                             max='9999'
@@ -217,14 +264,14 @@ export default class Insert extends Component{
                             classInput='form-control form-control-sm'
                         />
                         <InputText 
-                            class='col-lg-3'
+                            class='col-lg-4'
                             label='Numero de Documento'
                             max='50'
                             classInput='form-control form-control-sm'
                             name='numDocumento'
                         />
                         <InputNumber 
-                        class='col-lg-1'
+                        class='col-lg-2'
                         label='Anexos'
                         name='anexos'
                         max='99'
@@ -238,33 +285,25 @@ export default class Insert extends Component{
                             class='col-lg-2'
                             label='Fecha Documento'
                             classInput='form-control form-control-sm'
+                            name='fDocumento'
                         />
                         <InputDate 
                             class='col-lg-2'
                             label='Fecha Recepcion'
                             classInput='form-control form-control-sm'
+                            name='fRecepcion'
                         />
                         <InputHour
                             class='col-lg-2'
                             label='Hora Recepcion'
                             classInput='form-control form-control-sm'
-                        />
-                    </div>
-
-                    <div className='form-row bottom'>
-                        <InputText 
-                            class='col-lg-6'
-                            label='Remitente'
-                            max='50'
-                            classInput='form-control form-control-sm'
-                            name='idRemitente'
-                            read={true}
+                            name='hRecepcion'
                         />
                     </div>
 
                     <div className='form-row bottom'>
                         <TextArea 
-                            class='col-lg-6'
+                            class='col-lg-12'
                             label='Asunto'
                             name='asunto'
                             classTextArea='form-control'
@@ -298,7 +337,8 @@ export default class Insert extends Component{
                     </div>
 
                     <InputHidden name='notaConfronta' value={this.state.form.notaConfronta} />
-                    
+                    <InputHidden name='cveAuditoria' value={this.state.form.cveAuditoria} />
+                    <InputHidden name="idRemitente" value={this.state.form.remitente} />
                     <Buttons cancel={this.HandleCancel.bind(this)} />
 
                     
@@ -322,7 +362,16 @@ export default class Insert extends Component{
                         this.state.visible.modalDictamen &&
                         <Dictamen
                             open={this.state.visible.modalDictamen}
+                            request={this.ModalDictamenRequest.bind(this)}
                         />
+                    }
+                    {
+                        this.state.visible.modalAuditoria &&
+                            <Auditoria 
+                                open={this.state.visible.modalAuditoria}
+                                cuenta={this.form.ctaPublica}
+                                request={this.modalAuditoria.bind(this)}
+                            />
                     }
                   
                 </div>
