@@ -2,7 +2,6 @@
 namespace Juridico\App\Models\Volantes;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Volantes\VolantesDocumentos;
 
 class Volantes extends Model {
      protected $primaryKey = 'idVolante';

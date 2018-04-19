@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import TimePicker from 'react-time-picker';
-import moment from 'moment';
 
 
 export default class InputHour extends Component{
 
 
     state = {
-        time:'00:00'
+        time:'00:00',
     }
 
     onChange = time => this.setState({ time })
 
     render(){
+        
+       
         return(
             <div className={this.props.class}>
                 <label className={this.props.classLabel}>{this.props.label}</label>    

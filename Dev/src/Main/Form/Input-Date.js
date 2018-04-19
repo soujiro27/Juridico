@@ -6,7 +6,7 @@ import moment from 'moment';
 export default class InputDate extends Component{
 
     state = {
-        startDate:moment()
+        startDate:moment(this.props.value)
  
     }
 

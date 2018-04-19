@@ -54,8 +54,8 @@ export default class TableRegisters extends Component{
             accessor:'nombre'
         },
         {
-            Header:'Estatus',
-            accessor:'estatus',
+            Header:'Estado',
+            accessor:'idEstadoTurnado',
             width:120
         },
 ]
@@ -63,7 +63,7 @@ export default class TableRegisters extends Component{
     HandleClickTr(state, rowInfo, column){
         return {
             onClick:(e,handleOriginal) =>{
-                this.props.dataId(rowInfo.original.idDocumentoTexto)
+                this.props.dataId(rowInfo.original.idVolante)
             }
         }
     }

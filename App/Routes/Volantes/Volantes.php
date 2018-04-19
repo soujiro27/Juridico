@@ -33,6 +33,10 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 		$controller->Update($app->request->post());
 	});
 
+	$app->post('/Volantes/Close',function() use ($controller,$app){
+		$controller->Close($app->request->post());
+	});
+
 });
 
 

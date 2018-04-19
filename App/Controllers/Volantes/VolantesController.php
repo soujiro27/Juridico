@@ -46,7 +46,7 @@ class VolantesController extends TwigController{
 		->join('sia_auditorias as a','a.idAuditoria','=','vd.cveAuditoria')
 		->join('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
 		->where('sub.auditoria','SI')
-		->where('t.idTipoTurnado','E')
+		->where('t.idTipoTurnado','V')
 		->whereYear('sia_Volantes.fRecepcion','=',"$now")
 		->orderBy("folio","ASC")
 		->get();
@@ -54,13 +54,6 @@ class VolantesController extends TwigController{
 		echo json_encode($volantes);
 	}
 
-
-
-	public function update_register($id){
-
-		$datos = Textos::find($id);
-		echo json_encode($datos);
-	}
 
 
 	public function Save($data,$file){
@@ -116,7 +109,7 @@ class VolantesController extends TwigController{
 	            'idAreaRecepcion' => $data['idTurnado'],
 	            'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
 	            'idEstadoTurnado' => 'EN ATENCION',
-	            'idTipoTurnado' => 'E',
+	            'idTipoTurnado' => 'V',
 	            'idTipoPrioridad' => $data['idCaracter'],
 	            'comentario' => 'SIN COMENTARIOS',
 	            'usrAlta' => $_SESSION['idUsuario'],
@@ -134,49 +127,89 @@ class VolantesController extends TwigController{
 			if(!empty($nombre_file)){
 
 				$upload = $base->upload_file_areas($file,$max,$idTurnadoJuridico);
-				if($upload){
-
-					$validate[0] = 'success';
-				}
+				
 			}
 
+			$base->send_notificaciones_areas($data);
+			$validate[0] = 'success';
 		}
 
-		echo json_encode($validate);
+
 		
-
-		/*
-			$this->send_notificaciones($data);
-			$this->send_notificaciones_varios($data);
-			$success = $base->success();
-			echo json_encode($success);
-
-		*/
+		echo json_encode($validate);
 	}
 
+
+
+
+	public function update_register($id){
+
+		$datos = Volantes::select('sia_volantes.*','idAreaRecepcion')
+						->join('sia_TurnadosJuridico as tj','tj.idVolante','=','sia_Volantes.idVolante')
+						->where('sia_Volantes.idVolante',"$id")
+						->get();
+		echo json_encode($datos);
+	}
+
+
 	public function Update($data){
-		$validate = $this->validate($data);
-		$id = $data['id'];
+		
+		$data['estatus'] =  'ACTIVO';
+		$id = $data['idVolante'];
+
+		$validate = $this->validate_update($data);
+		$base = new BaseController();
+		$datos_director_area = $base->get_data_area($data['idTurnado']);
 
 		if(empty($validate)){
 
+			$vd = VolantesDocumentos::where('idVolante',"$id")->get();
+			$data['idSubTipoDocumento'] = $vd[0]['idSubTipoDocumento'];
 
-			$SubTipos = Textos::find($id)->update([
-				'idTipoDocto' => $data['idTipoDocto'],
-				'idSubTipoDocumento' => $data['idSubTipoDocumento'],
-				'texto' => $data['texto'],
-				'estatus' => $data['estatus'],
+
+			Volantes::find($id)->update([
+				'numDocumento' => $data['numDocumento'],
+				'anexos' => $data['anexos'],
+				'fDocumento' => $data['fDocumento'],
+				'fRecepcion' => $data['fRecepcion'],
+				'asunto' => $data['asunto'],
+				'idCaracter' => $data['idCaracter'],
+				'idAccion' => $data['idAccion'],
 				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
+			]);
+
+			TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
+				'idAreaRecepcion' => $data['idTurnado'],
+				'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
+				'idTipoPrioridad' => $data['idCaracter'],
+				'usrModificacion' => $_SESSION['idUsuario'],
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
 
 			]);
 
+			$base->send_notificaciones_areas($data);
+		
 			$validate[0] = 'success';
 
 		}
 
 		echo json_encode($validate);
 		
+	}
+
+
+	public function close($data){
+
+		$id = $data['idVolante'];
+		Volantes::find($id)->update([
+			'estatus' => 'INACTIVO'
+		]);
+
+		TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
+			'idEstadoTurnado' => 'CERRADO'
+		]);
+
 	}
 
 	public function validate($data){
@@ -223,6 +256,51 @@ class VolantesController extends TwigController{
 		if($res->isNotEmpty()){
 			
 			array_push($is_valid, 'Registro Duplicado');
+		}
+
+		$base = new BaseController();
+		$datos_director_area = $base->get_data_area($data['idTurnado']);
+		
+		if($datos_director_area->isEmpty()){
+
+			array_push($is_valid, 'El Director NO se encuentra dado de alta ');
+		}
+
+
+		return $is_valid;
+	}
+
+
+	public function validate_update(array $data){
+
+		$estatus = $data['estatus'];
+		
+		
+
+		$is_valid = GUMP::is_valid($data,array(
+			'numDocumento' => 'required|max_len,50',
+			'anexos' => 'required|max_len,2|numeric',
+			'fDocumento' => 'required',
+			'fRecepcion' => 'required',
+			'asunto' => 'max_len,50|alpha_space',
+			'idCaracter' => 'required|max_len,2|numeric',
+			'idTurnado' => 'required|max_len,10|alpha',
+			'idAccion' => 'required|max_len,2|numeric'
+
+		));
+
+		if($is_valid === true){
+			$is_valid = [];
+		}
+
+		
+
+		$base = new BaseController();
+		$datos_director_area = $base->get_data_area($data['idTurnado']);
+		
+		if($datos_director_area->isEmpty()){
+
+			array_push($is_valid, 'El Director NO se encuentra dado de alta ');
 		}
 
 

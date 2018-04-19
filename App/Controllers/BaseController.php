@@ -1,12 +1,15 @@
 <?php  
 namespace Juridico\App\Controllers;
 
+use Carbon\Carbon;
+
 use Juridico\App\Models\Api\Notificaciones;
 use Juridico\App\Models\Api\TiposDocumentos;
 use Juridico\App\Models\Api\UsuariosRoles;
 use Juridico\App\Models\Api\Puestos;
 use Juridico\App\Models\Api\Usuarios;
 use Juridico\App\Models\Volantes\AnexosJuridico;
+use Juridico\App\Models\Catalogos\SubTipos;
 
 class BaseController {
 
@@ -131,5 +134,71 @@ class BaseController {
 
 	}
 
+
+	public function get_id_usr($rpe){
+
+		$usuarios = Usuarios::where('idEmpleado',"$rpe")->where('estatus','ACTIVO')->get();
+		$idUsuario = $usuarios[0]['idUsuario'];
+		return $idUsuario;
+	}
+
+	public function send_notificaciones_areas($data){
+
+		$subDocumento = $data['idSubTipoDocumento'];
+		$turnado=$data['idTurnado'];
+		
+		$datos_area = $this->get_data_area($turnado);
+		$rpe = $datos_area[0]['rpe'];
+		$nombre = $datos_area[0]['saludo'] .' '.$datos_area[0]['nombre'].' '.$datos_area[0]['paterno'].' '.$datos_area[0]['materno'];
+
+		$usuarios[0] = $this->get_id_usr($rpe);
+
+		$subtipos = SubTipos::find($subDocumento);
+		$documento = $subtipos['nombre'];
+
+		
+		$mensaje = 'Mensaje enviado a: '.$nombre.
+				"\nHas recibido un ".$documento.
+				"\nCon el folio: ".$data['folio'];
+
+
+		$puestos = Puestos::where('usrAsisteA',"$rpe")->where('estatus','ACTIVO')->get();
+
+		foreach ($puestos as $key => $value) {
+			array_push($usuarios,$this->get_id_usr($value['rpe']));
+		}
+
+		foreach ($usuarios as $key => $value) {
+			$this->save_notificaciones($value,$mensaje);
+		}
+
+		
+
+	}
+
+
+	public function save_notificaciones($idUsuario,$mensaje){
+
+		$notifica = new Notificaciones([
+				'idNotificacion' => '1',
+				'idUsuario' => $idUsuario,
+				'mensaje' => $mensaje,
+				'idPrioridad' => 'ALTA',
+				'idImpacto' => 'MEDIO',
+				'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
+				'usrAlta' => $_SESSION['idUsuario'],
+				'estatus' => 'ACTIVO',
+				'situacion' => 'NUEVO',
+				'identificador' => '1',
+				'idCuenta' => $_SESSION['idCuentaActual'],
+				'idAuditoria' => '1',
+				'idModulo' => 'Volantes',
+				'referencia' => 'idVolante'
+	 
+			]);
+			$notifica->save();
+
+
+	}
 
 }
