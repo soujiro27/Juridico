@@ -17,6 +17,7 @@ use Juridico\App\Models\Api\Auditorias;
 use Juridico\App\Models\Api\AuditoriasUnidades;
 use Juridico\App\Models\Api\Unidades;
 use Juridico\App\Models\Volantes\VolantesDocumentos;
+use Juridico\App\Models\Api\Remitentes;
 
 class ApiController {
 
@@ -33,6 +34,19 @@ class ApiController {
 				->where('tipo','JURIDICO')
 				->where('estatus','ACTIVO')
 				->where('auditoria','SI')
+				->get();
+
+
+		echo json_encode($sub);
+	}
+
+	public function get_subDocumentos_volantesDiversos($data){
+
+		$documento = $data['documento'];
+		$sub = SubTipos::where('idTipoDocto',"$documento")
+				->where('tipo','JURIDICO')
+				->where('estatus','ACTIVO')
+				->where('auditoria','NO')
 				->get();
 
 
@@ -134,4 +148,18 @@ class ApiController {
 		echo json_encode($turnos);
 	}
 
+
+	public function get_remitentes(array $data){
+
+		$tipo = $data['tipo'];
+
+		$remitentes  = Remitentes::where('estatus','=','ACTIVO')
+        ->where('tipoRemitente','=',"$tipo")
+        ->get();
+
+		echo json_encode($remitentes);
+
+	}
+
 }
+

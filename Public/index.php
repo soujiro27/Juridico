@@ -12,7 +12,7 @@ include_once $root_directory.'Catalogos/Textos.php';
 
 /*-------------Volantes----------------------*/
 include_once $root_directory.'Volantes/Volantes.php';
-//include_once '/../routes/volantes/volantesDiversos.php';
+include_once $root_directory.'Volantes/volantesDiversos.php';
 
 
 /*----------oficios------------------------*/

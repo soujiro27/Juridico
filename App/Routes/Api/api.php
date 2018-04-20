@@ -25,6 +25,13 @@ $app->group('/juridico',function() use($app,$controller){
 		
 	});
 
+	#obtiene los sibdocumentos para volantes diversos
+	$app->get('/Api/SubDocumentosDiversos',function() use ($app,$controller){
+		
+		$controller->get_subDocumentos_volantesDiversos($app->request->get());
+		
+	});
+
 	#obtiene los datos de la tabla carCaracteres
 	$app->get('/Api/Caracteres',function() use ($controller){
 		
@@ -59,6 +66,14 @@ $app->group('/juridico',function() use($app,$controller){
 		$controller->get_auditoria_turnado($app->request->get());
 		
 	});
+
+	#obtiene los remitentes de Volantes Diversos
+	$app->get('/Api/Remitentes',function() use ($app,$controller){
+		
+		$controller->get_remitentes($app->request->get());
+		
+	});
+
 
 	
 
