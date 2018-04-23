@@ -38,7 +38,7 @@ class VolantesController extends TwigController{
 
 	public function get_registers(){
 		
-		$now = Carbon::now('America/Mexico_City')->format('Y');
+	
 		
 		$volantes = Volantes::select('sia_Volantes.*','vd.cveAuditoria','a.clave','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion')
 		->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
@@ -47,7 +47,6 @@ class VolantesController extends TwigController{
 		->join('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
 		->where('sub.auditoria','SI')
 		->where('t.idTipoTurnado','V')
-		->whereYear('sia_Volantes.fRecepcion','=',"$now")
 		->orderBy("folio","ASC")
 		->get();
 
@@ -126,7 +125,7 @@ class VolantesController extends TwigController{
 			
 			if(!empty($nombre_file)){
 
-				$upload = $base->upload_file_areas($file,$max,$idTurnadoJuridico);
+				$base->upload_file_areas($file,$max,$idTurnadoJuridico);
 				
 			}
 

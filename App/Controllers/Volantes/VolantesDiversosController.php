@@ -38,15 +38,14 @@ class VolantesDiversosController extends TwigController{
 
 	public function get_registers(){
 		
-		$now = Carbon::now('America/Mexico_City')->format('Y');
+	
 		
 		$volantes = Volantes::select('sia_Volantes.*','vd.cveAuditoria','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion','t.idAreaRemitente')
 		->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
 		->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante'  )
 		->join('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
 		->where('sub.auditoria','NO')
-		->where('t.idTipoTurnado','VD')
-		->whereYear('sia_Volantes.fRecepcion','=',"$now")
+		->where('t.idTipoTurnado','V')
 		->orderBy("folio","ASC")
 		->get();
 
@@ -61,7 +60,7 @@ class VolantesDiversosController extends TwigController{
 
 		$base = new BaseController();
 	
-
+		$nombre_file = $file['file']['name'];
 		$data['estatus'] =  'ACTIVO';
 		
 		$validate = $this->validate($data);
@@ -118,7 +117,7 @@ class VolantesDiversosController extends TwigController{
 		            'idAreaRecepcion' => $value,
 		            'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
 		            'idEstadoTurnado' => 'EN ATENCION',
-		            'idTipoTurnado' => 'VD',
+		            'idTipoTurnado' => 'V',
 		            'idTipoPrioridad' => $data['idCaracter'],
 		            'comentario' => 'SIN COMENTARIOS',
 		            'usrAlta' => $_SESSION['idUsuario'],
@@ -127,21 +126,16 @@ class VolantesDiversosController extends TwigController{
         		]);
 
         		$turno->save();
-			}
 
 			
+	        	$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
 
-        	
-        	$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
-
-			
-			
-			$nombre_file = $file['file']['name'];
-			
-			if(!empty($nombre_file)){
-
-				$upload = $base->upload_file_areas($file,$max,$idTurnadoJuridico);
 				
+				if(!empty($nombre_file)){
+
+					$base->upload_file_areas($file,$max,$idTurnadoJuridico);
+					
+				}
 			}
 
 			foreach ($areas as $key => $value) {

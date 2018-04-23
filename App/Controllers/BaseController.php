@@ -10,6 +10,9 @@ use Juridico\App\Models\Api\Puestos;
 use Juridico\App\Models\Api\Usuarios;
 use Juridico\App\Models\Volantes\AnexosJuridico;
 use Juridico\App\Models\Catalogos\SubTipos;
+use Juridico\App\Models\Volantes\Volantes;
+use Juridico\App\Models\Volantes\VolantesDocumentos;
+use Juridico\App\Models\Volantes\TurnadosJuridico;
 
 class BaseController {
 
@@ -99,9 +102,15 @@ class BaseController {
 
 	public function upload_file_areas($file,$idVolante,$idTurnadoJuridico){
 
+
+		$time = Carbon::now('America/Mexico_City')->format('H:i:s');
+		$formatTime = str_replace(':', '-', $time);
+		
+		
+
 		$nombre_file = $file['file']['name'];
 		$extension = explode('.',$nombre_file);
-		$nombre_final = $idTurnadoJuridico.'.'.$extension[1];
+		$nombre_final = $formatTime.'.'.$extension[1];
 
 		$directory ='juridico/files/'.$idVolante.'/Areas';
     
@@ -114,7 +123,7 @@ class BaseController {
 
         
 
-        if(move_uploaded_file($file['file']['tmp_name'],$directory.'/'.$nombre_final)){
+        move_uploaded_file($file['file']['tmp_name'],$directory.'/'.$nombre_final);
 
 
 	        $anexo = new AnexosJuridico([
@@ -127,10 +136,7 @@ class BaseController {
 	            ]);
 
 	    	$anexo->save();
-	    	return true;
-        } else {
-        	return false;
-        }
+	    	
 
 	}
 
@@ -151,7 +157,7 @@ class BaseController {
 		$rpe = $datos_area[0]['rpe'];
 		$nombre = $datos_area[0]['saludo'] .' '.$datos_area[0]['nombre'].' '.$datos_area[0]['paterno'].' '.$datos_area[0]['materno'];
 
-		$usuarios[0] = $this->get_id_usr($rpe);
+		$usuario = $this->get_id_usr($rpe);
 
 		$subtipos = SubTipos::find($subDocumento);
 		$documento = $subtipos['nombre'];
@@ -162,15 +168,39 @@ class BaseController {
 				"\nCon el folio: ".$data['folio'];
 
 
-		$puestos = Puestos::where('usrAsisteA',"$rpe")->where('estatus','ACTIVO')->get();
+		$this->save_notificaciones($usuario,$mensaje);
 
-		foreach ($puestos as $key => $value) {
-			array_push($usuarios,$this->get_id_usr($value['rpe']));
-		}
+		
 
-		foreach ($usuarios as $key => $value) {
-			$this->save_notificaciones($value,$mensaje);
-		}
+	}
+
+	public function send_notificaciones_documentos($idVolante,$idTurnado){
+
+
+		$volantesDocumentos = VolantesDocumentos::where('idVolante',"$idVolante")->get();
+		$volantes = Volantes::find($idVolante);
+		$turnados = TurnadosJuridico::find($idTurnado);
+
+
+		$subDocumento = $volantesDocumentos[0]['idSubTipoDocumento'];
+		$turnado=$turnados['idAreaRecepcion'];
+		
+		$datos_area = $this->get_data_area($turnado);
+		$rpe = $datos_area[0]['rpe'];
+		$nombre = $datos_area[0]['saludo'] .' '.$datos_area[0]['nombre'].' '.$datos_area[0]['paterno'].' '.$datos_area[0]['materno'];
+
+		$usuario = $this->get_id_usr($rpe);
+
+		$subtipos = SubTipos::find($subDocumento);
+		$documento = $subtipos['nombre'];
+
+		
+		$mensaje = 'Mensaje enviado a: '.$nombre.
+				"\nHas recibido un Documendo Digitalizado: ".$documento.
+				"\nCon el folio: ".$volantes['folio'];
+
+
+		$this->save_notificaciones($usuario,$mensaje);
 
 		
 
