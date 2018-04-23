@@ -178,8 +178,7 @@ class VolantesDiversosController extends TwigController{
 		$id = $data['idVolante'];
 
 		$validate = $this->validate_update($data);
-		$base = new BaseController();
-		$datos_director_area = $base->get_data_area($data['idTurnado']);
+		
 
 		if(empty($validate)){
 
@@ -199,7 +198,7 @@ class VolantesDiversosController extends TwigController{
 				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
 			]);
 
-			TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
+			/*TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
 				'idAreaRecepcion' => $data['idTurnado'],
 				'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
 				'idTipoPrioridad' => $data['idCaracter'],
@@ -209,7 +208,7 @@ class VolantesDiversosController extends TwigController{
 			]);
 
 			$base->send_notificaciones_areas($data);
-		
+		*/
 			$validate[0] = 'success';
 
 		}
@@ -226,7 +225,7 @@ class VolantesDiversosController extends TwigController{
 			'estatus' => 'INACTIVO'
 		]);
 
-		TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
+		TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','VD')->update([
 			'idEstadoTurnado' => 'CERRADO'
 		]);
 
@@ -313,23 +312,12 @@ class VolantesDiversosController extends TwigController{
 			'fRecepcion' => 'required',
 			'asunto' => 'max_len,50|alpha_space',
 			'idCaracter' => 'required|max_len,2|numeric',
-			'idTurnado' => 'required|max_len,10|alpha',
 			'idAccion' => 'required|max_len,2|numeric'
 
 		));
 
 		if($is_valid === true){
 			$is_valid = [];
-		}
-
-		
-
-		$base = new BaseController();
-		$datos_director_area = $base->get_data_area($data['idTurnado']);
-		
-		if($datos_director_area->isEmpty()){
-
-			array_push($is_valid, 'El Director NO se encuentra dado de alta ');
 		}
 
 

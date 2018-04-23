@@ -11,7 +11,7 @@ export default class SelectCaracter extends Component {
     render(){
         return (
             <div className={this.props.class}>
-                <label className={this.props.classLabel}>Caracter</label>
+                <label className={this.props.classLabel}>Acciones</label>
                 <select 
                     className={this.props.classSelect}  
                     //onChange={this.HandleChange.bind(this)}

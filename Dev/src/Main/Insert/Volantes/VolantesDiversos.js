@@ -191,11 +191,11 @@ export default class Insert extends Component{
     ]
 
     handleChange = (selectedOption) => {
-        console.log(selectedOption)
+     
         this.setState({ 
             selectedOption:selectedOption
             });
-        //console.log(`Selected: ${selectedOption.label}`);
+        
       }
 
     

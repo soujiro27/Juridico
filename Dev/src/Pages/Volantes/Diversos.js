@@ -11,7 +11,7 @@ import ButtonAdd from './../../Main/Header/Components/Header-button-add';
 import Registers from './../../Main/Registros/Container/VolantesDiversos';
 
 import Form from './../../Main/Insert/Volantes/VolantesDiversos';
-import Update  from './../../Main/Update/Volantes/Volantes';
+import Update  from './../../Main/Update/Volantes/VolantesDiversos';
 /*-----------------------Form----------------*/
 
 /*------------------Modal--------------------*/
@@ -109,7 +109,7 @@ export default class Home extends Component {
             }
             {
                 this.state.visible.update &&
-                <Get url={'/SIA/juridico/Volantes/'+this.state.update.id}>
+                <Get url={'/SIA/juridico/VolantesDiversos/'+this.state.update.id}>
                     {(error, response, isLoading, onReload) =>{
                         if(response !== null) {
                             
