@@ -65,7 +65,7 @@ class DocumentosController extends TwigController{
 
 		if(!empty($nombre_file)){
 
-			$upload = $base->upload_file_areas($file,$id,$idTurnadoJuridico);
+			$upload = $base->upload_file_areas($file,$id,$idTurnadoJuridico,'Areas');
 			
 		}
 

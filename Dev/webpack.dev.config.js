@@ -11,7 +11,8 @@ module.exports = {
     //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Catalogos/Textos/index.js')],
     //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Volantes/index.js')],
     //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/VolantesDiversos/index.js')],
-    "Documentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Documentos/index.js')],
+    //"Documentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Documentos/index.js')],
+    "Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Cedulas/Irac/index.js')],
 
 
   },

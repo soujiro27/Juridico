@@ -100,7 +100,7 @@ class BaseController {
 	}
 
 
-	public function upload_file_areas($file,$idVolante,$idTurnadoJuridico){
+	public function upload_file_areas($file,$idVolante,$idTurnadoJuridico,$tipo){
 
 
 		$time = Carbon::now('America/Mexico_City')->format('H:i:s');
@@ -112,7 +112,7 @@ class BaseController {
 		$extension = explode('.',$nombre_file);
 		$nombre_final = $formatTime.'.'.$extension[1];
 
-		$directory ='juridico/files/'.$idVolante.'/Areas';
+		$directory ='juridico/files/'.$idVolante.'/'.$tipo;
     
         $extension = explode('.',$nombre_file);
 
@@ -139,6 +139,7 @@ class BaseController {
 	    	
 
 	}
+
 
 
 	public function get_id_usr($rpe){
@@ -172,6 +173,32 @@ class BaseController {
 
 		
 
+	}
+
+	public function send_notificaciones_internos($idVolante,$idTurnadoJuridico,$idPuestoJuridico){
+
+		$vd = VolantesDocumentos::where('idVolante',"$idVolante")->get();
+		$subDocumento = $vd[0]['idSubTipoDocumento'];
+
+		$volantes = Volantes::find($idVolante);
+
+		$puesto = Puestos::find($idPuestoJuridico);
+
+		$rpe = $puesto['rpe'];
+		$nombre = $puesto[0]['saludo'] .' '.$puesto[0]['nombre'].' '.$puesto[0]['paterno'].' '.$puesto[0]['materno'];
+
+		$usuario = $this->get_id_usr($rpe);
+
+		$subtipos = SubTipos::find($subDocumento);
+		$documento = $subtipos['nombre'];
+
+		
+		$mensaje = 'Mensaje enviado a: '.$nombre.
+				"\nHas recibido un Turando Interno perteneciente a un: ".$documento.
+				"\nCon el folio: ".$volantes['folio'];
+
+
+		$this->save_notificaciones($usuario,$mensaje);
 	}
 
 	public function send_notificaciones_documentos($idVolante,$idTurnado){

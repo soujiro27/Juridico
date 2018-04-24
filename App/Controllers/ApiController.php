@@ -161,5 +161,14 @@ class ApiController {
 
 	}
 
+	public function get_personal(){
+
+		$area = $_SESSION['idArea'];
+
+		$puestos = Puestos::where('idArea',"$area")->where('estatus','ACTIVO')->get();
+
+		echo json_encode($puestos);
+	}
+
 }
 

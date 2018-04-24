@@ -125,7 +125,7 @@ class VolantesController extends TwigController{
 			
 			if(!empty($nombre_file)){
 
-				$base->upload_file_areas($file,$max,$idTurnadoJuridico);
+				$base->upload_file_areas($file,$max,$idTurnadoJuridico,'Areas');
 				
 			}
 

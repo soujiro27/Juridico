@@ -74,6 +74,12 @@ $app->group('/juridico',function() use($app,$controller){
 		
 	});
 
+		$app->get('/Api/Puestos',function() use ($app,$controller){
+		
+		$controller->get_personal();
+		
+	});
+
 
 	
 

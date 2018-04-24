@@ -2,3 +2,4 @@ App/.phpintel
 App/vendor
 Dev/node_modules
 Public/js/
+files/
