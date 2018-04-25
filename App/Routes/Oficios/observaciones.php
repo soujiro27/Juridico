@@ -1,5 +1,5 @@
 <?php 
-namespace App\Routes\Catalogos;
+namespace App\Routes\Oficios;
 
 use Juridico\App\Controllers\Oficios\ObservacionesController;
 
@@ -19,17 +19,14 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 	});
 
 	$app->post('/Observaciones/Save',function() use ($controller,$app){
-		$controller->Save($app->request->post(),$_FILES);
+		$controller->Save($app->request->post());
 	});
 
 	$app->post('/Observaciones/Update',function() use ($controller,$app){
 		$controller->Update($app->request->post());
 	});
 
-	$app->post('/Observaciones/Close',function() use ($controller,$app){
-		$controller->Close($app->request->post());
-	});
-
+	
 });
 
 

@@ -9,6 +9,7 @@ const InputNumber = (props) => (
             max={props.max}
             min={props.min}
             pattern='[0-9]+'
+            defaultValue={props.value}
             className={props.classInput}
             required
             

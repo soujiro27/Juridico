@@ -15,14 +15,14 @@ use Juridico\App\Models\Volantes\VolantesDocumentos;
 use Juridico\App\Models\Volantes\TurnadosJuridico;
 use Juridico\App\Models\Api\Puestos;
 use Juridico\App\Models\Api\Usuarios;
-use Juridico\App\Models\Api\Observaciones;
+use Juridico\App\Models\Api\Plantillas;
 
-class ObservacionesController extends TwigController{
+class PlantillasController extends TwigController{
 
-	public function get_observaciones($id){
+	public function get_Plantillas($id){
 
-		$observaciones = Observaciones::where('idVolante',"$id")->get();
-		echo json_encode($observaciones);
+		$plantillas = Plantillas::where('idVolante',"$id")->get();
+		echo json_encode($plantillas);
 	}
 
 	public function Save(array $data){

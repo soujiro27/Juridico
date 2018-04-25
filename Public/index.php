@@ -23,6 +23,8 @@ include_once $root_directory.'Oficios/Irac.php';
 //include_once '/../routes/oficios/diversos.php';
 include_once $root_directory.'Oficios/Turnados.php';
 include_once $root_directory.'Oficios/Observaciones.php';
+include_once $root_directory.'Oficios/Plantillas.php';
+include_once $root_directory.'Oficios/DocumentosSiglas.php';
 
 /*----------Documentos---------------------*/
 
