@@ -254,7 +254,7 @@ class VolantesController extends TwigController{
 
 		if($res->isNotEmpty()){
 			
-			array_push($is_valid, 'Registro Duplicado');
+			array_push($is_valid, 'El folio ya se encuentra asignado');
 		}
 
 		$base = new BaseController();

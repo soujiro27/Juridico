@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { AxiosProvider, Request, Get } from 'react-axios'
+import { Get } from 'react-axios'
+import { GridLoader } from 'react-spinners';
 import Table from './../Components/Irac-registers'
 import './Table.styl';
 export default class TableContainer extends Component {
@@ -17,7 +18,10 @@ export default class TableContainer extends Component {
                     return (<div>Algo ha ocurrido: {error.message} <button onClick={() => onReload({ params: { reload: true } })}>Recargar</button></div>)
                 }
                 else if(isLoading) {
-                    return (<div>Loading...</div>)
+                    return (<GridLoader
+                        color={'#750c05'} 
+                        loading={isLoading} 
+                    />)
                 }
                 else if(response !== null) {
                     return ( <Table registers={response.data} dataId={this.getId.bind(this)} /> )

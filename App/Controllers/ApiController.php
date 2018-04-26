@@ -130,6 +130,8 @@ class ApiController {
 		}else{
 
 			$clave = 'ASCM/'.$dato['clave'].'/'.$cuenta;
+			
+
 
 			$datos = Auditorias::select('idAuditoria', 'tipoAuditoria','rubros')
 			->where('clave',"$clave")
@@ -142,7 +144,7 @@ class ApiController {
 			->join('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','sia_volantesDocumentos.idSubTipoDocumento')
 			->join('sia_TurnadosJuridico as t','t.idVolante','sia_volantesDocumentos.idVolante')
 			->where('sia_volantesDocumentos.cveAuditoria',"$idAuditoria")
-			->where('t.idTipoTurnado','E')
+			->where('t.idTipoTurnado','V')
 			->get();
 		}
 		echo json_encode($turnos);

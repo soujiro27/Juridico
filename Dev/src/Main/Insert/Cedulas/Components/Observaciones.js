@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Request, Get, Patch, withAxios } from 'react-axios';
+import {Get} from 'react-axios';
+import { GridLoader } from 'react-spinners';
 import ReactTable from 'react-table';
 import axios from 'axios';
 
@@ -185,7 +186,10 @@ export default class Observaciones extends Component {
                                     getTrProps={this.HandleClickTr.bind(this)}
                                 />
                             } else {
-                                return (<div>Loading....</div>)
+                                return (<GridLoader
+                                    color={'#750c05'} 
+                                    loading={isLoading} 
+                                />)
                             }
                         }}
                     </Get>

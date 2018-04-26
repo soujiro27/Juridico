@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import {Get} from 'react-axios';
 import axios from 'axios';
 import ReactTable from 'react-table';
+import { GridLoader } from 'react-spinners';
 
 import Text from './../../../Form/Input-Text'
 import Fecha from './../../../Form/Input-Date';
 import Numeric from './../../../Form/Input-Number';
 import Hidden from './../../../Form/Input-Hidden';
-import Buttons from './../../../Form/Buttons';
+import Buttons from './../../../Form/Buttons-cedula';
 
 import ModalFirmas from './../../../Modal/Components/Modal-puestos-firmas';
 import Modal from './../../../Modal/Components/Modal-form';
+import ModalCedula from './../../../Modal/Components/Modal-cedula';
 
 export default class CedulaIrac extends Component {
     
@@ -30,7 +32,8 @@ export default class CedulaIrac extends Component {
         puestos:'',
         visible:{
             firmas:false,
-            modal:false
+            modal:false,
+            cedula:false
         },
         message:''
     }
@@ -43,7 +46,7 @@ export default class CedulaIrac extends Component {
 
         axios.all([axios.get(url),]).then(axios.spread((datos) => {
             if(datos.data.length > 0){
-                console.log(datos.data)
+                
                     this.setState({
                         form:{
                             siglas:datos.data[0].siglas,
@@ -108,7 +111,12 @@ export default class CedulaIrac extends Component {
     HanldeModalClose(value){
 
         if(this.state.message == 'success'){
-            this.props.cancel(false)
+           this.setState({
+               visible:{
+                   modal:false,
+                   cedula:true
+               }
+           })
         } else{
             this.setState({
                 visible:{
@@ -118,8 +126,27 @@ export default class CedulaIrac extends Component {
         }
     }
 
+
+    HandleCloseCedula(value){
+        this.setState({
+            visible:{
+                cedula:value
+            }
+        })
+    }
+
+    HandlePrint(event){
+        event.preventDefault()
+        this.setState({
+            visible:{
+                cedula:true
+            }
+        })
+    }
+
+
+
     render(){
-        console.log(this.state)
         if(this.state.load){
             return (
                 <div>
@@ -150,7 +177,7 @@ export default class CedulaIrac extends Component {
                         />
                         <div className='col-lg-2'>
                             <label>Añadir Firmas</label>
-                            <button className='btn btn-sm btn-info'onClick={this.HandleModalFirmas.bind(this)}>
+                            <button className='btn btn-sm btn-info icon' onClick={this.HandleModalFirmas.bind(this)}>
                                 <i className="fas fa-pencil-alt"></i>
                                 Firmas
                             </button>
@@ -166,7 +193,7 @@ export default class CedulaIrac extends Component {
                             min='0'
                             name='encabezado'
                             classInput='form-control form-control-sm '
-                            value={this.state.form.folio}
+                            value={this.state.form.espacio_obvs}
                         />
                         <Numeric 
                         class='col-lg-2'
@@ -175,7 +202,7 @@ export default class CedulaIrac extends Component {
                             min='0'
                             name='cuerpo'
                             classInput='form-control form-control-sm '
-                            value={this.state.form.folio}
+                            value={this.state.form.espacio_texto}
                         />
                         <Numeric 
                         class='col-lg-2'
@@ -184,11 +211,11 @@ export default class CedulaIrac extends Component {
                             min='0'
                             name='pie'
                             classInput='form-control form-control-sm '
-                            value={this.state.form.folio}
+                            value={this.state.form.espacio_firmas}
                         />
                         <Hidden name="idPuestosJuridico" value={this.state.form.firmas} />
                     </div>
-                        <Buttons cancel={this.props.cancel.bind(this)} />
+                        <Buttons cancel={this.props.cancel.bind(this)} print={this.HandlePrint.bind(this)} />
                     </form>
                     {
                         this.state.visible.firmas &&
@@ -205,27 +232,23 @@ export default class CedulaIrac extends Component {
                                 modalClose={this.HanldeModalClose.bind(this)}
                             />
                     }
+                    {
+                        this.state.visible.cedula &&
+                            <ModalCedula 
+                                open={this.state.visible.cedula}
+                                title='Irac'
+                                url={'/SIA/juridico/App/cedulas/Irac.php?param='+this.props.volante}
+                                modalClose={this.HandleCloseCedula.bind(this)}
+                            />
+                    }
                 </div>
             )
         } else {
-            return <p> Loading ... </p>
+            return(<GridLoader
+                color={'#750c05'} 
+                loading={true} 
+            />)
         }
     
     }
 }
-
-/*
-    <ReactTable 
-                                    data={response.data}
-                                    columns={this.columns}
-                                    pageSizeOptions={[5,10,15]}
-                                    defaultPageSize={5}
-                                    className="-highlight"
-                                    previousText='Anterior'
-                                    nextText='Siguiente'
-                                    noDataText='Sin Datos'
-                                    pageText='Pagina'
-                                    ofText= 'de'
-                                    getTrProps={this.HandleClickTr.bind(this)}
-                                />
-*/

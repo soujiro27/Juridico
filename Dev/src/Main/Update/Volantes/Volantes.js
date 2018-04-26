@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+
 import InputText from './../../Form/Input-Text';
 import InputDate from './../../Form/Input-Date';
 import TextArea from './../../Form/Textarea';
@@ -149,7 +150,7 @@ export default class Insert extends Component{
                             <InputDate 
                                 class='col-lg-2'
                                 label='Fecha Documento'
-                                value={this.props.data.fDocumento}
+                                value={this.props.data[0].fDocumento}
                                 classInput='form-control form-control-sm'
                                 name='fDocumento'
                             />
@@ -157,7 +158,7 @@ export default class Insert extends Component{
                             <InputDate 
                                 class='col-lg-2'
                                 label='Fecha Recepcion'
-                                value={this.props.data.fRecepcion}
+                                value={this.props.data[0].fRecepcion}
                                 classInput='form-control form-control-sm'
                                 name='fRecepcion'
                             />

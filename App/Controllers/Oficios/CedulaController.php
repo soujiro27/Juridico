@@ -40,28 +40,54 @@ class CedulaController extends TwigController{
 		
 		if(empty($validate)){
 
-		  	$documento = new DocumentosSiglas([
-                'idVolante' => $idVolante,
-                'idSubTipoDocumento' => $subTipo,
-                'idPuestosJuridico' => $data['idPuestosJuridico'],
-                'fOficio' => $data['fOficio'],
-                'siglas' => $data['siglas'],
-                'numFolio' => $data['folio'],
-                'usrAlta' => $_SESSION['idUsuario'],
-            ]);
+			$document = DocumentosSiglas::where('idVolante',"$idVolante")->get();
 
-            $documento->save();
+			if($document->isEmpty()){
 
-            $espacios = new Espacios([
-                'idVolante' => $idVolante,
-                'encabezado' => $data['encabezado'],
-                'cuerpo' => $data['cuerpo'],
-                'pie' => $data['pie'],
-                'usrAlta' => $_SESSION['idUsuario']
-            ]);
+			  	$documento = new DocumentosSiglas([
+	                'idVolante' => $idVolante,
+	                'idSubTipoDocumento' => $subTipo,
+	                'idPuestosJuridico' => $data['idPuestosJuridico'],
+	                'fOficio' => $data['fOficio'],
+	                'siglas' => $data['siglas'],
+	                'numFolio' => $data['folio'],
+	                'usrAlta' => $_SESSION['idUsuario'],
+	            ]);
 
-            $espacios->save();
-            $validate[0] = 'success';
+	            $documento->save();
+
+	            $espacios = new Espacios([
+	                'idVolante' => $idVolante,
+	                'encabezado' => $data['encabezado'],
+	                'cuerpo' => $data['cuerpo'],
+	                'pie' => $data['pie'],
+	                'usrAlta' => $_SESSION['idUsuario']
+	            ]);
+
+	            $espacios->save();
+	            $validate[0] = 'success';
+			} else {
+
+				DocumentosSiglas::where('idVolante',"$idVolante")->update([
+	                'idPuestosJuridico' => $data['idPuestosJuridico'],
+	                'fOficio' => $data['fOficio'],
+	                'siglas' => $data['siglas'],
+	                'numFolio' => $data['folio'],
+	                'usrModificacion' => $_SESSION['idUsuario'],
+	                'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+				]);
+
+				Espacios::where('idVolante',"$idVolante")->update([
+					'encabezado' => $data['encabezado'],
+	                'cuerpo' => $data['cuerpo'],
+	                'pie' => $data['pie'],
+	                'usrModificacion' => $_SESSION['idUsuario'],
+	               	'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+
+				]);
+
+				 $validate[0] = 'success';
+			}
 	
 		}
 

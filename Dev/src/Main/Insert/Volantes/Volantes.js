@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { GridLoader } from 'react-spinners';
 /*-------------- Elementos Formulario --------------*/
 import Select from './../../../Main/Form/Select-Documentos';
 import SelectSub from './../../../Main/Form/Select-SubDocumentos';
@@ -377,7 +378,10 @@ export default class Insert extends Component{
                 </div>
             )
         } else {
-            return <p>Loading...</p>
+            return(<GridLoader
+                color={'#750c05'} 
+                loading={true} 
+            />)
         }
 
     }

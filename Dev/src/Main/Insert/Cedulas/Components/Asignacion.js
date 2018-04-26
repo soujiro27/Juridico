@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { AxiosProvider, Request, Get, Patch, withAxios } from 'react-axios';
+import { Get } from 'react-axios';
+import { GridLoader } from 'react-spinners';
 import axios from 'axios';
 import SelectPuestos from './../../../Form/Select-personal';
 import SelectPrioridad from './../../../Form/Select-prioridad'
@@ -102,7 +103,10 @@ export default class Asignacion extends Component {
                     </div>
                     )
                 }
-                return (<div>Loading....</div>)
+                return (<GridLoader
+                    color={'#750c05'} 
+                    loading={isLoading} 
+                />)
             }}
             </Get>
         )

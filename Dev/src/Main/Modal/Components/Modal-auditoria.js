@@ -166,7 +166,7 @@ export default class ModalAuditoria extends Component {
                     <ReactTable 
                     data={this.state.turnado}
                     columns={this.columnas}
-                    defaultPageSize={2}
+                    defaultPageSize={3}
                     className="-highlight"
                     showPagination={false}
                     noDataText='Sin Datos'

@@ -19,6 +19,7 @@ export default class InputDate extends Component{
 
 
     render(){
+        console.log(this.state)
         return(
             <div className={this.props.class}>
                 <label className={this.props.classLabel}>{this.props.label}</label>    
