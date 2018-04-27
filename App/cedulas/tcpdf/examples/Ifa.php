@@ -6,7 +6,7 @@ $idVolante = $_GET['param1'];
 
 function conecta(){
     try{
-      require './../../../../src/conexion.php';
+      require './../../../../../src/conexion.php';
       $db = new PDO("sqlsrv:Server={$hostname}; Database={$database}", $username, $password );
       return $db;
     }catch (PDOException $e) {
@@ -302,7 +302,7 @@ LEFT JOIN sia_areas ar on tj.idAreaRecepcion = ar.idArea
 LEFT JOIN sia_usuarios us on ar.idEmpleadoTitular=us.idEmpleado 
 LEFT JOIN sia_PuestosJuridico pj on us.idEmpleado=pj.rpe 
 LEFT JOIN sia_DocumentosSiglas ds on vo.idVolante = ds.idVolante 
-WHERE vo.idVolante='$idVolante' and tj.idTipoTurnado='E'";
+WHERE vo.idVolante='$idVolante' and tj.idTipoTurnado='V'";
 
 $jefe=consultaRetorno($sql,$db);
 $titular=$jefe[0]['nombre'];

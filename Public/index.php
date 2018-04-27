@@ -18,6 +18,7 @@ include_once $root_directory.'Volantes/Documentos.php';
 
 /*----------oficios------------------------*/
 include_once $root_directory.'Oficios/Irac.php';
+include_once $root_directory.'Oficios/Ifa.php';
 //include_once '/../routes/oficios/Confrontas.php';
 //include_once '/../routes/oficios/ifa.php';
 //include_once '/../routes/oficios/diversos.php';

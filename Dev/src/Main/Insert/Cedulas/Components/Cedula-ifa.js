@@ -11,6 +11,7 @@ import Hidden from './../../../Form/Input-Hidden';
 import Buttons from './../../../Form/Buttons-cedula';
 
 import ModalFirmas from './../../../Modal/Components/Modal-puestos-firmas';
+import ModalTextos from './../../../Modal/Components/Modal-promocion-acciones';
 import Modal from './../../../Modal/Components/Modal-form';
 export default class CedulaIrac extends Component {
     
@@ -22,6 +23,7 @@ export default class CedulaIrac extends Component {
             fDocumento:'',
             firmas:'',
             folio:'',
+            texto:'',
             espacio_obvs:'',
             espacio_texto:'',
             espacio_firmas:''
@@ -31,7 +33,8 @@ export default class CedulaIrac extends Component {
         visible:{
             firmas:false,
             modal:false,
-            cedula:false
+            cedula:false,
+            texto:false
         },
         message:''
     }
@@ -39,7 +42,7 @@ export default class CedulaIrac extends Component {
     
 
     componentWillMount(){
-
+        console.log(this.props.volante)
         let url ='/SIA/juridico/Cedula/'+this.props.volante
 
         axios.all([axios.get(url),]).then(axios.spread((datos) => {
@@ -53,7 +56,8 @@ export default class CedulaIrac extends Component {
                             folio:datos.data[0].numFolio,
                             espacio_obvs:datos.data[0].encabezado,
                             espacio_texto:datos.data[0].cuerpo,
-                            espacio_firmas:datos.data[0].pie
+                            espacio_firmas:datos.data[0].pie,
+                            texto:datos.data[0].idDocumentoTexto
                         },
                         load:true
 
@@ -82,7 +86,8 @@ export default class CedulaIrac extends Component {
                 firmas:false
             },
             form:{
-                firmas:value
+                firmas:value,
+                texto:this.state.form.texto
             }
         })
     }
@@ -91,7 +96,7 @@ export default class CedulaIrac extends Component {
         event.preventDefault()
         let form = new FormData(event.target)
         form.append('idVolante',this.props.volante)
-        axios.post('/SIA/juridico/Cedula/Save',form).then(json=>{
+        axios.post('/SIA/juridico/Ifa/Save',form).then(json=>{
             
             this.setState({
                 visible:{
@@ -103,9 +108,6 @@ export default class CedulaIrac extends Component {
     }
 
 
-
-    
-
     HanldeModalClose(value){
 
         if(this.state.message == 'success'){
@@ -116,7 +118,7 @@ export default class CedulaIrac extends Component {
                }
            })
 
-           window.open('/SIA/juridico/App/cedulas/Irac.php?param='+this.props.volante)
+           window.open('/SIA/juridico/App/cedulas/tcpdf/examples/Ifa.php?param1='+this.props.volante)
 
 
         } else{
@@ -139,10 +141,30 @@ export default class CedulaIrac extends Component {
 
     HandlePrint(event){
         event.preventDefault()
-        window.open('/SIA/juridico/App/cedulas/Irac.php?param='+this.props.volante)
+        window.open('/SIA/juridico/App/cedulas/tcpdf/examples/Ifa.php?param1='+this.props.volante)
+
     }
 
+    HandleModalTexto(event){
+        event.preventDefault()
+        this.setState({
+            visible:{
+                texto:true
+            }
+        })
+    }
 
+    HandleTexto(value){
+        this.setState({
+            form:{
+                texto:value,
+                firmas:this.state.form.firmas
+            },
+            visible:{
+                texto:false
+            }
+        })
+    }
 
     render(){
         if(this.state.load){
@@ -156,14 +178,6 @@ export default class CedulaIrac extends Component {
                             name='siglas'
                             classInput='form-control form-control-sm'
                             value={this.state.form.siglas}
-                        />
-
-                        <Text 
-                            class='col-lg-3'
-                            label='Numero Folio'
-                            name='folio'
-                            classInput='form-control form-control-sm '
-                            value={this.state.form.folio}
                         />
 
                         <Fecha 
@@ -180,6 +194,14 @@ export default class CedulaIrac extends Component {
                                 Firmas
                             </button>
                         </div>
+
+                        <div className='col-lg-3'>
+                        <label>Promocion de Acciones</label>
+                        <button className='btn btn-sm btn-info icon' onClick={this.HandleModalTexto.bind(this)}>
+                            <i className="fas fa-text-height"></i>
+                            Texto
+                        </button>
+                    </div>
                     </div>
 
                     <div className='row bottom'>
@@ -212,6 +234,7 @@ export default class CedulaIrac extends Component {
                             value={this.state.form.espacio_firmas}
                         />
                         <Hidden name="idPuestosJuridico" value={this.state.form.firmas} />
+                        <Hidden name="idDocumentoTexto" value={this.state.form.texto} />
                     </div>
                         <Buttons cancel={this.props.cancel.bind(this)} print={this.HandlePrint.bind(this)} />
                     </form>
@@ -228,6 +251,14 @@ export default class CedulaIrac extends Component {
                                 message={this.state.message} 
                                 open={this.state.visible.modal}
                                 modalClose={this.HanldeModalClose.bind(this)}
+                            />
+                    }
+
+                    {
+                        this.state.visible.texto &&
+                            <ModalTextos 
+                            open={this.state.visible.texto}
+                            requestTexto={this.HandleTexto.bind(this)}
                             />
                     }
                    

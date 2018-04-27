@@ -18,20 +18,49 @@ use Juridico\App\Models\Api\Usuarios;
 use Juridico\App\Models\Api\DocumentosSiglas;
 use Juridico\App\Models\Api\Espacios;
 
-class CedulaController extends TwigController{
-
-	public function get_Cedula($id){
+class IfaController extends TwigController{
 
 	
+	private $js = 'Ifa';
 
-		$cedula = DocumentosSiglas::select('sia_DocumentosSiglas.*','e.idEspacioJuridico','e.encabezado','e.cuerpo','e.pie')
-			->join('sia_EspaciosJuridico as e','e.idVolante','=','sia_DocumentosSiglas.idVolante')
-			->where('sia_DocumentosSiglas.idVolante',"$id")
-			->get();
-		echo json_encode($cedula);
+	public function index(){
+		
+		$base = new BaseController();
+		$notificaciones = $base->get_user_notification($_SESSION['idUsuario']);
+		$menu = $base->menu();
+
+		echo $this->render('HomeLayout/HomeContainer.twig',[
+			'js' => $this->js,
+			'session' => $_SESSION,
+			'notificaciones' => $notificaciones->count(),
+			'menu' => $menu['modulos']
+		]);
+
+		
+}
+
+	public function get_registers(){
+		
+		$id = $_SESSION['idEmpleado'];
+        $areas = Puestos::where('rpe','=',"$id")->get();
+        $area = $areas[0]['idArea'];
+
+         $iracs = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
+            ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
+            ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
+            ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
+            ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
+            ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+            ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
+            ->where('sub.nombre','=','IFA')
+            ->where('t.idAreaRecepcion','=',"$area")
+            ->where('t.idTipoTurnado','V')
+            ->get();
+
+		echo json_encode($iracs);
 	}
 
-	public function Save(array $data){
+		public function Save(array $data){
 
 		$validate = $this->validate($data);
 
@@ -48,10 +77,10 @@ class CedulaController extends TwigController{
 			  	$documento = new DocumentosSiglas([
 	                'idVolante' => $idVolante,
 	                'idSubTipoDocumento' => $subTipo,
+	                'idDocumentoTexto' => $data['idDocumentoTexto'],
 	                'idPuestosJuridico' => $data['idPuestosJuridico'],
 	                'fOficio' => $data['fOficio'],
 	                'siglas' => $data['siglas'],
-	                'numFolio' => $data['folio'],
 	                'usrAlta' => $_SESSION['idUsuario'],
 	            ]);
 
@@ -73,7 +102,7 @@ class CedulaController extends TwigController{
 	                'idPuestosJuridico' => $data['idPuestosJuridico'],
 	                'fOficio' => $data['fOficio'],
 	                'siglas' => $data['siglas'],
-	                'numFolio' => $data['folio'],
+	                'idDocumentoTexto' => $data['idDocumentoTexto'],
 	                'usrModificacion' => $_SESSION['idUsuario'],
 	                'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 				]);
@@ -126,8 +155,8 @@ class CedulaController extends TwigController{
 
 			$is_valid = GUMP::is_valid($data,array(
 			'siglas' => 'required',
-			'folio' => 'required',
 			'fOficio' => 'required',
+			'idDocumentoTexto' => 'required',
 			'idPuestosJuridico' => 'required',
 			'encabezado' => 'max_len,2|numeric',
 			'cuerpo' => 'max_len,2|numeric',
@@ -144,4 +173,5 @@ class CedulaController extends TwigController{
 
 	}
 
+	
 }

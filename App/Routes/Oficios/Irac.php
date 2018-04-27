@@ -29,13 +29,7 @@ $app->group('/juridico',$auth,function() use($controller, $app){
 		$controller->Save($app->request->post(),$_FILES);
 	});
 
-	$app->post('/Irac/Update',function() use ($controller,$app){
-		$controller->Update($app->request->post());
-	});
 
-	$app->post('/Irac/Close',function() use ($controller,$app){
-		$controller->Close($app->request->post());
-	});
 
 });
 

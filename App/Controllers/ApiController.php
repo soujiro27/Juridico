@@ -172,5 +172,12 @@ class ApiController {
 		echo json_encode($puestos);
 	}
 
+	public function get_promocion_acciones(){
+		
+		$textos = Textos::where('tipo','JURIDICO')->where('estatus','ACTIVO')->get();
+		echo json_encode($textos);
+		
+	}
+
 }
 
