@@ -13,8 +13,12 @@ module.exports = {
     //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/VolantesDiversos/index.js')],
     //"Documentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Documentos/index.js')],
     //"Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Cedulas/Irac/index.js')],
-    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Cedulas/Ifa/index.js')],
-
+    //"Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Cedulas/Ifa/index.js')],
+    //"Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Cedulas/Confronta/index.js')],
+    //"DocumentosDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Cedulas/DocumentosDiversos/index.js')]
+    //"DocumentosDirectores":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/DocumentosDirectores/index.js')]
+    "IracInternos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Cedulas/IracInternos/index.js')],
+    
 
   },
   output: {

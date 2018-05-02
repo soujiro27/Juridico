@@ -18,6 +18,7 @@ use Juridico\App\Models\Api\AuditoriasUnidades;
 use Juridico\App\Models\Api\Unidades;
 use Juridico\App\Models\Volantes\VolantesDocumentos;
 use Juridico\App\Models\Api\Remitentes;
+use Juridico\App\Models\Volantes\TurnadosJuridico;
 
 class ApiController {
 
@@ -177,6 +178,26 @@ class ApiController {
 		$textos = Textos::where('tipo','JURIDICO')->where('estatus','ACTIVO')->get();
 		echo json_encode($textos);
 		
+	}
+
+	public function get_turnados_internos($data){
+		$idPuesto = $data['id'];
+
+		$receptor = $_SESSION['idUsuario'];
+
+		$puestos = Puestos::find($idPuesto);
+		$rpe = $puestos['rpe'];
+
+		$usuarios = Usuarios::where('idEmpleado',"$rpe")->where('estatus','ACTIVO')->get();
+		$envia = $usuarios[0]['idUsuario'];
+
+		$turnos = TurnadosJuridico::select('sia_TurnadosJuridico.*','a.*')
+				->leftJoin('sia_anexosjuridico as a','a.idTurnadojuridico','=','sia_TurnadosJuridico.idTurnadojuridico')
+				->where('sia_TurnadosJuridico.idUsrReceptor',"$receptor")
+				->where('sia_TurnadosJuridico.usrAlta',"$envia")
+				->get();
+
+		echo json_encode($turnos);
 	}
 
 }

@@ -8,7 +8,7 @@ $idVolante = $_GET['param'];
 
 function conecta(){
   try{
-    require './../../src/conexion.php';
+    require './../../../src/conexion.php';
     $db = new \PDO("sqlsrv:Server={$hostname}; Database={$database}", $username, $password );
     return $db;
   }catch (PDOException $e) {
@@ -161,7 +161,7 @@ $pdf->SetFont('helvetica', '', 9);
 $sql = "select * from sia_plantillasJuridico where idVolante ='$idVolante'";
     $db=conecta();
     $datos=consultaRetorno($sql, $db);
-    $espaciosFirma = $datos[0]['espacios2'];
+    $espaciosFirma = $datos[0]['espacios'];
 
 $tbl = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">

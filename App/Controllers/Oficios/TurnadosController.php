@@ -50,7 +50,7 @@ class TurnadosController extends TwigController{
 	            'idEstadoTurnado' => 'EN ATENCION',
 	            'idTipoTurnado' => 'I',
 	            'idTipoPrioridad' => $data['idTipoPrioridad'],
-	            'comentario' => 'SIN COMENTARIOS',
+	            'comentario' => $data['asunto'],
 	            'usrAlta' => $_SESSION['idUsuario'],
 	            'estatus' => 'ACTIVO',
 	            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')

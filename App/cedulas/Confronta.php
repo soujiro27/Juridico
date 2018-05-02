@@ -7,7 +7,7 @@ $idVolante = $_GET['param1'];
 
 function conecta(){
     try{
-      require './../../src/conexion.php';
+      require './../../../src/conexion.php';
       $db = new PDO("sqlsrv:Server={$hostname}; Database={$database}", $username, $password );
       return $db;
     }catch (PDOException $e) {

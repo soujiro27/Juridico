@@ -87,6 +87,13 @@ $app->group('/juridico',function() use($app,$controller){
 	});
 
 
+		$app->get('/Api/Respuestas',function() use ($app,$controller){
+		
+		$controller->get_turnados_internos($app->request->get());
+		
+	});
+
+
 	
 
 
