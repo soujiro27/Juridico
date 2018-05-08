@@ -22,6 +22,9 @@ include_once $root_directory.'Oficios/Ifa.php';
 include_once $root_directory.'Oficios/Confrontas.php';
 
 include_once $root_directory.'Oficios/Irac-Internos.php';
+include_once $root_directory.'Oficios/Confronta-Internos.php';
+include_once $root_directory.'Oficios/Ifa-Internos.php';
+include_once $root_directory.'Oficios/DocumentosDiversosInternos.php';
 
 //include_once '/../routes/oficios/ifa.php';
 //include_once '/../routes/oficios/diversos.php';

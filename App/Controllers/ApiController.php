@@ -181,24 +181,56 @@ class ApiController {
 	}
 
 	public function get_turnados_internos($data){
-		$idPuesto = $data['id'];
+		$idUsuario = $_SESSION['idUsuario'];
+		$idVolante = $data['idVolante'];
+		$idPuesto = $data['idPuesto'];
 
-		$receptor = $_SESSION['idUsuario'];
+		$puestos = Puestos::select('u.idUsuario')
+					->join('sia_usuarios as u','u.idEmpleado','=','sia_PuestosJuridico.rpe')
+					->where('sia_PuestosJuridico.idPuestoJuridico',"$idPuesto")
+					->get();
+		$idUsuario_envio = $puestos[0]['idUsuario'];
+		
 
-		$puestos = Puestos::find($idPuesto);
-		$rpe = $puestos['rpe'];
+		$turnados_propios = TurnadosJuridico::select('idTurnadoJuridico')
+							->where('idVolante',"$idVolante")
+							->where('usrAlta',"$idUsuario")
+							->where('idUsrReceptor',"$idUsuario_envio")
+							->where('idTipoTurnado','I')
+							->get();
+	
+		$turnados_recibidos = TurnadosJuridico::select('idTurnadoJuridico')
+							->where('idVolante',"$idVolante")
+							->where('usrAlta',"$idUsuario_envio")
+							->where('idUsrReceptor',"$idUsuario")
+							->where('idTipoTurnado','I')
+							->get();
 
-		$usuarios = Usuarios::where('idEmpleado',"$rpe")->where('estatus','ACTIVO')->get();
-		$envia = $usuarios[0]['idUsuario'];
+		$propios = $this->array_turnados($turnados_propios);
+		$recibidos = $this->array_turnados($turnados_recibidos);
 
-		$turnos = TurnadosJuridico::select('sia_TurnadosJuridico.*','a.*')
-				->leftJoin('sia_anexosjuridico as a','a.idTurnadojuridico','=','sia_TurnadosJuridico.idTurnadojuridico')
-				->where('sia_TurnadosJuridico.idUsrReceptor',"$receptor")
-				->where('sia_TurnadosJuridico.usrAlta',"$envia")
-				->get();
+		$res = array_merge($propios,$recibidos);
 
-		echo json_encode($turnos);
+
+		$turnados = TurnadosJuridico::select('sia_TurnadosJuridico.*','a.archivoFinal','u.saludo','u.nombre','u.paterno','u.materno')
+					->leftJoin('sia_AnexosJuridico as a ','a.idTurnadoJuridico','=','sia_TurnadosJuridico.idTurnadoJuridico')
+					->join('sia_usuarios as u','u.idUsuario','=','sia_TurnadosJuridico.usrAlta')
+					->whereIn('sia_TurnadosJuridico.idTurnadoJuridico',$res)
+					->orderBy('sia_TurnadosJuridico.fAlta','DESC')
+					->get();
+
+		echo json_encode($turnados);
 	}
+
+
+		public function array_turnados($data) {
+		$id = [];
+		foreach ($data as $key => $value) {
+			array_push($id,$data[$key]['idTurnadoJuridico']);
+		}
+		return $id;
+	}
+
 
 }
 

@@ -9,6 +9,7 @@ use GUMP;
 use Carbon\Carbon;
 
 use Juridico\App\Controllers\BaseController;
+use Juridico\App\Controllers\NotificacionesController;
 
 use Juridico\App\Models\Volantes\Volantes;
 use Juridico\App\Models\Volantes\VolantesDocumentos;
@@ -23,7 +24,8 @@ class DocumentosController extends TwigController{
 	public function index(){
 		
 		$base = new BaseController();
-		$notificaciones = $base->get_user_notification($_SESSION['idUsuario']);
+		$notifica = new NotificacionesController();
+		$notificaciones = $notifica->get_notifications($_SESSION['idUsuario']);
 		$menu = $base->menu();
 
 		echo $this->render('HomeLayout/HomeContainer.twig',[
@@ -69,7 +71,12 @@ class DocumentosController extends TwigController{
 			
 		}
 
-		$base->send_notificaciones_documentos($id,$idTurnadoJuridico);
+		$turnado = TurnadosJuridico::find($idTurnadoJuridico);
+
+		$area = $turnado['idAreaRecepcion'];
+
+
+		$base->notifications_complete('Documento Digital',$area,$id);
 
 		$validate[0] = 'success';
 			

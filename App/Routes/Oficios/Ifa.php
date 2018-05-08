@@ -1,5 +1,5 @@
 <?php 
-namespace App\Routes\Catalogos;
+namespace Juridico\App\Routes\Catalogos;
 
 use Juridico\App\Controllers\Oficios\IfaController;
 

@@ -9,6 +9,7 @@ use GUMP;
 use Carbon\Carbon;
 
 use Juridico\App\Controllers\BaseController;
+use Juridico\App\Controllers\NotificacionesController;
 
 use Juridico\App\Models\Volantes\Volantes;
 use Juridico\App\Models\Volantes\VolantesDocumentos;
@@ -19,7 +20,53 @@ use Juridico\App\Models\Api\Usuarios;
 
 class TurnadosController extends TwigController{
 
+	private $js = 'Turnos';
 
+	public function index(){
+
+		$base = new BaseController();
+		$notifica = new NotificacionesController();
+		$notificaciones = $notifica->get_notifications($_SESSION['idUsuario']);
+		$menu = $base->menu();
+
+		echo $this->render('HomeLayout/HomeContainer.twig',[
+			'js' => $this->js,
+			'session' => $_SESSION,
+			'notificaciones' => $notificaciones->count(),
+			'menu' => $menu['modulos']
+		]);
+
+	}
+
+	public function get_registers(){
+
+		$idUsuario = $_SESSION['idUsuario'];
+       
+        $turnados_propios = TurnadosJuridico::where('idUsrReceptor',"$idUsuario")
+        ->get();
+        
+
+        $volantes_repetidos = [];
+        foreach ($turnados_propios as $key => $value) {
+            array_push($volantes_repetidos,$turnados_propios[$key]['idVolante']);
+        }
+
+       
+        
+        $volantes = array_unique($volantes_repetidos);
+
+		  $turnos = Volantes::select('sia_Volantes.*','sub.nombre','c.nombre as caracter','a.nombre as accion','audi.clave')
+            ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
+            ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
+            ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
+            ->leftJoin('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
+            ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+            ->whereIn('sia_Volantes.idVolante',$volantes)
+            ->get();
+
+        echo json_encode($turnos);
+
+	}
 
 
 	public function Save($data,$file){
@@ -68,7 +115,7 @@ class TurnadosController extends TwigController{
 					
 			}
 
-			$base->send_notificaciones_internos($idVolante,$idTurnadoJuridico,$idPuestoJuridico);
+			$base->notifications_turnados('Turnado Interno',$rpe,$idVolante);
 			
 			$validate[0] = 'success';
 		}

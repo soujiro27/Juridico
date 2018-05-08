@@ -11,7 +11,7 @@ import Title from './../../Main/Header/Components/Header-title';
 import Registers from './../../Main/Registros/Container/DocumentosDirectores';
 
 
-import Insert  from './../../Main/Insert/Volantes/Documentos';
+import Insert  from './../../Main/Insert/Volantes/DocumentosDirectores';
 /*-----------------------Form----------------*/
 
 /*------------------Modal--------------------*/

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Get } from 'react-axios'
 import { GridLoader } from 'react-spinners';
-import Table from './../Components/Irac-registers'
+import Table from './../Components/Turnos-registers'
 import './Table.styl';
 export default class TableContainer extends Component {
     
@@ -12,7 +12,7 @@ export default class TableContainer extends Component {
     render(){
         return(
         <div className="row Registers">
-            <Get url='/SIA/juridico/Irac-Internos/Registers' >
+            <Get url='/SIA/juridico/turnos/Registers' >
             {(error, response, isLoading, onReload) => {
                 if(error) {
                     return (<div>Algo ha ocurrido: {error.message} <button onClick={() => onReload({ params: { reload: true } })}>Recargar</button></div>)
@@ -24,11 +24,7 @@ export default class TableContainer extends Component {
                     />)
                 }
                 else if(response !== null) {
-                    let datos = []
-                    if(response.data[0] != null){
-                        datos = response.data
-                    } 
-                    return ( <Table registers={datos} dataId={this.getId.bind(this)} /> )
+                    return ( <Table registers={response.data} dataId={this.getId.bind(this)} /> )
                     
                 }
 

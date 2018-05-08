@@ -9,7 +9,6 @@ use GUMP;
 use Carbon\Carbon;
 
 use Juridico\App\Controllers\BaseController;
-use Juridico\App\Controllers\NotificacionesController;
 
 use Juridico\App\Models\Volantes\Volantes;
 use Juridico\App\Models\Volantes\VolantesDocumentos;
@@ -19,16 +18,15 @@ use Juridico\App\Models\Api\Usuarios;
 use Juridico\App\Models\Api\DocumentosSiglas;
 use Juridico\App\Models\Api\Espacios;
 use Juridico\App\Models\Api\Confrontas;
-class ConfrontaController extends TwigController{
+class ConfrontaInternosController extends TwigController{
 
 	
-	private $js = 'Confronta';
+	private $js = 'ConfrontaInternos';
 
 	public function index(){
 		
 		$base = new BaseController();
-		$notifica = new NotificacionesController();
-		$notificaciones = $notifica->get_notifications($_SESSION['idUsuario']);
+		$notificaciones = $base->get_user_notification($_SESSION['idUsuario']);
 		$menu = $base->menu();
 
 		echo $this->render('HomeLayout/HomeContainer.twig',[
@@ -47,6 +45,8 @@ class ConfrontaController extends TwigController{
         $areas = Puestos::where('rpe','=',"$id")->get();
         $area = $areas[0]['idArea'];
 
+        $idUsuario = $_SESSION['idUsuario'];
+
          $iracs = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
             ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
             ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
@@ -56,10 +56,14 @@ class ConfrontaController extends TwigController{
             ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
             ->where('sub.nombre','=','CONFRONTA')
             ->where('t.idAreaRecepcion','=',"$area")
-            ->where('t.idTipoTurnado','V')
-            ->get();
+            ->where('t.idUsrReceptor',"$idUsuario")
+            ->where('t.idTipoTurnado','I')
+            ->orderBy('t.idTurnadoJuridico','DESC')
+            ->first();
 
-		echo json_encode($iracs);
+  $res[0] = $iracs;
+
+		echo json_encode($res);
 	}
 
 	public function Save(array $data){

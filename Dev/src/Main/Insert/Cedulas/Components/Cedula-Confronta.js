@@ -42,12 +42,11 @@ export default class CedulaIrac extends Component {
             if(json.data[0].idConfrontaJuridico != 'null' ){
                 //hay datos
                 let data = json.data[0] 
-                
+            
+
                 let datos = {
                     nota:data.notaInformativa,
                     cargo:data.cargoResponsable,
-                    fConfronta:data.fConfronta,
-                    fOficio:data.fOficio,
                     hConfronta:data.hConfronta ,
                     nombre:data.nombreResponsable,
                     folio:data.numFolio,

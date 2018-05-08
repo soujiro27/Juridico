@@ -23,7 +23,8 @@ class VolantesDiversosController extends TwigController{
 	public function index(){
 		
 		$base = new BaseController();
-		$notificaciones = $base->get_user_notification($_SESSION['idUsuario']);
+		$notifica = new NotificacionesController();
+		$notificaciones = $notifica->get_notifications($_SESSION['idUsuario']);
 		$menu = $base->menu();
 
 		echo $this->render('HomeLayout/HomeContainer.twig',[
@@ -141,7 +142,7 @@ class VolantesDiversosController extends TwigController{
 			foreach ($areas as $key => $value) {
 				
 				$data['idTurnado'] = $value;
-				$base->send_notificaciones_areas($data);
+				$base->notifications_complete('Volante',$data['idTurnado'],$max);
 			}
 			
 			$validate[0] = 'success';

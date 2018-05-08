@@ -13,21 +13,37 @@ export default class Asignacion extends Component {
         message:'',
         visible:{
             modal:false
-        }
+        },
+        data:[]
     }
 
     columns = [
         {
             Header:'Enviado por:',
-            accessor:'siglas'
+            accessor:props =>{
+                let nombre = props.saludo + ' ' + props.nombre + ' ' + props.materno + ' ' + props.paterno 
+                return nombre
+            },
+            id:'id'
         },
         {
             Header:'Fecha',
-            accessor:'nombre'
+            accessor:props =>{
+                let fecha = props.fAlta
+                let fFinal = fecha.substring(0,10)
+                return fFinal
+
+            },
+            id:'idFecha'
         },
         {
             Header:'Hora',
-            accessor:'estatus'
+            accessor:props =>{
+                let fecha = props.fAlta
+                let fFinal = fecha.substring(11,16)
+                return fFinal
+            },
+            id:'idHora'
         },
         {
             Header:'Comentario',
@@ -35,14 +51,23 @@ export default class Asignacion extends Component {
         },
         {
             Header:'Archivo',
-            accessor:'archivo'
+            accessor:props => {
+                if(props.archivoFinal == null){
+                    return 'Sin Archivo'
+                } else{
+                    return <a href={'/SIA/juridico/Files/'+this.props.volante +'/Internos/' + props.archivoFinal}>{props.archivoFinal}</a>
+                }
+            },
+            id:'idFile'
         }
 ]
 
     HandleChange(event){
         event.preventDefault()
-        axios.get('/SIA/juridico/Api/Respuestas',{params:{id:event.target.value}}).then(json=>{
-            
+        axios.get('/SIA/juridico/Api/Respuestas',{params:{idPuesto:event.target.value,idVolante:this.props.volante}}).then(json=>{
+            this.setState({
+                data:json.data
+            })
         })
     }
 
@@ -77,6 +102,19 @@ export default class Asignacion extends Component {
                             </div>
                         </div>
                     </form>
+                    <ReactTable 
+                        data={this.state.data}
+                        columns={this.columns}
+                        pageSizeOptions={[5]}
+                        defaultPageSize={5}
+                        className="-highlight"
+                        previousText='Anterior'
+                        nextText='Siguiente'
+                        noDataText='Sin Datos'
+                        pageText='Pagina'
+                        ofText= 'de'
+                        //getTrProps={this.HandleClickTr.bind(this)}
+                    />
                     </div>
                     )
                 }

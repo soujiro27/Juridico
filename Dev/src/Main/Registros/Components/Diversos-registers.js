@@ -84,6 +84,7 @@ export default class TableRegisters extends Component{
                 pageText='Pagina'
                 resizable={true}
                 ofText= 'de'
+                rowsText='Registros'
                 getTrProps={this.HandleClickTr.bind(this)}
             />
         )

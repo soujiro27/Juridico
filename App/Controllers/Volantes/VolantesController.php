@@ -9,10 +9,13 @@ use GUMP;
 use Carbon\Carbon;
 
 use Juridico\App\Controllers\BaseController;
+use Juridico\App\Controllers\NotificacionesController;
 
 use Juridico\App\Models\Volantes\Volantes;
 use Juridico\App\Models\Volantes\VolantesDocumentos;
 use Juridico\App\Models\Volantes\TurnadosJuridico;
+
+
 
 
 class VolantesController extends TwigController{
@@ -23,7 +26,8 @@ class VolantesController extends TwigController{
 	public function index(){
 		
 		$base = new BaseController();
-		$notificaciones = $base->get_user_notification($_SESSION['idUsuario']);
+		$notifica = new NotificacionesController();
+		$notificaciones = $notifica->get_notifications($_SESSION['idUsuario']);
 		$menu = $base->menu();
 
 		echo $this->render('HomeLayout/HomeContainer.twig',[
@@ -128,8 +132,11 @@ class VolantesController extends TwigController{
 				$base->upload_file_areas($file,$max,$idTurnadoJuridico,'Areas');
 				
 			}
+			
+			
+		
+			$base->notifications_complete('Volante',$data['idTurnado'],$max);
 
-			$base->send_notificaciones_areas($data);
 			$validate[0] = 'success';
 		}
 
@@ -187,7 +194,7 @@ class VolantesController extends TwigController{
 
 			]);
 
-			$base->send_notificaciones_areas($data);
+			$base->notifications_complete('Volante',$data['idTurnado'],$id);
 		
 			$validate[0] = 'success';
 
@@ -217,7 +224,8 @@ class VolantesController extends TwigController{
 		$estatus = $data['estatus'];
 		$folio = $data['folio'];
 		$subFolio = $data['subFolio'];
-		
+		$cveAuditoria = $data['cveAuditoria'];
+		$subTipo = $data['idSubTipoDocumento'];
 
 		$is_valid = GUMP::is_valid($data,array(
 			'idTipoDocto' => 'required|max_len,50|alpha',
@@ -255,6 +263,16 @@ class VolantesController extends TwigController{
 		if($res->isNotEmpty()){
 			
 			array_push($is_valid, 'El folio ya se encuentra asignado');
+		}
+
+
+		$vd = VolantesDocumentos::where('cveAuditoria',"$cveAuditoria")->where('idSubTipoDocumento',"$subTipo")->get();
+
+		
+
+		if($vd->isNotEmpty()){
+
+			array_push($is_valid, 'La Auditoria ya ha sido Asignada a ese Documento');
 		}
 
 		$base = new BaseController();

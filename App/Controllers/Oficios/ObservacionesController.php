@@ -84,7 +84,7 @@ class ObservacionesController extends TwigController{
 
 			$is_valid = GUMP::is_valid($data,array(
 			'pagina' => 'required|max_len,3|numeric',
-			'parrafo' => 'required|max_len,20|alpha',
+			'parrafo' => 'required|max_len,3|numeric',
 			'texto' => 'required'
 
 		));

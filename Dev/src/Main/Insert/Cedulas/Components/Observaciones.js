@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 import Pagina from './../../../Form/Input-Number';
-import Parrafo from './../../../Form/Input-Text';
+import Parrafo from './../../../Form/Input-Number';
 import TextEditor from './../../../Form/Text-editor';
 import Estatus from './../../../Form/Select-Activo';
 import Buttons from './../../../Form/Buttons';

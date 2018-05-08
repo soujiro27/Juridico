@@ -116,7 +116,8 @@ export default class CedulaIrac extends Component {
                }
            })
 
-           window.open('/SIA/juridico/App/cedulas/Irac.php?param='+this.props.volante)
+           window.open('/SIA/juridico/App/cedulas/Irac_.php?param='+this.props.volante)
+        window.open('/SIA/juridico/App/cedulas/oficio_irac.php?param='+this.props.volante)
 
 
         } else{
@@ -139,7 +140,8 @@ export default class CedulaIrac extends Component {
 
     HandlePrint(event){
         event.preventDefault()
-        window.open('/SIA/juridico/App/cedulas/Irac.php?param='+this.props.volante)
+        window.open('/SIA/juridico/App/cedulas/Irac_.php?param='+this.props.volante)
+        window.open('/SIA/juridico/App/cedulas/oficio_irac.php?param='+this.props.volante)
     }
 
 

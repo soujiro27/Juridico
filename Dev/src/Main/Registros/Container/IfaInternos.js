@@ -12,7 +12,7 @@ export default class TableContainer extends Component {
     render(){
         return(
         <div className="row Registers">
-            <Get url='/SIA/juridico/Irac-Internos/Registers' >
+            <Get url='/SIA/juridico/Ifa-Internos/Registers' >
             {(error, response, isLoading, onReload) => {
                 if(error) {
                     return (<div>Algo ha ocurrido: {error.message} <button onClick={() => onReload({ params: { reload: true } })}>Recargar</button></div>)

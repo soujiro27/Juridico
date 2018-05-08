@@ -82,6 +82,7 @@ export default class TableRegisters extends Component{
                 nextText='Siguiente'
                 noDataText='Sin Datos'
                 pageText='Pagina'
+                rowsText='Registros'
                 resizable={true}
                 ofText= 'de'
                 getTrProps={this.HandleClickTr.bind(this)}
