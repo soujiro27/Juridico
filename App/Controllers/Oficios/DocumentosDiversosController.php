@@ -188,6 +188,9 @@ class DocumentosDiversosController extends TwigController{
 	public function get_data_confronta($id){
 
 		$DocumentosDiversos = Plantillas::where('idVolante',"$id")->get();
+		if($DocumentosDiversos->isEmpty()){
+			$DocumentosDiversos = [];
+		}
 		$tipo = $this->tipo_cedula($id);
 		$DocumentosDiversos[0]['tipo'] = $tipo;
 		echo json_encode($DocumentosDiversos);

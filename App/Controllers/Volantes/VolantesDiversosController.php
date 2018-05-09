@@ -9,6 +9,7 @@ use GUMP;
 use Carbon\Carbon;
 
 use Juridico\App\Controllers\BaseController;
+use Juridico\App\Controllers\NotificacionesController;
 
 use Juridico\App\Models\Volantes\Volantes;
 use Juridico\App\Models\Volantes\VolantesDocumentos;

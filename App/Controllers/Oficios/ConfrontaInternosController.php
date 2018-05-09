@@ -145,7 +145,7 @@ class ConfrontaInternosController extends TwigController{
 	public function validate($data){
 
 			$is_valid = GUMP::is_valid($data,array(
-			'nombre' => 'required|max_len,40|alpha_space',
+			'nombre' => 'required|max_len,40',
 			'cargo' => 'required|max_len,40|alpha_space',
 			'fConfronta' => 'required',
 			'hConfronta' => 'required',

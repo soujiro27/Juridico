@@ -23,6 +23,17 @@ function consultaRetorno($sql,$db){
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
+$sql = "SELECT * FROM sia_DocumentosSiglas WHERE idVolante='$idVolante'";
+$db=conecta();
+$datos=consultaRetorno($sql, $db);
+
+if(empty($datos)){
+  header('Location: /SIA/juridico/Public/cedula.html');
+}
+
+
+
+
 $sql = "select * from sia_plantillasJuridico where idVolante ='$idVolante'";
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
