@@ -162,16 +162,33 @@ class DocumentosDiversosController extends TwigController{
 			            $copias = substr($copias,1);
 			        }
 
-				Plantillas::where('idVolante',"$id")->update([
-        			'numFolio' => $data['numFolio'],
+			        $datos_update = Array (
+			     	'numFolio' => $data['numFolio'],
         			'fOficio' => $data['fOficio'],
         			'texto' => $data['texto'],
         			'siglas' => $data['siglas'],
-        			'copias' => $copias,
         			'espacios' => $data['espacios'],
+        			'asunto' => $data['asunto'],
         			'usrModificacion' => $_SESSION['idUsuario'],
-					//'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-				]);
+			     	);
+
+
+
+			    	if(!empty($copias)){
+
+			    		$datos_update['copias'] = $copias;
+
+			    	}
+
+			    	if($tipo == 'NOTA'){
+
+			    		if(!empty($data['idPuestoJuridico'])){
+
+			    			$datos_update['idPuestoJuridico'] = $data['idPuestoJuridico'];
+			    		}
+			    	}
+
+				Plantillas::where('idVolante',"$id")->update($datos_update);
 
 				$validate[0] = 'success';
 		        $validate[1] = $tipo;

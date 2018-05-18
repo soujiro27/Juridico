@@ -13,6 +13,7 @@ import Buttons from './../../../Form/Buttons-cedula';
 
 import Modal from './../../../Modal/Components/Modal-form';
 import ModalInterno from './../../../Modal/Components/Modal-remitentes-internos';
+import ModalNota from './../../../Modal/Components/Modal-nota-puestos';
 export default class CedulaIrac extends Component {
     
     state = {
@@ -20,6 +21,7 @@ export default class CedulaIrac extends Component {
             modal:false,
             interno:false,
             externos:false,
+            puestos:false,
             render:false
 
         },
@@ -31,7 +33,8 @@ export default class CedulaIrac extends Component {
             internos:'',
             externos:'',
             asunto:'',
-            texto:''
+            texto:'',
+            puestos:''
         },
         message:'',
         tipo:''
@@ -40,7 +43,6 @@ export default class CedulaIrac extends Component {
     componentWillMount(){
         let url = '/SIA/juridico/DocumentosDiversos/'+this.props.volante
         axios.get(url).then(json=>{
-          
             this.setState({
                 form:{
                     folio:json.data[0].numFolio,
@@ -64,6 +66,7 @@ export default class CedulaIrac extends Component {
         form.append('texto',this.state.form.texto)
         form.append('idVolante',this.props.volante)
         axios.post('/SIA/juridico/DocumentosDiversos/Save',form).then(json=>{
+            
             this.setState({
                 visible:{
                     modal:true,
@@ -122,6 +125,16 @@ export default class CedulaIrac extends Component {
         })
     }
 
+    HandleModalPuestos(event){
+        event.preventDefault()
+        this.setState({
+            visible:{
+                puestos:true,
+                render:true
+            }
+        })
+    }
+
     requestInternos(value){
         this.setState({
             visible:{
@@ -131,7 +144,8 @@ export default class CedulaIrac extends Component {
             form:{
                 internos:value,
                 externos:this.state.form.externos,
-                texto:this.state.form.texto
+                texto:this.state.form.texto,
+                puestos:this.state.form.puestos
             }
         })
     }
@@ -145,7 +159,25 @@ export default class CedulaIrac extends Component {
             form:{
                 externos:value,
                 internos:this.state.form.internos,
+                texto:this.state.form.texto,
+                puestos:this.state.form.puestos
+            }
+        })
+    }
+
+    requestNota(value){
+        console.log(value)
+        this.setState({
+            visible:{
+                puestos:false,
+                render:true
+            },
+            form:{
+                puestos:value,
+                externos:this.state.form.externos,
+                internos:this.state.form.internos,
                 texto:this.state.form.texto
+                
             }
         })
     }
@@ -155,7 +187,8 @@ export default class CedulaIrac extends Component {
             form:{
                 texto:value,
                 externos:this.state.form.externos,
-                internos:this.state.form.internos
+                internos:this.state.form.internos,
+                puestos:this.state.form.puestos
             }
         })
     }
@@ -201,7 +234,7 @@ export default class CedulaIrac extends Component {
                     <div className='row bottom'>
                     
                         <Text 
-                            class='col-lg-6 form-group'
+                            class='col-lg-4 form-group'
                             classInput='form-control form-control-sm'                            
                             label='Asunto'
                             name='asunto'
@@ -233,6 +266,16 @@ export default class CedulaIrac extends Component {
                             onClick={this.HandleModalExternos.bind(this)}
                             className='btn btn-info btn-sm'>Añadir</button>
                         </div>
+
+                        {
+                            this.state.tipo == 'NOTA' &&
+                            <div className='col-lg-2'>
+                                <label>Persona que Firma:</label>
+                                <button 
+                                    onClick={this.HandleModalPuestos.bind(this)}
+                                    className='btn btn-info btn-sm'>Añadir</button>
+                            </div>
+                        }
                     </div>
 
                     <div className='row'>
@@ -242,6 +285,7 @@ export default class CedulaIrac extends Component {
                     </div>
                     <Hidden name='internos' value={this.state.form.internos} />
                     <Hidden name='externos' value={this.state.form.externos} />
+                    <Hidden name='idPuestoJuridico' value={this.state.form.puestos} />
                     <Buttons cancel={this.props.cancel.bind(this)} print={this.HandlePrint.bind(this)} />
                     </form>
                     {
@@ -260,6 +304,10 @@ export default class CedulaIrac extends Component {
                     {
                         this.state.visible.externos &&
                         <ModalInterno open={this.state.visible.externos} tipo='E' request={this.requestExternos.bind(this)}/>
+                    }
+                    {
+                        this.state.visible.puestos &&
+                        <ModalNota open={this.state.visible.puestos} request={this.requestNota.bind(this)}/>
                     }
                         
                 

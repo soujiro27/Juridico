@@ -8,7 +8,7 @@ $idVolante = $_GET['param'];
 
 function conecta(){
   try{
-    require './../../src/conexion.php';
+    require './../../../src/conexion.php';
     $db = new \PDO("sqlsrv:Server={$hostname}; Database={$database}", $username, $password );
     return $db;
   }catch (PDOException $e) {
@@ -23,7 +23,7 @@ function consultaRetorno($sql,$db){
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
-$sql = "SELECT * FROM sia_DocumentosSiglas WHERE idVolante='$idVolante'";
+$sql = "SELECT * FROM sia_plantillasJuridico WHERE idVolante='$idVolante'";
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
 

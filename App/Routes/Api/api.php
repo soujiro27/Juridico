@@ -93,6 +93,12 @@ $app->group('/juridico',function() use($app,$controller){
 		
 	});
 
+
+	$app->get('/Api/FirmaNota',function() use ($app,$controller){
+		
+		$controller->get_firma_nota();
+		
+	});
 	
 
 });

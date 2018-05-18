@@ -232,5 +232,14 @@ class ApiController {
 	}
 
 
+	public function get_firma_nota(){
+
+		$personal = Puestos::where('firmaNota','SI')
+									->where('estatus','ACTIVO')
+									->get();
+		echo json_encode($personal);
+
+	}
+
 }
 
