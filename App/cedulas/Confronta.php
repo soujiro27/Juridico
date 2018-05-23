@@ -22,7 +22,7 @@ function consultaRetorno($sql,$db){
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
-$sql = "SELECT * FROM sia_DocumentosSiglas WHERE idVolante='$idVolante'";
+$sql = "SELECT * FROM sia_ConfrontasJuridico WHERE idVolante='$idVolante'";
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
 

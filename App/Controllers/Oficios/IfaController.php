@@ -155,6 +155,8 @@ class IfaController extends TwigController{
 
 	public function validate($data){
 
+		$firmas = $data['idPuestosJuridico'];
+
 			$is_valid = GUMP::is_valid($data,array(
 			'siglas' => 'required',
 			'fOficio' => 'required',
@@ -167,8 +169,18 @@ class IfaController extends TwigController{
 
 		));
 
+
+		$arreglo = explode(',', $firmas);
+
+
+
+
 		if($is_valid === true){
 			$is_valid = [];
+		}
+
+		if(count($arreglo) > 3){
+			array_push($is_valid, 'Solo Pueden Firmar 3 personas Maximo');
 		}
 
 		return $is_valid;

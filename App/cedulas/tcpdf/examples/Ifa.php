@@ -126,8 +126,8 @@ $pdf->setPrintFooter(false);
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-
+$pdf->SetMargins(17, 10, 17);
+$pdf->SetHeaderMargin(3);
 // set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
@@ -376,7 +376,7 @@ $elementos=count($nombres);
         $elaboro=$elaboro.'<td align="center"><p><b>ELABORÓ</b></p><br><br><br><br><b>'.$nombres[$llave].'</b><br><b>'.$puestos[$llave].'</b></td>';
       } 
     $elaboro=$elaboro.'</tr>';
-  }elseif ($elementos==3) {
+  }elseif ($elementos>2) {
     
     $cont=1;
     $elaboro='<tr>';
@@ -394,6 +394,9 @@ $elementos=count($nombres);
       } 
    
   }
+
+
+
 
 
 

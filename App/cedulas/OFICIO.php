@@ -99,7 +99,8 @@ $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetMargins(17, 10, 17);
 $pdf->SetHeaderMargin(3);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -235,7 +236,7 @@ $pdf -> writeHTML($tbl,true,false,false,false,'');
 
 
 
-$pdf->SetFont('helvetica', '', 6);
+$pdf->SetFont('helvetica', '', 8);
 $sql = "select copias from sia_plantillasJuridico where idVolante ='$idVolante'";
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
