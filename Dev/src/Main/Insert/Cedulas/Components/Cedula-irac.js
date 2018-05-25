@@ -10,7 +10,7 @@ import Numeric from './../../../Form/Input-Number';
 import Hidden from './../../../Form/Input-Hidden';
 import Buttons from './../../../Form/Buttons-cedula';
 
-import ModalFirmas from './../../../Modal/Components/Modal-puestos-firmas';
+import ModalFirmas from './../../../Modal/Components/Modal-puestos-firmas-cedula';
 import Modal from './../../../Modal/Components/Modal-form';
 export default class CedulaIrac extends Component {
     

@@ -52,7 +52,7 @@ export default class Home extends Component {
         })
     }
 
-
+   
 
   
     HandleCancel(value){
@@ -78,7 +78,6 @@ export default class Home extends Component {
     }
 
     render(){
-       
         return(
         <HomeLayout >
             <Header>

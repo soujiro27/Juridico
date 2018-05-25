@@ -15,8 +15,11 @@ export default class TableRegisters extends Component{
     columns = [
         {
             Header:'Folio',
-            accessor:'folio',
-            width:50
+            accessor: props => {
+                return parseInt(props.folio)
+            },
+            width:50,
+            id:'id'
         },
         {
             Header:'SubFolio',

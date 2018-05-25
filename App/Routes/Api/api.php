@@ -80,6 +80,13 @@ $app->group('/juridico',function() use($app,$controller){
 		
 	});
 
+
+	$app->get('/Api/PuestosCedula',function() use ($app,$controller){
+		
+		$controller->get_persona_cedula();
+		
+	});
+
 	$app->get('/Api/PromocionAcciones',function() use ($app,$controller){
 		
 		$controller->get_promocion_acciones();

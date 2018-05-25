@@ -173,6 +173,18 @@ class ApiController {
 		echo json_encode($puestos);
 	}
 
+
+	public function get_persona_cedula(){
+
+		$area = $_SESSION['idArea'];
+
+		$puestos = Puestos::where('idArea',"$area")->where('estatus','ACTIVO')->where('titular','NO')->get();
+
+		echo json_encode($puestos);
+		
+
+	}
+
 	public function get_promocion_acciones(){
 		
 		$textos = Textos::where('tipo','JURIDICO')->where('estatus','ACTIVO')->get();

@@ -17,7 +17,15 @@ export default class InputHour extends Component{
         return(
             <div className={this.props.class}>
                 <label className={this.props.classLabel}>{this.props.label}</label>    
-                <TimePicker
+                <input type="time" name={this.props.name} />
+    </div>   
+        )
+    }
+}
+
+/*
+
+ <TimePicker
                     onChange={this.onChange}
                     value={this.state.time}
                     className='form-control form-control-sm'
@@ -26,7 +34,5 @@ export default class InputHour extends Component{
                     name={this.props.name}
                     required
                 />
-    </div>   
-        )
-    }
-}
+
+                */

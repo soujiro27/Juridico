@@ -146,7 +146,7 @@ $text1 = '
     <tr>
         <td colspan="3"><img width="1100%" height="1600%" src="img/asamblea.png"/></td>
         <td colspan="1"></td>
-        <td colspan="4"><p><font size="10"><b> AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO<br><br> DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS<br><br>OFICIO NÚM: ' .$datos[0]["numFolio"] .'<br><br> ASUNTO: Se remite evaluación del Informe de <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Resultados de Auditoría para Confronta<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (IRAC) correspondiente a la Auditoría <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $clave . '.<br><br>Ciudad de México, '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'<br><br><i>"Fiscalizar con Integridad para Prevenir y Mejorar".</i></b></p></font></td>
+        <td colspan="4"><p><font size="10"><b> AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO<br><br> DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS<br><br>OFICIO NÚM. ' .$datos[0]["numFolio"] .'<br><br> ASUNTO:</b> Se remite evaluación del Informe de <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Resultados de Auditoría para Confronta<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (IRAC) correspondiente a la Auditoría <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $clave . '.<br><br>Ciudad de México, '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'<br><br><i>"Fiscalizar con Integridad para Prevenir y Mejorar".</i></p></font></td>
     </tr>
 </table>';
 
@@ -187,7 +187,13 @@ EOD;
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
-$sql="SELECT ROW_NUMBER() OVER (ORDER BY vo.idVolante  desc ) as fila,a.idAuditoria,a.clave,dbo.lstSujetosByAuditoria(a.idAuditoria) sujeto, ta.nombre tipo, a.rubros FROM sia_Volantes vo INNER JOIN sia_ObservacionesDoctosJuridico ob on vo.idVolante=ob.idVolante INNER JOIN sia_auditorias a on ob.cveAuditoria=a.idAuditoria INNER JOIN sia_tiposauditoria ta on a.tipoAuditoria=ta.idTipoAuditoria WHERE vo.idVolante='$idVolante' GROUP BY a.idAuditoria,a.clave, ta.nombre, a.rubros,vo.idVolante;";
+$sql="SELECT ROW_NUMBER() OVER (ORDER BY vo.idVolante  desc ) as fila,a.idAuditoria,a.clave,dbo.lstSujetosByAuditoria(a.idAuditoria) sujeto,
+ta.nombre tipo, a.rubros, vo.idVolante 
+FROM sia_Volantes vo 
+LEFT JOIN sia_VolantesDocumentos vd on vo.idVolante=vd.idVolante
+LEFT JOIN sia_auditorias a on vd.cveAuditoria=a.idAuditoria 
+LEFT JOIN sia_tiposauditoria ta on a.tipoAuditoria=ta.idTipoAuditoria 
+WHERE vo.idVolante='$idVolante'";
 
 $db=conecta();
 $datos=consultaRetorno($sql, $db);

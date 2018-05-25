@@ -82,6 +82,8 @@ class ObservacionesController extends TwigController{
 
 	public function validate($data){
 
+		$texto = $data['texto'];
+
 			$is_valid = GUMP::is_valid($data,array(
 			'pagina' => 'required|max_len,3|numeric',
 			'parrafo' => 'required|max_len,3|numeric',
@@ -91,6 +93,10 @@ class ObservacionesController extends TwigController{
 
 		if($is_valid === true){
 			$is_valid = [];
+		}
+
+		if($texto == 'undefined'){
+			array_push($is_valid, 'El Texto es Requerido');
 		}
 
 		return $is_valid;

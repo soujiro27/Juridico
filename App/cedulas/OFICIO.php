@@ -78,6 +78,16 @@ class MYPDF extends TCPDF {
         // Page number
         $this->Cell(0, 0,$this->getAliasNumPage(),0,0,'C');
     }
+    public function Header() {
+        // Logo
+        $image_file = K_PATH_IMAGES.'logo_example.jpg';
+        $this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        // Set font
+        $this->SetFont('helvetica', 'B', 20);
+        // Title
+        $this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+    }
+
 }
 
 // create new PDF document
@@ -120,7 +130,7 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 
 
 // add a page
-$pdf->SetFont('helvetica', '', 8);
+$pdf->SetFont('helvetica', '', 9);
 $pdf->AddPage();
 
 $text1 = '
@@ -136,8 +146,21 @@ $pdf->writeHTML($text1);
 
 
 // -------------------------------------------------------------------
-$pdf->SetFont('helvetica', '', 10);
+$pdf->SetFont('helvetica', '', 9);
+
 $tbl = <<<EOD
+<table cellspacing="0" cellpadding="0" border="0" width="395" >
+    
+    <tr>
+        <td colspan="1"><b>{$name} <br>{$puesto}<br>PRESENTE</b></td>
+        
+        
+    </tr>
+</table>
+EOD;
+
+$pdf->writeHTML($tbl, true, false, false, false, '');
+/*$tbl = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     
     <tr>
@@ -151,7 +174,7 @@ EOD;
 
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
-
+*/
 
 // -------------------------------------------------------------------
 $tbl = <<<EOD
@@ -269,6 +292,7 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
 
+$pdf->SetFont('helvetica', '', 8);
 $tbl = <<<EOD
   <table cellspacing="0" cellpadding="0" border="0">
     <tr><td colspan="6" align="left">$siglas<br><br></td></tr>

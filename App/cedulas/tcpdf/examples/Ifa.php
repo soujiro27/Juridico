@@ -126,7 +126,7 @@ $pdf->setPrintFooter(false);
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(17, 10, 17);
+$pdf->SetMargins(25, 15, 25);
 $pdf->SetHeaderMargin(3);
 // set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -147,45 +147,37 @@ $pdf->SetFont('helvetica', '', 9);
 
 // add a page
 $pdf->AddPage();
-
+  $pdf->SetFont('helvetica', '', 8);
 // set some text to print
-$txt = <<<EOD
-AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO
-DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS
-DIRECCIÓN DE INTERPRETACIÓN JURÍDICA Y PROMOCIÓN DE ACCIONES
-HOJA DE EVALUACIÓN DE INFORMES FINALES DE AUDITORÍA
-CUENTA PÚBLICA 2016
-EOD;
-
-// print a block of text using Write()
-$pdf->Write(0, $txt, '', 0, 'C', true, 0, false, false, 0);
+ $html = '<table cellspacing="0" cellpadding="0" border="0"  ><tr><td align="center"><p><font size="9"><b>AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO<br>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS<br>HOJA DE EVALUACIÓN DEL INFORME DE RESULTADOS DE AUDITORÍA PARA CONFRONTA<br>CUENTA PÚBLICA 2016</b></font></p></td></tr></table>';
+      $pdf->WriteHTML($html);
 
 // ---------------------------------------------------------
 
-$pdf->Ln(5);
+$pdf->Ln(0);
 
 
 
 $html = <<<EOD
 <table cellspacing="0" cellpadding="3" border="1" style="background-color:#E7E6E6;">
     <tr>
-        <td>UNIDAD ADMINISTRATIVA AUDITORA</td>
+        <td><b>UNIDAD ADMINISTRATIVA AUDITORA:</b></td>
         <td>{$datos[0]['nombre']}</td>
     </tr>
     <tr>
-        <td>CLAVE</td>
+        <td><b>CLAVE:</b></td>
         <td>{$datos[0]['claveAuditoria']}</td>
     </tr>
     <tr>
-        <td>RUBRO AUDITADO</td>
+        <td><b>RUBRO O FUNCION DE GASTO AUDITADO:</b></td>
         <td>{$ente}</td>
     </tr>
     <tr>
-        <td>TIPO DE AUDITORIA</td>
+        <td><b>TIPO DE AUDITORIA</b></td>
         <td>{$datos[0]['tipo']}</td>
     </tr>
     <tr>
-        <td>ENTE AUDITADO</td>
+        <td><b>SUJETO FISCALIZADO</b></td>
         <td>{$sujeto}</td>
     </tr>
 </table>
@@ -217,7 +209,7 @@ $pdf->Ln(3);
 $txt='';
 $cont=1;
 foreach($tabla as $llave => $valor){
-    $txt=$txt.'<tr><td align="center" colspan="1" width="39">'.$cont.'</td>';
+    $txt=$txt.'<tr><td align="center" colspan="1" width="43">'.$cont.'</td>';
     foreach($tabla[$llave] as $key=>$value){
         $txt=$txt.'<td>'.$value.'</td>';
     }
@@ -225,12 +217,12 @@ foreach($tabla as $llave => $valor){
     $cont++;
 }
 $html = <<<EOD
-<table cellspacing="0" cellpadding="3" border="1" >
+<table cellspacing="0" cellpadding="2" border="1" >
    <tr style="background-color:#E7E6E6;">
-       <td align="center" colspan="1" width="39" >No.</td>
-       <td align="center" colspan="1" width="39" >Hoja</td>
-       <td align="center" colspan="1" width="39" >Parrafo</td>
-       <td align="left" colspan="1" width="540"></td>
+       <td align="center" colspan="1" width="43" >No.</td>
+       <td align="center" colspan="1" width="43" >Hoja</td>
+       <td align="center" colspan="1" width="43" >Parrafo</td>
+       <td align="left" colspan="1" width="458"></td>
    </tr>
    <tbody>
    $txt</tbody>
@@ -320,18 +312,16 @@ $jefe=consultaRetorno($sql,$db);
 $titular=$jefe[0]['nombre'];
 $area=$jefe[0]['juridico'];
 $html = <<<EOD
-<table cellspacing="0" cellpadding="0" border="0">
+<table cellspacing="0" cellpadding="1" border="0" >
 <tr>
-<td colspan="1" width="60" border="0"></td>
-<td align="center" colspan="1" width="220" ><b>DR. IVÁN DE JESÚS OLMOS CANSINO</b></td>
-<td colspan="1" width="120"></td>
-<td align="center" colspan="1" width="230" ><b>$titular</b></td>
+    <td align="center" ><b>DR. IVÁN DE JESÚS OLMOS CANSINO</b></td>
+    <td align="center" ><b>$titular</b></td>
 </tr>
 <tr>
-<td colspan="1" width="70"></td>
-<td align="center" colspan="1" width="200"  ><b>DIRECTOR GENERAL DE ASUNTOS JURÍDICOS</b></td>
-<td colspan="1" width="120"></td>
-<td align="center" colspan="1" width="230"  ><b>$area</b></td>
+
+<td align="center"    ><b>DIRECTOR GENERAL DE ASUNTOS JURÍDICOS</b></td>
+
+<td align="center"    ><b>$area</b></td>
 </tr>
 
 </table>

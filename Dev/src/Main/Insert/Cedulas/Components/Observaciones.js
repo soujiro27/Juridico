@@ -32,7 +32,8 @@ export default class Observaciones extends Component {
             modal:false,
             insert:false,
             updated:false
-        }
+        },
+        message:''
     }
 
     columns = [
@@ -127,15 +128,20 @@ export default class Observaciones extends Component {
                 table:true,
                 visible:{
                     modal:false,
-                    updated:false,
+                   updated:false,
                     insert:false
+                },
+                form:{
+                    idObsv:''
                 }
             })
         } else{
             this.setState({
                 visible:{
-                    modal:value
-                }
+                    modal:false,
+                    
+                },
+                table:true
             })
         }
     }
@@ -161,6 +167,8 @@ export default class Observaciones extends Component {
             }
         }
     }
+
+
 
     
     render(){

@@ -114,7 +114,7 @@ $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetMargins(PDF_MARGIN_LEFT, 10, PDF_MARGIN_RIGHT);
 //$pdf->SetHeaderMargin(3);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -231,7 +231,7 @@ $pdf -> writeHTML($tbl,true,false,false,false,'');
 
 
 
-$pdf->SetFont('helvetica', '', 6);
+$pdf->SetFont('helvetica', '', 8);
 $sql = "select copias from sia_plantillasJuridico where idVolante ='$idVolante'";
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
@@ -254,8 +254,8 @@ foreach ($arreglo  as $valor){
 $tbl = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     <tr>
-      <td>c.c.p.</td> 
-      <td colspan="6">$tr </td>
+      <td colspan="1">c.c.p.</td> 
+      <td colspan="5">$tr </td>
     </tr>
 </table>
 EOD;
@@ -263,7 +263,7 @@ EOD;
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
-
+$pdf->SetFont('helvetica', '', 8);
 $tbl = <<<EOD
   <table cellspacing="0" cellpadding="0" border="0">
     <tr>

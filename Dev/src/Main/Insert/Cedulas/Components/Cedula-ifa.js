@@ -10,7 +10,7 @@ import Numeric from './../../../Form/Input-Number';
 import Hidden from './../../../Form/Input-Hidden';
 import Buttons from './../../../Form/Buttons-cedula';
 
-import ModalFirmas from './../../../Modal/Components/Modal-puestos-firmas';
+import ModalFirmas from './../../../Modal/Components/Modal-puestos-firmas-cedula';
 import ModalTextos from './../../../Modal/Components/Modal-promocion-acciones';
 import Modal from './../../../Modal/Components/Modal-form';
 export default class CedulaIrac extends Component {
@@ -81,6 +81,7 @@ export default class CedulaIrac extends Component {
     }
 
     HandleFirmas(value){
+        console.log(value)
         this.setState({
             visible:{
                 firmas:false
@@ -118,7 +119,7 @@ export default class CedulaIrac extends Component {
                }
            })
 
-           window.open('/SIA/juridico/App/cedulas/tcpdf/examples/Ifa.php?param1='+this.props.volante)
+           window.open('/SIA/juridico/App/cedulas/Ifa.php?param='+this.props.volante)
 
 
         } else{
@@ -141,7 +142,7 @@ export default class CedulaIrac extends Component {
 
     HandlePrint(event){
         event.preventDefault()
-        window.open('/SIA/juridico/App/cedulas/tcpdf/examples/Ifa.php?param1='+this.props.volante)
+        window.open('/SIA/juridico/App/cedulas/Ifa.php?param='+this.props.volante)
 
     }
 

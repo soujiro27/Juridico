@@ -106,28 +106,30 @@ $director=convierte('DIRECTOR GENERAL DE ASUNTOS JURÍDICOS');
 
 $nombreResponsable = convierte($datos[0]['nombreResponsable']);
 
-
 $pdf = new PDF_MC_Table();
+$pdf->SetMargins(19, 15 ,19);
 $pdf->AddPage();
-$pdf->SetFont('Arial','B',10);
-$pdf->Image('./img/logo-top.png',10,8,33);
+$pdf->SetFont('Helvetica','B',10);
+$pdf->Image('./img/logo-top.png',20,13,55);
 $pdf->Cell(80,1,'',0);
 $pdf->Cell(50,1,$dir,0,0,'L');
 $pdf->Ln(5);
 $pdf->Cell(80,1,'',0);
-$pdf->Cell(50,5,'NOTA INFORMATIVA',0,0,'L');
+$pdf->Cell(50,1,'NOTA INFORMATIVA',0,0,'L');
 
-$pdf->SetFont('Arial','',10);
+$pdf->SetFont('Helvetica','',10);
 $pdf->Ln(10);
-$pdf->Cell(180,5,$fechaTxt.$fecha[2].' de '.$mes.' de '.$fecha[0],0,0,'R');
-$pdf->Ln(5);
-$pdf->SetFont('Arial','I',10);
-$pdf->Cell(180,5,'"Fiscalizar con Integridad para Prevenir y Mejorar".',0,0,'R');
+$pdf->Cell(80,1,'',0);
+$pdf->Cell(100,5,$fechaTxt.$fecha[2].' de '.$mes.' de '.$fecha[0],0,0,'L');
 $pdf->Ln(10);
-$pdf->SetFont('Arial','B',10);
+$pdf->SetFont('Helvetica','I',10);
+$pdf->Cell(80,1,'',0);
+$pdf->Cell(100,5,'"Fiscalizar con Integridad para Prevenir y Mejorar".',0,0,'L');
+$pdf->Ln(10);
+$pdf->SetFont('Helvetica','B',10);
 $pdf->Cell(20,5,'PARA: ',0,0,'L');
 $pdf->Cell(90,5,$titular,0,0,'L');
-$pdf->Ln(10);
+$pdf->Ln(5);
 $pdf->Cell(20,5,'',0,0,'L');
 $pdf->MultiCell(60,5,$areaTxt,0,'L');
 
@@ -139,8 +141,8 @@ $pdf->Cell(20,5,'',0,0,'L');
 $pdf->Cell(90,5,$director,0,0,'L');
 $pdf->Ln(15);
 
-$pdf->SetFont('Arial','',10);
-$pdf->MultiCell(180,5,$textoFinal,0,'L');
+$pdf->SetFont('Helvetica','',10);
+$pdf->MultiCell(175,5,$textoFinal,0,'L');
 $pdf->Ln(10);
 $pdf->Cell(15,5,'',0,0,'L');
 $pdf->SetFillColor(198,200,204);
@@ -151,21 +153,21 @@ $pdf->Cell(30,5,'ASISTE',1,0,'C',true);
 $pdf->Cell(30,5,'CARGO',1,0,'C',true);
 
 $pdf->Ln(5);
-$pdf->SetFont('Arial','B',6);
+$pdf->SetFont('Helvetica','B',6);
 $pdf->Cell(15,5,'',0,0,'L');
 $pdf->SetWidths(array(50,20,20,30,30));
 $pdf->Row(array($ente,$datos[0]['clave'],$tiempo,$nombreResponsable,$datos[0]['cargoResponsable']));
 
 
-$pdf->SetFont('Arial','',10);
+$pdf->SetFont('Helvetica','',10);
 $pdf->Ln(10);
 $pdf->Cell(120,5,$footer,0,0,'L');
 $pdf->Ln(10);
-$pdf->SetFont('Arial','B',10);
+$pdf->SetFont('Helvetica','B',11);
 $pdf->Cell(120,5,'ATENTAMENTE',0,0,'L');
 $pdf->Ln(50);
-$pdf->SetFont('Arial','',10);
-$pdf->Cell(170,5,$datos[0]['siglas'],0,0,'L');
+$pdf->SetFont('Helvetica','',8);
+$pdf->Cell(155,5,$datos[0]['siglas'],0,0,'L');
 $pdf->Cell(120,5,$datos[0]['numFolio'],0,0,'L');
 
 

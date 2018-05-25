@@ -49,7 +49,7 @@ class DocumentosDiversosController extends TwigController{
         $areas = Puestos::where('rpe','=',"$id")->get();
         $area = $areas[0]['idArea'];
 
-        $iracs = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','t.idEstadoTurnado')
+        $iracs = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','t.idEstadoTurnado','sub.idTipoDocto')
             ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
             ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
             ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
