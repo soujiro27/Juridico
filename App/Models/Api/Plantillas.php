@@ -19,6 +19,7 @@ class Plantillas extends Model {
           'espacios2',	
      	'idPuestoJuridico',
      	'usrAlta',
+          'refDocumento',
      	'fAlta',
      	'usrModificacion',
      	'fModificacion'

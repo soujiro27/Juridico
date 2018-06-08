@@ -107,7 +107,6 @@ class DocumentosDiversosController extends TwigController{
             'texto' => $data['texto'],
             'siglas' => $data['siglas'],
             'copias' => $copias,
-            'espacios' => $data['espacios']
         );
 
         if($tipo == 'OFICIO' || $tipo == 'CIRCULAR'){
@@ -117,6 +116,7 @@ class DocumentosDiversosController extends TwigController{
         } else {
 
             $datos['idPuestoJuridico'] = $data['idPuestoJuridico'];
+            $datos['refDocumento'] = $data['refDocumento'];
 
         }
 
@@ -142,6 +142,18 @@ class DocumentosDiversosController extends TwigController{
 		        $datos['usrAlta'] = $_SESSION['idUsuario'];
 		        $plantilla =  new Plantillas($datos);
 		        $plantilla->save();
+		      
+
+
+		        $espacios = new Espacios([
+		        	'idVolante' => $id,
+		        	'atte' => $data['espacios'],
+		        	'copia' => $data['espaciosCopias'],
+		        	'sigla' => $data['espaciosSiglas'],
+		        	'usrAlta' => $_SESSION['idUsuario']
+		        ]);
+		        $espacios->save();
+
 		        $validate[0] = 'success';
 		        $validate[1] = $tipo;
 			
@@ -167,11 +179,19 @@ class DocumentosDiversosController extends TwigController{
         			'fOficio' => $data['fOficio'],
         			'texto' => $data['texto'],
         			'siglas' => $data['siglas'],
-        			'espacios' => $data['espacios'],
         			'asunto' => $data['asunto'],
         			'usrModificacion' => $_SESSION['idUsuario'],
+        			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 			     	);
 
+			        $espaciosUpdate = Espacios::where('idVolante',"$id")->update([
+				        'atte' => $data['espacios'],
+			        	'copia' => $data['espaciosCopias'],
+			        	'sigla' => $data['espaciosSiglas'],
+			        	'usrModificacion' => $_SESSION['idUsuario'],
+			        	'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+
+			        ]);
 
 
 			    	if(!empty($copias)){
@@ -204,7 +224,15 @@ class DocumentosDiversosController extends TwigController{
 
 	public function get_data_confronta($id){
 
-		$DocumentosDiversos = Plantillas::where('idVolante',"$id")->get();
+		//echo $id;
+		//$DocumentosDiversos = Plantillas::where('idVolante',"$id")->get();
+
+
+		$DocumentosDiversos = Plantillas::select('sia_plantillasJuridico.*','e.*')
+							->join('sia_EspaciosJuridico as e','e.idVolante','=','sia_plantillasJuridico.idVolante')
+							->where('sia_plantillasJuridico.idVolante',"$id")
+							->get();
+
 		if($DocumentosDiversos->isEmpty()){
 			$DocumentosDiversos = [];
 		}

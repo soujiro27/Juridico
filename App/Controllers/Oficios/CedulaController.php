@@ -24,7 +24,7 @@ class CedulaController extends TwigController{
 
 	
 
-		$cedula = DocumentosSiglas::select('sia_DocumentosSiglas.*','e.idEspacioJuridico','e.encabezado','e.cuerpo','e.pie')
+		$cedula = DocumentosSiglas::select('sia_DocumentosSiglas.*','e.*')
 			->join('sia_EspaciosJuridico as e','e.idVolante','=','sia_DocumentosSiglas.idVolante')
 			->where('sia_DocumentosSiglas.idVolante',"$id")
 			->get();
@@ -62,7 +62,12 @@ class CedulaController extends TwigController{
 	                'encabezado' => $data['encabezado'],
 	                'cuerpo' => $data['cuerpo'],
 	                'pie' => $data['pie'],
-	                'usrAlta' => $_SESSION['idUsuario']
+	                'atte' => $data['espacioAtte'],
+	                'copia' => $data['espacioCopias'],
+	                'sigla' => $data['espacioSiglas'],
+	                'usrAlta' => $_SESSION['idUsuario'],
+	                'copiaCedula' => $data['copiaCedula']
+
 	            ]);
 
 	            $espacios->save();
@@ -82,6 +87,10 @@ class CedulaController extends TwigController{
 					'encabezado' => $data['encabezado'],
 	                'cuerpo' => $data['cuerpo'],
 	                'pie' => $data['pie'],
+	                'atte' => $data['espacioAtte'],
+	                'copia' => $data['espacioCopias'],
+	                'sigla' => $data['espacioSiglas'],
+	                 'copiaCedula' => $data['copiaCedula'],
 	                'usrModificacion' => $_SESSION['idUsuario'],
 	               	'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 
@@ -134,6 +143,9 @@ class CedulaController extends TwigController{
 			'encabezado' => 'max_len,2|numeric',
 			'cuerpo' => 'max_len,2|numeric',
 			'pie' => 'max_len,2|numeric',
+			'espacioAtte' => 'max_len,2|numeric',
+			'espacioCopias' => 'max_len,2|numeric',
+			'espacioSiglas' => 'max_len,2|numeric',
 		
 
 		));

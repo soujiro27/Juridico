@@ -3466,7 +3466,11 @@ class TCPDF {
 	 * It is automatically called by AddPage() and could be overwritten in your own inherited class.
 	 * @public
 	 */
-	public function Footer() {
+
+
+
+
+public function Footer() {
 		$cur_y = $this->y;
 		$this->SetTextColorArray($this->footer_text_color);
 		//set style for cell border
@@ -3507,6 +3511,7 @@ class TCPDF {
 			$this->Cell(0, 0, $this->getAliasRightShift().$pagenumtxt, 'T', 0, 'R');
 		}
 	}
+
 
 	/**
 	 * This method is used to render the page header.

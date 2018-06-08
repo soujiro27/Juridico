@@ -73,33 +73,8 @@ $puesjud=$datos[0]['idPuestosJuridico'];
 $tipo=$datos[0]['tipoau'];
 $numof=$datos[0]["numFolio"];
 
-class MYPDF extends TCPDF {
-
-	//Page header
-	public function Header() {
-		// Logo
-		$image_file = K_PATH_IMAGES.'logo_example.jpg';
-		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-		// Set font
-		$this->SetFont('helvetica', 'B', 20);
-		// Title
-		$this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-	}
-
-      // Page footer
-    public function Footer() {
-        // Position at 15 mm from bottom
-        $this->SetY(-15);
-        // Set font
-        $this->SetFont('helvetica', 'I', 10);
-        // Page number
-        //$this->Cell(20);
-        //$this->Cell(186, 3,' | '.$this->getAliasNumPage().' | '. ' de '.' | '.$this->getAliasNbPages().' | ',1,1,'R');
-    }
-}
-
 // create new PDF document
-$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -107,7 +82,7 @@ $pdf->SetAuthor('Auditoria Superior de la Ciudad de México');
 $pdf->SetTitle('IRAC ' .$clave);
  
  $pdf->setPrintHeader(false);
-//$pdf->setPrintFooter(false);
+$pdf->setPrintFooter(false);
 
 // set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -117,12 +92,11 @@ $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(17, 10, 17);
-$pdf->SetHeaderMargin(3);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
+$pdf->SetMargins('24','24','27',true);
+$pdf->SetFooterMargin('21');
 // set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+$pdf->SetY(0, true, true);
+$pdf->SetAutoPageBreak(true, '21');
 
 // set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -136,32 +110,47 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 // -------------------------------------------------------------------
 
 // set font
-$pdf->SetFont('helvetica', '', 20);
+$pdf->SetFont('helvetica', '', 11);
 
 // add a page
-$pdf->AddPage();
+$pdf->AddPage('P','LETTER',true);
 
-$text1 = '
-<table cellspacing="0" cellpadding="0" border="0">
+
+$header = '<table  border="0" width="100%">
     <tr>
-        <td colspan="3"><img width="1100%" height="1600%" src="img/asamblea.png"/></td>
-        <td colspan="1"></td>
-        <td colspan="4"><p><font size="10"><b> AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO<br><br> DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS<br><br>OFICIO NÚM. ' .$datos[0]["numFolio"] .'<br><br> ASUNTO:</b> Se remite evaluación del Informe de <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Resultados de Auditoría para Confronta<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (IRAC) correspondiente a la Auditoría <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $clave . '.<br><br>Ciudad de México, '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'<br><br><i>"Fiscalizar con Integridad para Prevenir y Mejorar".</i></p></font></td>
+        <td width="140"><img src="img/asamblea.png" width="124" height="160" /></td>
+        <td width="139"></td>
+        <td width="308"><p style="text-align:justify;line-height:14px"><b>AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO</b></p>
+          <p style="text-align:justify;margin-top:0px"><b>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS</b></p>
+          <p><b>OFICIO NÚM. ' .$datos[0]["numFolio"] .'</b></p>
+          
+            <span style="border:1px solid red"><b>ASUNTO:</b></span>
+              <span style="text-align:justify">Se remite evaluación del Informe de Resultados de Auditoría para Confronta (IRAC) correspondiente a la Auditoría '.$clave .'
+              </span> 
+       
+          <p>Ciudad de México, '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'</p>
+          <p><i>"Fiscalizar con Integridad para Prevenir y Mejorar"</i></p>
+        </td>
     </tr>
 </table>';
 
-$pdf->SetFontSize(9);
-$pdf->writeHTML($text1);
 
-//$pdf->SetFont('helvetica', '', 8);
+
+
+$pdf->SetFont('helvetica', '', 11);
+
+$pdf->writeHTML($header);
+
+
 
 // -------------------------------------------------------------------
-
+$pdf->SetFont('helvetica', '', 11);
 $tbl = <<<EOD
-<table cellspacing="0" cellpadding="0" border="0">
+<br><br>
+<table cellspacing="0" cellpadding="0" border="0"  width="395">
     
-    <tr>
-        <td colspan="1"><b>{$nomarers} <br>{$direc}<br>PRESENTE</b></td>
+    <tr >
+        <td style="line-height:15px"><b>{$nomarers} <br>{$direc}<br>P R E S E N T E</b></td>
         
         
     </tr>
@@ -173,12 +162,14 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
 // -------------------------------------------------------------------
-
+$pdf->SetFont('helvetica', '', 11);
+$mes_lower = strtolower($mes);
+$mes_dos_lower = strtolower($mes3);
 $tbl = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     
     <tr>
-        <td align="justify">En atención al oficio número {$numdocu} de fecha {$fecha[2]} de {$mes} de {$fecha[0]}, presentado ante esta Dirección General el día {$feRecep[2]} de {$mes3} de {$feRecep[0]}, y de conformidad con lo dispuesto por el Manual del Proceso General de Fiscalización en su Apartado 7. “Fases de Auditoría”, inciso B) “Fase de Ejecución”, Subapartado 4. “Confronta de Resultados de Auditoría con el Sujeto Fiscalizado”, numeral 1, por este conducto, me permito remitir junto al original en sobre cerrado, la Hoja de Evaluación del Informe de Resultados de Auditoría para Confronta (IRAC):</td>
+        <td align="justify">En atención al oficio número {$numdocu} de fecha {$fecha[2]} de {$mes_lower} de {$fecha[0]}, presentado ante esta Dirección General el día {$feRecep[2]} de {$mes_dos_lower} de {$feRecep[0]}, y de conformidad con lo dispuesto por el Manual del Proceso General de Fiscalización en su Apartado 7. “Fases de Auditoría”, inciso B) “Fase de Ejecución”, Subapartado 4. “Confronta de Resultados de Auditoría con el Sujeto Fiscalizado”, numeral 1, por este conducto, me permito remitir junto al original en sobre cerrado, la Hoja de Evaluación del Informe de Resultados de Auditoría para Confronta (IRAC):</td>
     </tr>
 
 </table>
@@ -201,11 +192,11 @@ $datos=consultaRetorno($sql, $db);
 $tbl = <<<EOD
   <table cellspacing="0" cellpadding="1" border="1">
     <tr style="background-color:#E7E6E6;">
-      <th colspan="1" align="center" width="22"><b>No.</b></th>
-      <th colspan="1" align="center" width="65"><b>AUDITORÍA NÚM.</b></th>
-      <th colspan="1" align="center" width="80"><b>SUJETO<br>FISCALIZADO</b></th>
-      <th colspan="1" align="center" width="75"><b>TIPO DE AUDITORÍA</b></th>
-      <th colspan="7" align="center"><b>RUBRO</b></th>
+      <th colspan="1" align="center" width="25"><b>No.</b></th>
+      <th colspan="1" align="center" width="80"><b>AUDITORÍA NÚM.</b></th>
+      <th colspan="1" align="center" width="100"><b>SUJETO<br>FISCALIZADO</b></th>
+      <th colspan="1" align="center" width="90"><b>TIPO DE AUDITORÍA</b></th>
+      <th colspan="4" align="center"><b>RUBRO</b></th>
     </tr>
     
 EOD;
@@ -225,51 +216,78 @@ EOD;
 $tbl .= <<<EOD
   </table>
 EOD;
-
+$pdf->SetFont('helvetica', '', 8);
 
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
 
-$tbl = <<<EOD
+
+$sqlEspacios="SELECT * from sia_EspaciosJuridico WHERE idVolante='$idVolante'";
+
+$db=conecta();
+$espacios=consultaRetorno($sqlEspacios, $db);
+
+$atentamente ='';
+for ($i=0; $i <$espacios[0]['atte'] ; $i++) { 
+ $atentamente .= <<<EOD
+  <br>
+
+EOD;
+}
+
+$atentamente .= <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     
     <tr>
         <td>Sin otro particular por el momento, hago propicia la ocasión para enviarle un cordial saludo.<br><br></td>
     </tr>
     <tr>
-        <td><b>ATENTAMENTE<br>El DIRECTOR GENERAL<br><br><br><br><br></b></td>
+        <td><b>ATENTAMENTE<br>El DIRECTOR GENERAL<br><br><br><br></b></td>
     </tr>
     <tr>
         <td><b>DR. IVÁN DE JESÚS OLMOS CANSINO<br></b></td>
     </tr>
 </table>
 EOD;
-
-$pdf->writeHTML($tbl, true, false, false, false, '');
+$pdf->SetFont('helvetica', '', 11);
+$pdf->writeHTML($atentamente, true, false, false, false, '');
 // -----------------------------------------------------------------------------
 
 $pdf->SetFont('helvetica', '', 8);
-$tbl = <<<EOD
+
+$textoCopias = '';
+for ($i=0; $i <$espacios[0]['copia']; $i++) { 
+ $textoCopias .= <<<EOD
+  <br>
+EOD;
+}
+
+$textoCopias .= <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     <tr>
-        <td colspan="1">c.c.p.</td>  
-        <td colspan="5"><b>DR. DAVID MANUEL VEGA VERA,</b> Auditor Superior.- Presente.- Para su conocimiento.<br>{$tipo}<b>DR. ARTURO VÁZQUEZ ESPINOSA,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Especializada y de Asuntos Jurídicos.- Presente.- Para su conocimiento.</td>
+        <td width="30">c.c.p.</td>  
+        <td width="555"><b>DR. DAVID MANUEL VEGA VERA,</b> Auditor Superior.- Presente.- Para su conocimiento.<br>{$tipo}<b>DR. ARTURO VÁZQUEZ ESPINOSA,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Especializada y de Asuntos Jurídicos.- Presente.- Para su conocimiento.</td>
     </tr>
 </table>
 EOD;
 
-$pdf->writeHTML($tbl, true, false, false, false, '');
+$pdf->writeHTML($textoCopias, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
-
-$tbl = <<<EOD
+$textoSiglas = '';
+for ($i=0; $i <$espacios[0]['sigla']; $i++) { 
+ $textoSiglas .= <<<EOD
+  <br>
+EOD;
+}
+$textoSiglas .= <<<EOD
   <table cellspacing="0" cellpadding="0" border="0">
-    <tr><td colspan="6" align="left">{$sig}<br><br></td></tr>
+    <tr><td colspan="6" align="left">{$sig}</td></tr>
   </table>
 EOD;
 
-$pdf->writeHTML($tbl, true, false, false, false, '');
+$pdf->writeHTML($textoSiglas, true, false, false, false, '');
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 //Close and output PDF document

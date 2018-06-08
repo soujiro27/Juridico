@@ -26,7 +26,8 @@ export default class CedulaIrac extends Component {
             texto:'',
             espacio_obvs:'',
             espacio_texto:'',
-            espacio_firmas:''
+            espacio_firmas:'',
+            espacio_siglas:''
 
         },
         puestos:'',
@@ -57,7 +58,8 @@ export default class CedulaIrac extends Component {
                             espacio_obvs:datos.data[0].encabezado,
                             espacio_texto:datos.data[0].cuerpo,
                             espacio_firmas:datos.data[0].pie,
-                            texto:datos.data[0].idDocumentoTexto
+                            texto:datos.data[0].idDocumentoTexto,
+                            espacio_siglas:datos.data[0].sigla
                         },
                         load:true
 
@@ -81,7 +83,7 @@ export default class CedulaIrac extends Component {
     }
 
     HandleFirmas(value){
-        console.log(value)
+        
         this.setState({
             visible:{
                 firmas:false
@@ -233,6 +235,15 @@ export default class CedulaIrac extends Component {
                             name='pie'
                             classInput='form-control form-control-sm '
                             value={this.state.form.espacio_firmas}
+                        />
+                        <Numeric 
+                        class='col-lg-2'
+                            label='Espacios Copias'
+                            max='99'
+                            min='0'
+                            name='espaciosSiglas'
+                            classInput='form-control form-control-sm '
+                            value={this.state.form.espacio_siglas}
                         />
                         <Hidden name="idPuestosJuridico" value={this.state.form.firmas} />
                         <Hidden name="idDocumentoTexto" value={this.state.form.texto} />

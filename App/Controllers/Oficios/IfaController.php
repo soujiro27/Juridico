@@ -93,6 +93,7 @@ class IfaController extends TwigController{
 	                'encabezado' => $data['encabezado'],
 	                'cuerpo' => $data['cuerpo'],
 	                'pie' => $data['pie'],
+	                'sigla' => $data['espaciosSiglas'],
 	                'usrAlta' => $_SESSION['idUsuario']
 	            ]);
 
@@ -113,6 +114,7 @@ class IfaController extends TwigController{
 					'encabezado' => $data['encabezado'],
 	                'cuerpo' => $data['cuerpo'],
 	                'pie' => $data['pie'],
+	                'sigla' => $data['espaciosSiglas'],
 	                'usrModificacion' => $_SESSION['idUsuario'],
 	               	'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 

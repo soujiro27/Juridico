@@ -12,7 +12,7 @@ use Juridico\App\Controllers\BaseController;
 use Juridico\App\Controllers\NotificacionesController;
 
 use Juridico\App\Models\Volantes\Volantes;
-use Juridico\App\Models\Volantes\VolantesDocumentos;
+use Juridico\App\Models\Volantes\VolantesDocumentos; 
 use Juridico\App\Models\Volantes\TurnadosJuridico;
 use Juridico\App\Models\Api\Puestos;
 use Juridico\App\Models\Api\Usuarios;
@@ -78,6 +78,7 @@ class ConfrontaController extends TwigController{
 				'fConfronta' => $data['fConfronta'],
 				'fOficio' => $data['fdocumento'],
 				'numFolio' => $data['documento'],
+				'refDocumento' => $data['refDocumento']
 			];
 
 		if(empty($validate)){
@@ -100,6 +101,16 @@ class ConfrontaController extends TwigController{
 				}
 
 				$confronta->save();
+
+
+				$espacios = new Espacios([
+					'idVolante' => $idVolante,
+					'sigla' => $data['espaciosSiglas'],
+					'usrAlta' => $_SESSION['idUsuario']
+				]);
+
+				$espacios->save();
+
 				$validate[0] = 'success';
 
 			} else {
@@ -117,6 +128,14 @@ class ConfrontaController extends TwigController{
 
 				}
 				Confrontas::find($idConfronta)->update($datos);
+
+
+				Espacios::where('idVolante',"$idVolante")->update([
+					'sigla' => $data['espaciosSiglas'],
+					'usrModificacion' => $_SESSION['idUsuario']
+
+				]);
+
 				$validate[0] = 'success';
 
 			}
@@ -130,8 +149,9 @@ class ConfrontaController extends TwigController{
 
 	public function get_data_confronta($id){
 
-		$volantes = VolantesDocumentos::select('sia_VolantesDocumentos.notaConfronta','c.*')
+		$volantes = VolantesDocumentos::select('sia_VolantesDocumentos.notaConfronta','c.*','e.sigla')
 					->leftJoin('sia_ConfrontasJuridico as c','c.idVolante','=','sia_VolantesDocumentos.idVolante')
+					->leftJoin('sia_EspaciosJuridico as e','e.idVolante','=','sia_VolantesDocumentos.idVolante')
 					->where('sia_VolantesDocumentos.idVolante',"$id")
 					->get();
 		echo json_encode($volantes);

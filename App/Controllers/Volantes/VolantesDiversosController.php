@@ -250,7 +250,7 @@ class VolantesDiversosController extends TwigController{
 			'idCaracter' => 'required|max_len,2|numeric',
 			'idTurnado' => 'required|max_len,30',
 			'idAccion' => 'required|max_len,2|numeric',
-			'idRemitente' => 'required|max_len,10|alpha'
+			'idRemitente' => 'required|max_len,10'
 
 		));
 

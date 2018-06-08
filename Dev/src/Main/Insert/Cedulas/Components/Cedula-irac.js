@@ -24,7 +24,11 @@ export default class CedulaIrac extends Component {
             folio:'',
             espacio_obvs:'',
             espacio_texto:'',
-            espacio_firmas:''
+            espacio_firmas:'',
+            espacio_atte:'',
+            espacio_copias:'',
+            espacio_siglas:'',
+            copiaCedula:''
 
         },
         puestos:'',
@@ -44,7 +48,7 @@ export default class CedulaIrac extends Component {
 
         axios.all([axios.get(url),]).then(axios.spread((datos) => {
             if(datos.data.length > 0){
-                
+               
                     this.setState({
                         form:{
                             siglas:datos.data[0].siglas,
@@ -53,7 +57,11 @@ export default class CedulaIrac extends Component {
                             folio:datos.data[0].numFolio,
                             espacio_obvs:datos.data[0].encabezado,
                             espacio_texto:datos.data[0].cuerpo,
-                            espacio_firmas:datos.data[0].pie
+                            espacio_firmas:datos.data[0].pie,
+                            espacio_atte:datos.data[0].atte,
+                            espacio_copias:datos.data[0].copia,
+                            espacio_siglas:datos.data[0].sigla,
+                            copiaCedula:datos.data[0].copiaCedula
                         },
                         load:true
 
@@ -185,7 +193,6 @@ export default class CedulaIrac extends Component {
                     </div>
 
                     <div className='row bottom'>
-
                         <Numeric 
                             class='col-lg-3'
                             label='Espacios Observaciones'
@@ -213,8 +220,53 @@ export default class CedulaIrac extends Component {
                             classInput='form-control form-control-sm '
                             value={this.state.form.espacio_firmas}
                         />
+
+                        <Numeric 
+                        class='col-lg-3'
+                            label='Espacios Copias Cedula'
+                            max='99'
+                            min='0'
+                            name='copiaCedula'
+                            classInput='form-control form-control-sm '
+                            value={this.state.form.copiaCedula}
+                        />
+                       
                         <Hidden name="idPuestosJuridico" value={this.state.form.firmas} />
                     </div>
+                    <div className='row bottom'>
+
+                    <Numeric 
+                        class='col-lg-3'
+                        label='Espacios Atentamente'
+                        max='99'
+                        min='0'
+                        name='espacioAtte'
+                        classInput='form-control form-control-sm '
+                        value={this.state.form.espacio_atte}
+                    />
+                    <Numeric 
+                    class='col-lg-2'
+                        label='Espacios Copias'
+                        max='99'
+                        min='0'
+                        name='espacioCopias'
+                        classInput='form-control form-control-sm '
+                        value={this.state.form.espacio_copias}
+                    />
+                    <Numeric 
+                    class='col-lg-2'
+                        label='Espacios Siglas'
+                        max='99'
+                        min='0'
+                        name='espacioSiglas'
+                        classInput='form-control form-control-sm '
+                        value={this.state.form.espacio_siglas}
+                    />
+                   
+                </div>
+
+
+
                         <Buttons cancel={this.props.cancel.bind(this)} print={this.HandlePrint.bind(this)} />
                     </form>
                     {

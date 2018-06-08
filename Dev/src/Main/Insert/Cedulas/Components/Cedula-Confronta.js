@@ -30,7 +30,9 @@ export default class CedulaIrac extends Component {
             hConfronta:'',
             nombre:'',
             folio:'',
-            siglas:''
+            siglas:'',
+            refDocumento:'',
+            espacios:''
         },
         message:''
     }
@@ -50,7 +52,9 @@ export default class CedulaIrac extends Component {
                     hConfronta:data.hConfronta ,
                     nombre:data.nombreResponsable,
                     folio:data.numFolio,
-                    siglas:data.siglas
+                    siglas:data.siglas,
+                    refDocumento:data.refDocumento,
+                    espacios:data.sigla
                 } 
 
                 if(json.data[0].notaConfronta == 'SI'){
@@ -209,6 +213,23 @@ export default class CedulaIrac extends Component {
                                 name='documento'
                                 value={this.state.form.folio}
                             />
+                            <Text 
+                            class='col-lg-3 form-group'
+                            classInput='form-control form-control-sm'                            
+                            label='Referencia Documento'
+                            name='refDocumento'
+                            value={this.state.form.refDocumento}
+                        />
+                    </div>
+                    <div className='row'>
+                        <Numeric 
+                            class='col-lg-3 form-group'
+                            classInput='form-control form-control-sm'                            
+                            label='Espacios Siglas'
+                            name='espaciosSiglas'
+                            min='0'
+                            value={this.state.form.espacios}
+                        />
                     </div>
                     <Buttons cancel={this.props.cancel.bind(this)} print={this.HandlePrint.bind(this)} />
                     </form>

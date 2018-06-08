@@ -11,6 +11,10 @@ class Espacios extends Model {
 		'encabezado',
 		'cuerpo',
 		'pie',
+		'atte',
+		'copia',
+		'copiaCedula',
+		'sigla',
 		'usrAlta',
 		'usrModificacion',
 		'fModificacion'

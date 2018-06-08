@@ -34,8 +34,23 @@ if(empty($datos)){
   header('Location: /SIA/juridico/Public/cedula.html');
 }
 
-$sql = "SELECT vo.numDocumento,CASE WHEN a.tipoAuditoria LIKE '%FIN%' THEN '<b>C.P. FELIPE DE JESÚS ALVA MARTÍNEZ,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Financiera y Administración.- Presente.- Para su conocimiento.<br>' WHEN us.idArea='DGACFA' or us.idArea='DGACFB' or us.idArea='DGACFC' THEN '<b>C.P. FELIPE DE JESÚS ALVA MARTÍNEZ,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Financiera y Administración.- Presente.- Para su conocimiento.<br>' ELSE ' ' END tipoau,a.idAuditoria audi ,a.clave claveAuditoria,vo.fDocumento,vo.fRecepcion ,CONCAT(us.saludo,' ',us.nombre,' ',us.paterno,' ', us.materno) nombreres, ar.nombre direccion,ds.fOficio,ds.siglas,ds.idPuestosJuridico,ds.numFolio FROM sia_Volantes vo INNER JOIN sia_volantesDocumentos vd on vo.idVolante = vd.idVolante INNER JOIN sia_areas ar on vo.idRemitente=ar.idArea INNER JOIN sia_usuarios us on ar.idEmpleadoTitular=us.idEmpleado LEFT JOIN sia_DocumentosSiglas ds on vo.idVolante=ds.idVolante INNER JOIN sia_auditorias a on vd.cveAuditoria=a.idAuditoria WHERE vo.idVolante='$idVolante';";      
-      
+$sql = "SELECT vo.numDocumento,
+CASE WHEN a.tipoAuditoria LIKE '%FIN%' 
+  THEN '<b>C.P. FELIPE DE JESÚS ALVA MARTÍNEZ,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Financiera y Administración.- Presente.- Para su conocimiento.<br>' 
+  WHEN us.idArea='DGACFA' or us.idArea='DGACFB' or us.idArea='DGACFC' 
+  THEN '<b>C.P. FELIPE DE JESÚS ALVA MARTÍNEZ,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Financiera y Administración.- Presente.- Para su conocimiento.<br>' 
+  ELSE ' ' 
+END tipoau,a.idAuditoria audi ,a.clave claveAuditoria,vo.fDocumento,vo.fRecepcion ,
+CONCAT(us.saludo,' ',us.nombre,' ',us.paterno,' ', us.materno) nombreres, 
+ar.nombre direccion,ds.fOficio,ds.siglas,ds.idPuestosJuridico,ds.numFolio, txt.texto
+FROM sia_Volantes vo 
+INNER JOIN sia_volantesDocumentos vd on vo.idVolante = vd.idVolante 
+INNER JOIN sia_areas ar on vo.idRemitente=ar.idArea 
+INNER JOIN sia_usuarios us on ar.idEmpleadoTitular=us.idEmpleado 
+LEFT JOIN sia_DocumentosSiglas ds on vo.idVolante=ds.idVolante
+INNER JOIN sia_CatDoctosTextos txt on txt.idDocumentoTexto = ds.idDocumentoTexto
+INNER JOIN sia_auditorias a on vd.cveAuditoria=a.idAuditoria WHERE vo.idVolante='$idVolante';";      
+    
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
 
@@ -61,6 +76,7 @@ $puesjud=$datos[0]['idPuestosJuridico'];
 $tipo=$datos[0]['tipoau'];
 $numof=$datos[0]["numFolio"];
 
+$texto_promocion = $datos[0]['texto'];
 
 $cuenta=$_SESSION["idCuentaActual"];
 
@@ -105,17 +121,18 @@ class MYPDF extends TCPDF {
       $ao = $GLOBALS['an'];
       $unidadAdmin = $GLOBALS['unidadAdmin'];
       
-      $this->SetFont('helvetica', '', 8);
+      $this->SetFont('helvetica', '', 11);
       
    
 
-      $html0 = '<table cellspacing="0" cellpadding="0" border="0"><tr><td align="center"><p><font size="24"><b></b></font></p></td></tr></table>';
+      $html0 = '<table cellspacing="0" cellpadding="0" border="0"><tr><td align="center"><p><b></b></p></td></tr></table>';
       $this->WriteHTML($html0);    
       
-      $html = '<table cellspacing="0" cellpadding="0" border="0"  ><tr><td align="center"><p><font size="9"><b>AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO<br>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS<br>HOJA DE EVALUACIÓN DEL INFORME DE RESULTADOS DE AUDITORÍA PARA CONFRONTA<br>CUENTA PÚBLICA ' . $ao . '</b></font></p></td></tr></table>';
+      $html = '<table cellspacing="0" cellpadding="0" border="0"  ><tr><td align="center"><p><b>AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO<br>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS<br>HOJA DE EVALUACIÓN DEL INFORMES FINALES DE AUDITORÍA<br>CUENTA PÚBLICA ' . $ao . '</b></p></td></tr></table>';
       $this->WriteHTML($html);
 
-      $html2 = '<table cellspacing="0" cellpadding="1" border="1" style="background-color:#E7E6E6;"><tr><td colspan="1"><b>UNIDAD ADMINISTRATIVA AUDITORA:</b></td><td colspan="2">'.$unidadAdmin.'</td></tr><tr><td  colspan="1"><b>CLAVE:</b></td><td colspan="2">'.$GLOBALS['clave'].'</td></tr><tr><td colspan="1"><b>RUBRO O FUNCIÓN DE GASTO AUDITADO:</b></td><td colspan="2">'.$GLOBALS['rubro'].'</td></tr><tr><td colspan="1"><b>TIPO DE AUDITORÍA:</b></td><td colspan="2">'.$GLOBALS['ti'].'</td></tr><tr><td colspan="1"><b>SUJETO FISCALIZADO:</b></td><td colspan="2">'.$GLOBALS['sSujeto'].'</td></tr></table>';
+    $this->SetFont('helvetica', '', 10);
+      $html2 = '<table cellspacing="0" cellpadding="1" border="1" style="background-color:#E7E6E6;" width="581"><tr><td colspan="1"><b>UNIDAD ADMINISTRATIVA AUDITORA:</b></td><td colspan="2">'.$unidadAdmin.'</td></tr><tr><td  colspan="1"><b>CLAVE:</b></td><td colspan="2">'.$GLOBALS['clave'].'</td></tr><tr><td colspan="1"><b>RUBRO O FUNCIÓN DE GASTO AUDITADO:</b></td><td colspan="2">'.$GLOBALS['rubro'].'</td></tr><tr><td colspan="1"><b>TIPO DE AUDITORÍA:</b></td><td colspan="2">'.$GLOBALS['ti'].'</td></tr><tr><td colspan="1"><b>SUJETO FISCALIZADO:</b></td><td colspan="2">'.$GLOBALS['sSujeto'].'</td></tr></table>';
       $this->WriteHTML($html2);
     }
 }
@@ -126,10 +143,10 @@ $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Auditoria Superior de la Ciudad de México');
-$pdf->SetTitle('IRAC ' .$clave);
+$pdf->SetTitle('IFA ' .$clave);
  
 //$pdf->setPrintHeader(true);
-//$pdf->setPrintFooter(false);
+$pdf->setPrintFooter(false);
 
 // set header and footer fonts
 //$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -139,12 +156,13 @@ $pdf->SetTitle('IRAC ' .$clave);
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(25, 60 , 20);
-//$pdf->SetHeaderMargin(10);
-//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
+$pdf->SetMargins('26','80','27',true);
+$pdf->SetFooterMargin('21');
+$pdf->SetHeaderMargin('14');
 // set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+$pdf->SetY(0, true, true);
+$pdf->SetAutoPageBreak(true, '21');
+
 
 // set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -156,58 +174,11 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 }
 
 // -------------------------------------------------------------------
-/*
-// set font
-$pdf->SetFont('helvetica', '', 20);
-
-// add a page
-
-$text1 = '
-
-<table cellspacing="0" cellpadding="0" border="0">
-    <tr>
-        <td align="center"><p><font size="9"><b> AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO<br>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS<br>HOJA DE EVALUACIÓN DEL INFORME DE RESULTADOS DE AUDITORÍA PARA CONFRONTA<br>CUENTA PÚBLICA '.$an.'</b></p></font></td>
-    </tr>
-</table>';
-
-$pdf->SetFontSize(9);
 
 
-//$pdf->writeHTML($text1);
-
-$pdf->SetHeaderData('','',$text1,'','');*/
-
-$pdf->AddPage();
+$pdf->AddPage('P','LETTER',true);
 $pdf->SetFont('helvetica', '', 8);
 
-
-// -------------------------------------------------------------------
-/*
-$tbl = <<<EOD
-  <table cellspacing="0" cellpadding="1" border="1" style="background-color:#E7E6E6;">
-    <tr>
-      <td colspan="1"><b>UNIDAD ADMINISTRATIVA AUDITORA:</b></td>
-      <td colspan="2">{$unidadAdmin}</td>
-    </tr>    
-    <tr>
-      <td  colspan="1"><b>CLAVE:</b></td>
-      <td colspan="2">{$clave}</td>
-    </tr>
-    <tr>
-      <td colspan="1"><b>RUBRO O FUNCIÓN DE GASTO AUDITADO:</b></td>
-      <td colspan="2">{$rubro}</td>
-    </tr>
-    <tr>
-      <td colspan="1"><b>TIPO DE AUDITORÍA:</b></td>
-      <td colspan="2">{$ti}</td>
-    </tr>
-    <tr>
-      <td colspan="1"><b>SUJETO FISCALIZADO:</b></td>
-      <td colspan="2">{$sSujeto}</td>
-    </tr>
-  </table>
-EOD;
-*/
 
 $tbl ='';
 
@@ -216,7 +187,7 @@ $sqlEspacios = "select * from sia_EspaciosJuridico where idVolante = '$idVolante
 $espacios = consultaRetorno($sqlEspacios,$db);
 
 
-for ($i=0; $i < $espacios[0]['encabezado'] ; $i++) { 
+for ($i=0; $i < $espacios[0]['encabezado'] +2 ; $i++) { 
   
   $tbl .= <<<EOD
   <br>
@@ -241,9 +212,9 @@ $tbl = <<<EOD
   <table cellspacing="0" cellpadding="1" border="1">
     <tr style="background-color:#E7E6E6;">
       <th colspan="1" align="center" width="35"><b>No.</b></th>
-      <th colspan="1" align="center" width="40"><b>Página</b></th>
+      <th colspan="1" align="center" width="45"><b>Página</b></th>
       <th colspan="1" align="center" width="50.6"><b>Párrafo</b></th>
-      <th colspan="11" align="center"><b>Observaciones</b></th>
+      <th  width="450"align="justify"><b>Observaciones</b></th>
     </tr>
    
 EOD;
@@ -254,7 +225,7 @@ $tbl .= <<<EOD
     <td colspan="1" align="center">{$row['fila']}</td>
     <td colspan="1" align="center">{$row['pagina']}</td>
     <td colspan="1" align="center">{$row['parrafo']}</td>
-    <td colspan="11" align="justify">{$row['observacion']}</td>
+    <td colspan="11" align="justify" style="line-height:13px">{$row['observacion']}</td>
 
   </tr>
 
@@ -272,20 +243,28 @@ for ($i=0; $i <$espacios[0]['cuerpo'] ; $i++) {
 EOD;
 }
 
-$tbl .= <<<EOD
- <table cellspacing="0" cellpadding="1" border="1"> 
-  <tr>
-    <td colspan="16" align="justify">Se debe considerar que la Dirección General de Asuntos Jurídicos no cuenta con soporte documental que permita determinar si se reúnen o no los elementos suficientes e idóneos para acreditar las observaciones detectadas en la auditoría.<br><br>Una vez evaluada la respuesta presentada en confronta y en caso de que esa UAA determine la existencia de Potenciales Promociones de Acción, se sugiere lo siguiente: 1).- Señalar los resultados en la cédula de potenciales promociones de acciones correspondiente. 2).- Indicar la normatividad infringida vigente en el período de revisión.</td>  
-  </tr>
- </table>
+
+$pdf->SetFont('helvetica', '', 10);
+$pdf->writeHTML($tbl, true, false, false, false, '');
+
+
+// -----------------------------------------------------
+
+$texto_seleccionado = <<<EOD
+    <table cellspacing="0" cellpadding="1" border="1">
+    <tr><td>$texto_promocion</td></tr>
+    </table>
 EOD;
 
+$pdf->SetFont('helvetica', '', 10);
+$pdf->writeHTML($texto_seleccionado, true, false, false, false, '');
 
-$pdf->writeHTML($tbl, true, false, false, false, '');
+
+
 
 // -----------------------------------------------------------------------------
 
-$sql="SELECT ar.idArea,pj.puesto juridico,CONCAT(pj.saludo,' ',pj.nombre,' ',pj.paterno,' ',pj.materno) nombre, ds.siglas,ds.fOficio 
+$sql="SELECT ar.idArea,pj.puesto juridico,CONCAT(pj.saludo,' ',pj.nombre,' ',pj.paterno,' ',pj.materno) nombre, ds.siglas,ds.fOficio
 FROM sia_Volantes vo 
 INNER JOIN sia_TurnadosJuridico tj on tj.idVolante = vo.idVolante
 INNER JOIN sia_areas ar on tj.idAreaRecepcion= ar.idArea 
@@ -321,7 +300,7 @@ for ($i=0; $i <$espacios[0]['pie'] ; $i++) {
 EOD;
 }
 
-
+$pdf->SetFont('helvetica', '', 11);
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
@@ -345,7 +324,7 @@ $tbl = <<<EOD
 
 </table>
 EOD;
-
+$pdf->SetFont('helvetica', '', 11);
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
@@ -417,13 +396,19 @@ $pdf->writeHTML($html, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
 
+$to = '';
+for ($i=0; $i <$espacios[0]['sigla'] ; $i++) { 
+  $to .= '<br>';
+}
+
 $tbl = <<<EOD
+  $to
   <table cellspacing="0" cellpadding="0" border="0">
     <tr><td colspan="6" align="left">{$sig}</td>
-    <td><b>{$numof}</b></td></tr>  
+    <td>{$numof}</td></tr>  
   </table>
 EOD;
-
+$pdf->SetFont('helvetica', '', 8);
 $pdf->writeHTML($tbl, true, false, false, false, '');
 // -----------------------------------------------------------------------------
 //Close and output PDF document

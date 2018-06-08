@@ -68,38 +68,17 @@ function mes($num){
 $feoficio=explode('-',$datos[0]['fOficio']);
 $mes2=mes(intval($feoficio[1]));
 
-class MYPDF extends TCPDF {
-        // Page footer
-    public function Footer() {
-        // Position at 15 mm from bottom
-        $this->SetY(-15);
-        // Set font
-        $this->SetFont('helvetica' , 'I', 10);
-        // Page number
-        $this->Cell(0, 0,$this->getAliasNumPage(),0,0,'C');
-    }
-    public function Header() {
-        // Logo
-        $image_file = K_PATH_IMAGES.'logo_example.jpg';
-        $this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        // Set font
-        $this->SetFont('helvetica', 'B', 20);
-        // Title
-        $this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-    }
-
-}
 
 // create new PDF document
-$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Auditoria Superior de la Ciudad de México');
-$pdf->SetTitle('Oficio -'.$asunto);
+$pdf->SetTitle('OFICIO GENERICO');
  
  $pdf->setPrintHeader(false);
-//$pdf->setPrintFooter(false);
+$pdf->setPrintFooter(false);
 
 // set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -109,14 +88,11 @@ $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->SetMargins(17, 10, 17);
-$pdf->SetHeaderMargin(3);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
+$pdf->SetMargins('24','24','25',true);
+$pdf->SetFooterMargin('21');
 // set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
+$pdf->SetY(0, true, true);
+$pdf->SetAutoPageBreak(true, '21');
 // set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
@@ -130,54 +106,57 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 
 
 // add a page
-$pdf->SetFont('helvetica', '', 9);
-$pdf->AddPage();
 
-$text1 = '
-<table cellspacing="0" cellpadding="0" border="0">
+// set font
+
+// add a page
+$pdf->AddPage('P','LETTER',true);
+$pdf->SetFont('helvetica', '', 11);
+
+
+
+
+$header = '<table  border="0" width="100%">
     <tr>
-        <td colspan="3"><img width="1100%" height="1600%" src="img/asamblea.png"/></td>
-        <td colspan="1"></td>
-        <td colspan="4"><p><font size="10"><b>AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO<br><br>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS<br><br>OFICIO NÚM.</b><b> '.$datos[0]['numFolio'].' <br><br>ASUNTO: </b> '.$datos[0]['asunto'].' <br><br>Ciudad de México, a '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'.'.'<br><br><i>"Fiscalizar con Integridad para Prevenir y Mejorar".</i></p></font></td>
+        <td width="140"><img src="img/asamblea.png" width="124" height="160" /></td>
+        <td width="139"></td>
+        <td width="308"><p style="text-align:justify;line-height:14px"><b>AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO</b></p>
+          <p style="text-align:justify;margin-top:0px"><b>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS</b></p>
+          <p><b>OFICIO NÚM. ' .$datos[0]["numFolio"] .'</b></p>
+          
+            <span style="border:1px solid red"><b>ASUNTO:</b></span>
+              <span style="text-align:justify">'.$datos[0]['asunto'].'</span> 
+       
+          <p>Ciudad de México, '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'</p>
+          <p><i>"Fiscalizar con Integridad para Prevenir y Mejorar"</i></p>
+        </td>
     </tr>
 </table>';
+$pdf->writeHTML($header);
 
-$pdf->writeHTML($text1);
+//$pdf->SetFont('helvetica', '', 8);
+
 
 
 // -------------------------------------------------------------------
-$pdf->SetFont('helvetica', '', 9);
+$pdf->SetFont('helvetica', '', 11);
 
-$tbl = <<<EOD
+$textoPuesto = <<<EOD
+<br><br>
 <table cellspacing="0" cellpadding="0" border="0" width="395" >
     
     <tr>
-        <td colspan="1"><b>{$name} <br>{$puesto}<br>PRESENTE</b></td>
+        <td colspan="1" style="line-height:15px"><b>{$name} <br>{$puesto}<br>P R E S E N T E</b></td>
         
         
     </tr>
 </table>
 EOD;
 
-$pdf->writeHTML($tbl, true, false, false, false, '');
-/*$tbl = <<<EOD
-<table cellspacing="0" cellpadding="0" border="0">
-    
-    <tr>
-        <td colspan="4"><b>$name</b><br><b>$puesto</b><br><b>PRESENTE</b></td>
-        <td colspan="2"></td>
-        <td colspan="1"></td>
-    </tr>
-
-</table>
-EOD;
-
-$pdf->writeHTML($tbl, true, false, false, false, '');
-
-*/
+$pdf->writeHTML($textoPuesto, true, false, false, false, '');
 
 // -------------------------------------------------------------------
-$tbl = <<<EOD
+$textoCuerpo = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     
     <tr>
@@ -186,38 +165,39 @@ $tbl = <<<EOD
 
 </table>
 EOD;
-
-$pdf->writeHTML($tbl, true, false, false, false, '');
+$pdf->SetFont('helvetica', '', 11);
+$pdf->writeHTML($textoCuerpo, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
 $pdf->SetFont('helvetica', '', 9);
 
 
-$sql = "select * from sia_plantillasJuridico where idVolante ='$idVolante'";
+$sql = "select * from sia_EspaciosJuridico where idVolante ='$idVolante'";
     $db=conecta();
     $datos=consultaRetorno($sql, $db);
-    $espaciosFirma = $datos[0]['espacios'];
+    $espaciosFirma = $datos[0]['atte'];
+$tbl='';
+for ($i=0; $i <$espaciosFirma ; $i++) { 
+    # code...
+$tbl .= <<<EOD
+<br>
+EOD;
+}
 
-$tbl = <<<EOD
+
+$tbl .= <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
-    
     <tr>
         <td>Sin otro particular por el momento, hago propicia la ocasión para enviarle un cordial saludo.<br><br></td>
     </tr>
 </table>
 EOD;
 
-for ($i=0; $i <$espaciosFirma ; $i++) { 
-    # code...
-$tbl   .= <<<EOD
-<br>
-EOD;
-}
 
+$pdf->SetFont('helvetica', '', 11);
 $tbl .= <<<EOD
-    <table>
-    <tr>
-        <td><b>ATENTAMENTE<br>El DIRECTOR GENERAL<br><br><br><br><br></b></td>
+<table>
+    <tr><td><b>ATENTAMENTE<br>El DIRECTOR GENERAL<br><br><br><br><br></b></td>
     </tr>
     <tr>
         <td><b>DR. IVÁN DE JESÚS OLMOS CANSINO<br></b></td>
@@ -231,10 +211,10 @@ EOD;
 $pdf->writeHTML($tbl, true, false, false, false, '');
 // -----------------------------------------------------------------------------
 //saltos de linea
-    $sql = "select * from sia_plantillasJuridico where idVolante ='$idVolante'";
+    $sql = "select * from sia_EspaciosJuridico where idVolante ='$idVolante'";
     $db=conecta();
     $datos=consultaRetorno($sql, $db);
-    $arreglo = $datos[0]['espacios'];
+    $arreglo = $datos[0]['copia'];
     $total = $arreglo;
 
    // $total = '0';
@@ -282,8 +262,8 @@ foreach ($arreglo  as $valor){
 $tbl = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     <tr>
-      <td>c.c.p.</td> 
-      <td colspan="6">$tr </td>
+      <td width="30">c.c.p.</td> 
+      <td width="555">$tr </td>
     </tr>
 </table>
 EOD;
@@ -293,7 +273,22 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 // -----------------------------------------------------------------------------
 
 $pdf->SetFont('helvetica', '', 8);
+
+  $sql = "select * from sia_EspaciosJuridico where idVolante ='$idVolante'";
+    $db=conecta();
+    $datos=consultaRetorno($sql, $db);
+    $arreglo = $datos[0]['sigla'];
+    $total = $arreglo;
+
+   // $total = '0';
+    $to = '';
+
+for($i=0;$i<$total;$i++){
+    $to .= '<br>';
+}
+
 $tbl = <<<EOD
+  $to
   <table cellspacing="0" cellpadding="0" border="0">
     <tr><td colspan="6" align="left">$siglas<br><br></td></tr>
   </table>

@@ -13,6 +13,7 @@
         "illuminate/database": "5.4",
         "nesbot/carbon": "1.22",
         "respect/validation": "1.1",
-        "wixel/gump": "dev-master"
+        "wixel/gump": "dev-master",
+        "dompdf/dompdf": "^0.8.2"
     }
 }

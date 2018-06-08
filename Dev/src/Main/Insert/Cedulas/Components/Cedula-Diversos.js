@@ -34,7 +34,9 @@ export default class CedulaIrac extends Component {
             externos:'',
             asunto:'',
             texto:'',
-            puestos:''
+            puestos:'',
+            espaciosCopias:'',
+            espaciosSiglas:''
         },
         message:'',
         tipo:''
@@ -50,7 +52,9 @@ export default class CedulaIrac extends Component {
                     fOficio:json.data[0].fOficio,
                     espacios:json.data[0].espacios,
                     asunto:json.data[0].asunto,
-                    texto:json.data[0].texto
+                    texto:json.data[0].texto,
+                    espaciosCopias:json.data[0].copia,
+                    espaciosSiglas:json.data[0].sigla
                 },
                 visible:{render:true},
                 tipo:json.data[0].tipo
@@ -218,6 +222,17 @@ export default class CedulaIrac extends Component {
                             value={this.state.form.siglas}
                         />
                         
+                        {
+                            this.state.tipo == 'NOTA' &&
+                            <Text 
+                                classInput='form-control form-control-sm'
+                                class='col-lg-3 form-group'
+                                label='Referencia Documento'
+                                name='refDocumento'
+                                value={this.state.form.siglas}
+                            />
+
+                        }
 
                         <Fecha
                             class='col-lg-3 form-group'
@@ -232,7 +247,8 @@ export default class CedulaIrac extends Component {
                     </div>
 
                     <div className='row bottom'>
-                    
+                    {
+                        this.state.tipo != 'NOTA' &&
                         <Text 
                             class='col-lg-4 form-group'
                             classInput='form-control form-control-sm'                            
@@ -240,15 +256,9 @@ export default class CedulaIrac extends Component {
                             name='asunto'
                             value={this.state.form.asunto}
                         />
+                    }
 
-                        <Numeric
-                            class='col-lg-2 form-group'
-                            classInput='form-control form-control-sm'                        
-                            label='Espacios en Blanco'
-                            name='espacios'
-                            value={this.state.form.espacios}
-                        />
-
+                   
                         <div className='col-lg-2'>
                             <label>Copias Internos</label>
                             <button 
@@ -278,6 +288,39 @@ export default class CedulaIrac extends Component {
                         }
                     </div>
 
+                    
+                    <div className='row bottom'>
+
+
+
+                    
+                    <Numeric
+                        class='col-lg-2 form-group'
+                        classInput='form-control form-control-sm'                        
+                        label='Espacios en Atte.'
+                        name='espacios'
+                        value={this.state.form.espacios}
+                    />
+                    <Numeric
+                        class='col-lg-2 form-group'
+                        classInput='form-control form-control-sm'                        
+                        label='Espacios en Copias'
+                        name='espaciosCopias'
+                        value={this.state.form.espaciosCopias}
+                    />
+
+                    <Numeric
+                        class='col-lg-2 form-group'
+                        classInput='form-control form-control-sm'                        
+                        label='Espacios en Siglas'
+                        name='espaciosSiglas'
+                        value={this.state.form.espaciosSiglas}
+                    />
+
+
+                    </div>
+
+
                     <div className='row'>
                         <label>Texto</label>
                         <TextEditor inputTextEditor={this.HandleChangeTextEditor.bind(this)} texto={this.state.form.texto}/>
@@ -286,6 +329,11 @@ export default class CedulaIrac extends Component {
                     <Hidden name='internos' value={this.state.form.internos} />
                     <Hidden name='externos' value={this.state.form.externos} />
                     <Hidden name='idPuestoJuridico' value={this.state.form.puestos} />
+                    {
+                        this.state.tipo == 'NOTA' &&
+                        <Hidden name='asunto' value={this.state.form.asunto} />
+                    }
+                    
                     <Buttons cancel={this.props.cancel.bind(this)} print={this.HandlePrint.bind(this)} />
                     </form>
                     {

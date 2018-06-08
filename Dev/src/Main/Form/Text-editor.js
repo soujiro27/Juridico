@@ -20,7 +20,6 @@ export default class TextoEditor extends Component {
     
      
           // dropdown with defaults from theme
-        [{ 'font': [] }],
         [{ 'align': [] }],
       
                                             // remove formatting button
